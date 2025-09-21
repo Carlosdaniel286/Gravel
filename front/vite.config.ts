@@ -1,0 +1,16 @@
+import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+import { enhancedImages } from '@sveltejs/enhanced-img';
+export default defineConfig({
+	
+	plugins: [
+		sveltekit(),
+        tailwindcss(),
+		enhancedImages()
+	],
+	server: {
+    host: "0.0.0.0",
+    port: 3000
+  }
+});
