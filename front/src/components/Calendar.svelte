@@ -55,7 +55,7 @@
   let isCalendarOpen = $state(false);
   let calendarRef = $state<HTMLElement | null>(null);
   let openButtonRef = $state<HTMLElement | null>(null);
-  
+  let inputRef = $state<HTMLDivElement | null>(null);
   // -----------------------
   // Dados derivados
   // -----------------------
@@ -169,28 +169,42 @@
  
   function handleClickOutside(event: MouseEvent) {
   const path = event.composedPath();
-    if ((openButtonRef && path.includes(openButtonRef)) ||(calendarRef && path.includes(calendarRef))) {
+   if ((openButtonRef && path.includes(openButtonRef)) ||(calendarRef && path.includes(calendarRef))) {
     return;
   }
   isCalendarOpen = false;
 }
+ let dropdownRef:null|HTMLDivElement = $state(null)
+ let height = $state(0)
+ let limitPosition = $state(true)
+ 
+ $effect(()=>{
   
-</script>
+  if(dropdownRef){
+    const rect = dropdownRef.getBoundingClientRect()
+    if(rect.top<0) limitPosition=false 
+    
+  }
+ })
 
+
+</script>
+<svelte:window  bind:innerHeight={height}  />
 <svelte:document onclick={handleClickOutside} />
 
 <div bind:this={calendarRef} class="relative" >
   {#if isCalendarOpen}
     <div
-      tabindex="-1"
-      class="p-1 border absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-[1.2rem] flex flex-col justify-center items-center"
-    >
+      bind:this={dropdownRef}
+     class={cn(
+        "p-1 border absolute z-20 left-1/2 -translate-x-1/2 bg-white rounded-[1.2rem] flex flex-col justify-center items-center",
+        limitPosition?"bottom-full mb-2" : "top-full mt-2",
+        )}>
       <div class="flex gap-2 justify-center items-center max-w-[400px]">
         <button class="cursor-pointer" onclick={goToPrevMonth}>
           <ArrowLeft size={60} class="h-5 w-5" />
         </button>
-
-        <Select
+       <Select
           property="month"
           options={months.map(it => ({ ...it, month: it.month.slice(0, 3) }))}
           label={currentMonthLabel}
@@ -255,10 +269,11 @@
     </div>
   {/if}
 <div class="flex flex-col gap-2">
+
 <label for="input" class="pl-2 uppercase text-gray-800 font-semibold">
   {label}
 </label>
-<div class={cn("flex  input ",className)}>
+<div bind:this={inputRef} class={cn("flex   input ",className)}>
     <button  class="cursor-pointer mr-3 rounded-sm">
       <X
         onclick={() => {
@@ -277,6 +292,7 @@
      id="input"
       class="w-full focus:outline-0 focus:ring-0"
       type="text"
+
       onclick={(()=>isCalendarOpen=true)}
       bind:value={inputValue}
       use:maskAction={{ mask: "00/00/0000", value: inputValue }}
@@ -303,4 +319,5 @@
     </button>
   </div>
   </div>
+  
 </div>

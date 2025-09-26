@@ -7,7 +7,7 @@
   interface DateRangePickerProps {
     startDate?: Date;
     endDate?: Date;
-    numberOfDays?: number;
+    numberOfDays?: number | 'permanente';
     class?: string;
     classDays?: string;
     classCalendar?: string;
@@ -50,8 +50,9 @@
 
   // Atualiza a data final ao digitar os dias
   function handleDaysInput() {
+    if(startDateInput=='permanente') return
     const num = Number(stayDaysInput);
-
+     
     if (!num || num < 1) return (stayDaysInput = "");
     if (stayDaysInput.toString().length > 3) return;
     if (num > 366) return (stayDaysInput = 366);
@@ -64,7 +65,7 @@
   }
 </script>
 
-<div class={cn("flex flex-col justify-center gap-3", className)}>
+<div class={cn("flex flex-col justify-center gap-4", className)}>
   <!-- Início da permanência -->
   <Calendar
     class={classCalendar}
@@ -86,7 +87,7 @@
   />
 
   <!-- Dias de permanência -->
-  <fieldset class="flex flex-col gap-2">
+  <fieldset class="flex flex-col  gap-2">
     <label
       for="days-input"
       class="pl-2 uppercase text-gray-800 font-semibold"
@@ -95,10 +96,14 @@
     </label>
     <input
       id="days-input"
+      disabled={stayDaysInput=='permanente'}
       bind:value={stayDaysInput}
       oninput={handleDaysInput}
-      use:maskAction={{ mask: "000", value: stayDaysInput.toString() }}
-      class={cn("input text-center px-1 cursor-auto", classDays)}
+      use:maskAction={{ mask: ["000",'permanente'], value: stayDaysInput.toString() }}
+      class={cn("input text-center px-1 cursor-auto", 
+       stayDaysInput=='permanente'?'text-gray-400':'input',
+       classDays
+      )}
     />
   </fieldset>
 </div>

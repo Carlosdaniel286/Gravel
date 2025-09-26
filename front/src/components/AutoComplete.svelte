@@ -25,7 +25,7 @@
  
   let searchValue = $state(value??'');
   let width = $state(0);
-  let openOverlay = $state(true);
+  let openOverlay = $state(false);
   // Armazenar a instância da máscara
   
   
@@ -72,14 +72,27 @@
    
     openOverlay = searchValue.trim() !== '';
   }
+  let containerRef = $state<HTMLElement | null>(null);
+   
+ function handleClickOutside(event: MouseEvent) {
+  const path = event.composedPath();
+   if(containerRef && !path.includes(containerRef)){
+      openOverlay = false;
+   }
+  
+  
+}
 </script>
 
-<div class={cn("relative flex flex-col gap-2",className)}>
+
+<svelte:document onclick={handleClickOutside} />
+
+<div  class={cn(" flex flex-col gap-2",className)}>
   <Label  
-  for="in"
+  for=""
   label={title}
   />
-  <div bind:clientWidth={width} class={cn("input h-full w-full flex",`h-[${height}px]`)}>
+  <div bind:this={containerRef} bind:clientWidth={width} class={cn("input relative h-full w-full flex",`h-[${height}px]`)}>
     <input 
      id="in"
       type="text" 
@@ -91,7 +104,6 @@
         openOverlay=true
       })}
        use:maskAction={{mask,value:searchValue}}
-      
       />
       
       <button class="cursor-pointer" onclick={() => {
@@ -99,13 +111,15 @@
       openOverlay = false;
       onClear?.()
     }}><Eraser size={20} /></button>
-  </div>
-  {#if openOverlay}
-    <ul class="bg-gray-100 absolute top-[2.7rem] flex flex-col gap-2 overflow-y-auto rounded-md max-h-[300px]">
+    {#if openOverlay}
+   
+    <ul class={cn("bg-black absolute top-full left-0 mt-4 flex flex-col gap-2   overflow-auto overflow-x-hidden rounded-md max-h-[300px]")}
+    style="min-width:{width}px"
+    >
       {#each filteredOptions as item, i (i)}
-        <li style="min-width:{width}px;">
+        <li  style="max-width:{width}px">
           <button 
-            class="uppercase  px-4 py-2 w-full text-left cursor-pointer hover:bg-gray-200 rounded-md"
+            class="uppercase px-4 py-2 w-full text-white text-left cursor-pointer hover:bg-gray-700 rounded-md break-words whitespace-normal"
             onclick={() => {
               searchValue = item;
               openOverlay = false
@@ -118,4 +132,5 @@
       {/each}
     </ul>
   {/if}
+  </div>
 </div>

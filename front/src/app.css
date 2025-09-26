@@ -110,6 +110,12 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+@theme {
+  --breakpoint-3xl: 120rem; /* 1920px */
+  --breakpoint-4xl: 140rem ; /* 2240px 140rem */
+  --breakpoint-swap: 66.875rem; /* 1070px */
+ 
+}
 
 @layer components {
   .button{
