@@ -22,7 +22,8 @@ interface InputProps{
     />
         <input 
             use:maskAction={{mask,value}}
-            class={cn("input uppercase cursor-text placeholder:text-gray-800 h-full",`h-[${height}px]` )}
+            class={cn("input uppercase cursor-text placeholder:text-gray-800 h-full" )}
+            style="height:{height}px;"
             id="name" 
             placeholder={placeholder}
             type="text" 

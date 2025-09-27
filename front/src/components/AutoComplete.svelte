@@ -92,7 +92,10 @@
   for=""
   label={title}
   />
-  <div bind:this={containerRef} bind:clientWidth={width} class={cn("input relative h-full w-full flex",`h-[${height}px]`)}>
+  <div bind:this={containerRef} bind:clientWidth={width} class={cn("input relative h-full w-full flex")}
+   style="height:{height}px;"
+  
+  >
     <input 
      id="in"
       type="text" 

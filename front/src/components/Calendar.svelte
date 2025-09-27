@@ -34,6 +34,7 @@
     endDate?:Date
     label?:string
     class?:string
+    height?:string|number
   }
   const today = startOfDay(new Date());
   const initialFormatted = format(today, "dd/MM/yyyy");
@@ -45,7 +46,8 @@
     startDate,
     endDate ,
     label,
-    class:className
+    class:className,
+    height:heightClass
   }:CalendarProps = $props()
   
   
@@ -268,12 +270,14 @@
       </div>
     </div>
   {/if}
-<div class="flex flex-col gap-2">
 
-<label for="input" class="pl-2 uppercase text-gray-800 font-semibold">
+<div class="flex  flex-col gap-2">
+  <label for="input" class="pl-2 uppercase text-gray-800 font-semibold">
   {label}
 </label>
-<div bind:this={inputRef} class={cn("flex   input ",className)}>
+<div bind:this={inputRef} class={cn("flex   input ",className)}
+ style="height:{heightClass}px;"
+>
     <button  class="cursor-pointer mr-3 rounded-sm">
       <X
         onclick={() => {
@@ -292,7 +296,6 @@
      id="input"
       class="w-full focus:outline-0 focus:ring-0"
       type="text"
-
       onclick={(()=>isCalendarOpen=true)}
       bind:value={inputValue}
       use:maskAction={{ mask: "00/00/0000", value: inputValue }}

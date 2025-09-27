@@ -23,7 +23,7 @@
 
  {#snippet accessVehicleForm()}
    <AccessVehicleForm
-    onCancel={(()=>api?.apiPrevious())}
+    onPrevious={(()=>api?.apiPrevious())}
    />
  {/snippet}
  

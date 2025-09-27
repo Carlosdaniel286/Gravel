@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Snippet} from 'svelte';
-    import { cubicInOut, linear } from 'svelte/easing';
-    import { fly,fade } from 'svelte/transition';
+    import { cubicInOut} from 'svelte/easing';
+    import { fly } from 'svelte/transition';
     
   export type ApiProps = {
    apiNext(): void;

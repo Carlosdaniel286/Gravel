@@ -53,7 +53,8 @@
   label={title}
   />
   <select
-   class={cn("input",`h-[${height}px]`)}
+   class={cn("input")}
+   style="height:{height}px;"
    id='select'
     onchange={(()=>{
       onSelect?.(selectedOption)

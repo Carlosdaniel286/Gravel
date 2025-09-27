@@ -70,7 +70,7 @@
 
   <Input
     height={HEIGHT}
-    mask="(00) 00000-0000"
+    mask="(00) 9 0000-0000"
     class={cn(`md:col-start-1 lg:col-span-2 lg:col-start-1`)}
     placeholder="Digite o número de telefone"
     label="telefone (opcional)"
