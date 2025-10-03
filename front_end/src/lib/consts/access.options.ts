@@ -1,11 +1,11 @@
-import type { AccessFormValues, AccessMode, AccessProfile, AccessType, ResidentAccess } from "$lib/types/access.types";
+import type { RegisterVisitor, AccessMode, AccessProfile, AccessType, ResidentAccess } from "$lib/types/access.types";
 
 
 // Opções de modo de acesso
 export const optionsAccessMode: AccessMode[] = [
   { id: 1, label: 'Pedestre', value: 'pedestre' },
-  { id: 2, label: 'Veículo', value: 'veiculo' },
-  { id: 3, label: 'Passageiro', value: 'passageiro' },
+  { id: 2, label: 'Veículo (Condutor)', value: 'veiculo' },
+  { id: 3, label: 'Passageiro (Veículo)', value: 'passageiro' },
   { id: 4, label: 'Bicicleta', value: 'bicicleta' },
   { id: 5, label: 'Bicicleta Elétrica', value: 'bicicleta eletrica' },
   { id: 6, label: 'Veículo Sem Placa', value: 'veiculo sem placa' },
@@ -63,15 +63,18 @@ export const optionsResidentAccess: ResidentAccess[] = [
 ];
 
 // Valor inicial do formulário
-export const initAccessForm: AccessFormValues = {
+export const initRegisterVisitor: RegisterVisitor = {
+  idRegister:'',
   name: '',
   cpf: '',
   address:'',
   phone:'',
-  StartDate:new Date,
-  EndDate:new Date,
-  StayDays:1,
-  accessType: null,
-  accessMode: null,
-  accessProfile: null,
+  startDate:new Date,
+  endDate:new Date,
+  stayDays:1,
+  cnhValidity:null,
+  accessType: '',
+  accessMode: '',
+  accessProfile: '',
+  vehicle:[]
 };

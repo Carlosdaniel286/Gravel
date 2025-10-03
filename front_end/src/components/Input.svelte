@@ -12,7 +12,7 @@ interface InputProps{
   height?:string|number
  }
   
- const {mask,class:className,label,placeholder,value=$bindable(),height}:InputProps=$props()
+ let {mask,class:className,label,placeholder,value=$bindable(),height}:InputProps=$props()
  </script>
 
   <fieldset class={cn("flex flex-col gap-2",className)}>
@@ -22,6 +22,7 @@ interface InputProps{
     />
         <input 
             use:maskAction={{mask,value}}
+            bind:value={value}
             class={cn("input uppercase cursor-text placeholder:text-gray-800 h-full" )}
             style="height:{height}px;"
             id="name" 

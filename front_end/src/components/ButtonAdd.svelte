@@ -6,21 +6,26 @@ import { CirclePlus } from "@lucide/svelte";
   class?:string
   text?:string
   onClick?:()=>void
-  heigth?:string|number
+  label?:string
+  style?:string
  }  
- const {class:className,text,onClick,heigth}:ButtonFormProps=$props()
+ const {class:className,text,onClick,label,style}:ButtonFormProps=$props()
 </script>
   <div class={cn('flex flex-col gap-2',className)}>
-    <Label
-    for="button"
-    label="Mais informações (opcional)"
- />
-  <button id="button" onclick={onClick} type="button" class={cn(
+   {#if label}
+     <Label
+      for="button"
+      label={label}
+   />
+   {/if}
+   <button id="button" onclick={onClick} type="button" class={cn(
     "bg-gray-900 rounded-lg text-white cursor-pointer uppercase", 
     'font-medium hover:bg-gray-800',
-    'flex justify-center items-center gap-2 px-1.5',
-     `h-[${heigth}px] w-full`
-     )} >
+    'flex justify-center items-center gap-2 px-2',
+     `w-full h-full`
+     )} 
+     style={style}
+     >
     {text}
     <CirclePlus/>
  </button>

@@ -1,3 +1,5 @@
+import type { Vehicle } from "./vehicle.type";
+
 export type AccessOptionBase = { 
   id: number; 
   label: string; 
@@ -49,16 +51,20 @@ export type ResidentAccess = AccessOptionBase & {
   casa: string | null
 };
 
-export type AccessFormValues = {
+export type RegisterVisitor = {
+  idRegister:string,
   name: string;
   cpf: string;
   address:string;
-  StartDate:Date
-	EndDate:Date
-	StayDays:number;
+  startDate:Date
+	endDate:Date
+	stayDays:number;
   phone:string
-  accessType: AccessType | null
-  accessMode: AccessMode | null
-  accessProfile: AccessProfile | null
-  
+  accessType?: string 
+  accessMode?: string 
+  accessProfile?: string 
+  cnhValidity: Date|null
+  cnh?: string;
+  vehicle?:string[] 
+
 };

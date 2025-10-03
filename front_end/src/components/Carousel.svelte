@@ -41,7 +41,7 @@ function apiPrevious() {
 </script>
   {#key activeIndex}
   <div
-     class="w-full  h-full overflow-x-hidden flex justify-center items-center "
+     class="w-full  h-full overflow-x-hidden overflow-y-auto flex justify-center items-center "
      in:fly={{x:move.in, duration: 1000,delay:400,easing:cubicInOut}}
      out:fly={{x:move.out, duration: 1000,easing:cubicInOut }}>
        {@render children[activeIndex]()}

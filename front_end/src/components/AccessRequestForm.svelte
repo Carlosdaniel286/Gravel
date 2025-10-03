@@ -8,29 +8,34 @@
   import Img from '$lib/assets/default_img.jpg'
   import ButtonAdd from './ButtonAdd.svelte';
   import Button from './Button.svelte';
-  import { initAccessForm, optionsAccessMode, optionsAccessProfile, optionsAccessType, optionsResidentAccess } from '$lib/consts/access.options';
+  import {  optionsAccessMode, optionsAccessProfile, optionsAccessType, optionsResidentAccess } from '$lib/consts/access.options';
   import HeaderForm from './HeaderForm.svelte';
+  import type { ApiProps } from './Carousel.svelte';
+  import { getRegisterContext } from '$lib/context/acessRequestForm.svelte';
+    
    
   interface AccessFormProps{
     onCancel?:()=>void
     onConfirm?: () => void
+    api?:ApiProps 
    }
  
   const HEIGHT = '58';
-  let inputsForm= $state(initAccessForm)
-  const {onCancel,onConfirm}:AccessFormProps= $props()
+ 
+  let {onCancel,onConfirm,api=$bindable()}:AccessFormProps= $props()
+  const registerManager = getRegisterContext();
   
 </script>
 
 
-<div class="bg-white flex flex-col w-full   gap-5  max-w-[1536px] 3xl:rounded-lg  px-5 py-5 ">
+<div class="bg-white flex flex-col w-full lg:h-[calc(100vh+110px)]   gap-5  max-w-[1536px] 3xl:rounded-lg  px-5 py-5  ">
    <!-- Header -->
   <HeaderForm
   title='Cadastro Geral'
   subTitle='Preencha as informações abaixo para criar um novo cadastro.'
   />
     <!-- Form Grid -->
-  <form  class="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-3">
+  <form  class="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
   <!-- Nome Completo -->
   <Input
     mask={/^[A-Za-z ]+$/}
@@ -38,7 +43,7 @@
     height={HEIGHT}
     placeholder="Digite o nome completo"
     label="Nome completo"
-    bind:value={inputsForm.name}
+    bind:value={registerManager.register.name}
   />
 
   <picture class=' md:col-start-2 flex justify-end row-span-2 lg:col-start-4 row-start-1'>
@@ -57,7 +62,8 @@
     placeholder="Digite endereço ou nome do morador"
     options={optionsResidentAccess}
     property='label'
-    bind:value={inputsForm.address}
+    bind:value={registerManager.register.address}
+    setSelect={registerManager.register.address}
   />
 
   <!-- CPF -->
@@ -67,7 +73,7 @@
     class={cn(`lg:col-span-2 lg:col-start-1`)}
     placeholder="Digite o CPF"
     label="CPF completo"
-    bind:value={inputsForm.cpf}
+    bind:value={registerManager.register.cpf}
   />
 
   <Input
@@ -76,30 +82,36 @@
     class={cn(`md:col-start-1 lg:col-span-2 lg:col-start-1`)}
     placeholder="Digite o número de telefone"
     label="telefone (opcional)"
-    bind:value={inputsForm.phone}
+    bind:value={registerManager.register.phone}
+    
   />
 
   <ButtonAdd
     class={cn(`md:col-start-2 md:row-start-7 row-start-13 lg:row-start-auto lg:col-span-2 lg:col-start-1  `)}
     text='criar uma observaçao'
-    heigth={HEIGHT}
+    label="Mais informações (opcional)"
+    style='height:{HEIGHT}px'
   />
 
   <!-- Período de Visita -->
   <DateRangePicker 
-    class="row-span-3 md: row-start-5 lg:row-start-2 lg:col-span-1 lg:col-start-3"
+    class="row-span-3 md: row-start-5 lg:row-start-2 lg:col-span-1 lg:col-start-3 gap-8"
     classCalendar={cn(`h-[${HEIGHT}px]`)}
     classDays={cn(`h-[${HEIGHT}px]`)}
-  />
+    bind:startDate={registerManager.register.startDate}
+    bind:endDate={registerManager.register.endDate}
+    />
 
   <!-- Selects adicionais -->
   <Select 
-    class={cn(` md:col-start-2 lg:col-start-4 lg:row-start-3`)}
+    class={cn(`md:col-start-2 lg:col-start-4 lg:row-start-3`)}
     height={HEIGHT}
     label='escolha o perfil'
     title='perfil de vistante'
     options={optionsAccessProfile}
     property='label'
+    
+    bind:value={registerManager.register.accessProfile}
   />
 
   <Select 
@@ -109,12 +121,9 @@
     height={HEIGHT}
     options={optionsAccessMode}
     property='label'
-    onSelect={((item)=>{
-      if(typeof item ==='string') return
-      inputsForm.accessMode=item
-      
-    })}
-    />
+    bind:value={registerManager.register.accessMode}
+   
+  />
 
   <Select 
     class={cn(`md:col-start-2 lg:col-span-2 lg:col-start-3 lg:row-start-5`)}
@@ -123,6 +132,8 @@
     options={optionsAccessType}
     property='label'
     label='tipo de registro'
+    bind:value={registerManager.register.accessType}
+  
   />
     <div class=" mt-6 col-span-1 md:col-span-2 lg:col-span-4 flex justify-between ">
        <Button
@@ -133,8 +144,17 @@
       
       <Button
        text='enviar'
-       variant={inputsForm.accessMode?.value=='veiculo'|| inputsForm.accessMode?.value=='passageiro' ?'next':'confirm'}
-       onClick={onConfirm}
+       variant={registerManager.register.accessMode=='Veículo (Condutor)' ?'next':'confirm'}
+       onClick={(()=>{
+         
+        if(registerManager.register.accessMode=='Veículo (Condutor)'){
+          
+           api?.apiNext()
+        }else{
+          onConfirm?.()
+          //registerList.push({...newRegister,idRegister:id})
+        }
+       })}
       />
       
     </div>

@@ -6,17 +6,24 @@
     import Overlay from "./Overlay.svelte";
     const show =getOverlayContext()
     import type { ApiProps } from "./Carousel.svelte";
+    import { setRegisterContext } from "$lib/context/acessRequestForm.svelte";
+   
     
-   let api:null|ApiProps = $state(null)
-
+   let api:ApiProps | undefined = $state(undefined)
+   setRegisterContext()
    
 </script>
 
  {#snippet accessRequestForm()}
    
   <AccessRequestForm
+    api={api}
     onConfirm={(()=>{
-      api?.apiNext()
+      
+    })}
+    
+    onCancel={(()=>{
+     show.close()
     })}
    />
  {/snippet}
@@ -29,17 +36,16 @@
  
  
 <Overlay
- class='grid w-full lg:h-full lg:bg-white lg:flex  lg:items-center-safe lg:justify-center-safe   3xl:h-auto 3xl:block  3xl:w-auto 3xl:bg-transparent'
+ class='grid w-full overflow-hidden   lg:flex  lg:items-center-safe lg:justify-center-safe   3xl:h-auto 3xl:block  3xl:w-auto 3xl:bg-transparent'
  show={show.isOpen}
- 
+ background='white'
  onOverlay={(()=>{
     show.close()
  })}
 >
 
  <Carousel children={[accessRequestForm,accessVehicleForm]} 
- 
-  onMove={((item)=>{
+ onMove={((item)=>{
     api=item
   })}
  

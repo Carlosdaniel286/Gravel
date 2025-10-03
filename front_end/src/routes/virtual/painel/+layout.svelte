@@ -6,7 +6,7 @@
     import { setOverlayContext } from '$lib/context/overlayContext.svelte';
     import { setRegisterContext } from '$lib/context/acessRequestForm.svelte';
     setOverlayContext()
-    setRegisterContext()
+    
  </script>
   <main class=" flex flex-col bg-gray-100 h-screen w-screen">
   <Header />

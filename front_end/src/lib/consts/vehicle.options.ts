@@ -1,3 +1,6 @@
+import type { Vehicle } from "$lib/types/vehicle.type";
+import { initRegisterVisitor } from "./access.options";
+
 export const brands = [
   { id: 1, brand: 'Fiat' },
   { id: 2, brand: 'Volkswagen' },
@@ -246,4 +249,17 @@ export const vehicleTypes = [
   { id: 19, type: "Caminhonete" }, // usado no Brasil como termo rural/pesado
   { id: 20, type: "Utilitário leve" }
 ];
+ 
 
+
+
+export const initRegisterVehicle:Vehicle ={
+  idVehicle:'',
+  plate:'',
+  color:'',
+  vehicleType:'',
+  model:'',
+  brands:'',
+  passenger:[],
+ 
+}

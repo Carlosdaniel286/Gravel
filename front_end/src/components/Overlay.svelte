@@ -7,14 +7,14 @@
     children?: Snippet;
     onOverlay?:()=>void;
     class?:string
+    background?:string
   }
 
-  let { show=$bindable(false), children,onOverlay,class:style }: OverlayProps = $props();
+  let { show=$bindable(false), children,onOverlay,class:style,background="auto" }: OverlayProps = $props();
 
   let overlayEl = $state<null | HTMLDivElement>(null);
   let height = $state(0)
-  let heightRef = $state(0)
- let sidebarEl: HTMLDivElement | null  =$state(null)
+ 
   
   
   $effect(() => {
@@ -35,8 +35,9 @@
   <div
     bind:this={overlayEl}
     class={cn("flex fixed inset-0 bg-black/40 h-screen w-screen items-center-safe justify-center",
+    
    )}
-    style="overflow-x:auto;"
+    style="overflow-x:auto; background:{background};"
 
     >
     <div  class={cn(style)}>

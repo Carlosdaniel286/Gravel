@@ -19,32 +19,36 @@
     title?:string
     placeholder?:string
     height?:string|number
+    setSelect?:string
   }
   
-  const { options, onSelect, property, filterOptions, class: className, mask = /.+/,onClear,value=$bindable(),title,placeholder,height}: AutoCompleteProps = $props();
+  let { options, onSelect, property, filterOptions, class: className, mask = /.+/,onClear,value=$bindable(),title,placeholder,height,setSelect}: AutoCompleteProps = $props();
  
-  let searchValue = $state(value??'');
+  let searchValue = $state('');
   let width = $state(0);
   let openOverlay = $state(false);
+  
   // Armazenar a instância da máscara
   
-  
+  $effect(()=>{
+    if(setSelect){
+      searchValue=setSelect
+    }
+  })
   // Mapear opções para strings
-  function mapOptionsToStrings(): string[] {
+  const mappedOptions = $derived.by(()=>{
     if (!options) return [];
     return options.map(option => {
-      //if(openOverlay==true) return option
       if (typeof option === 'string') return option;
       if (!property) return JSON.stringify(option);
       return String(option[property]);
     });
-  }
+  })
 
   // Lista de opções mapeadas
-  const mappedOptions = mapOptionsToStrings();
+ // const mappedOptions = mapOptionsToStrings();
 
   const filterByWordStart = $derived.by(() => {
-   
     return mappedOptions.filter((item) => {
       const regex = /\b\w+/g;
       const words = item.match(regex);
@@ -66,6 +70,7 @@
     }
   });
 
+ 
   function handleInput(e: Event) {
     const target = e.target as HTMLInputElement;
     searchValue = target.value;
@@ -127,6 +132,7 @@
               searchValue = item;
               openOverlay = false
               onSelect?.(item);
+              value=item
             }}
           >
             {item}

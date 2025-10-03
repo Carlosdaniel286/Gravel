@@ -1,8 +1,9 @@
 <script lang="ts">
   import { maskAction } from "$lib/hooks/useMask.svelte";
-  import { startOfDay, format, differenceInCalendarDays, addDays } from "date-fns";
+  import { startOfDay, format, differenceInCalendarDays, addDays,isAfter } from "date-fns";
   import Calendar from "./Calendar.svelte";
   import { cn } from "$lib/utils";
+    import { onMount } from "svelte";
 
   interface DateRangePickerProps {
     startDate?: Date;
@@ -17,38 +18,41 @@
   const today = startOfDay(new Date());
 
   let {
-    startDate = $bindable(),
-    endDate = $bindable(),
+    startDate = $bindable(today),
+    endDate = $bindable(today),
     numberOfDays = $bindable(),
     class: className,
     classDays,
     classCalendar
   }: DateRangePickerProps = $props();
 
-  // Estado das datas
-  let period = $state({
-    startDate: today,
-    endDate: today
-  });
-
-  // Quantidade de dias (sempre >= 1)
   const daysOfStay = $derived.by(() => {
-    const diff = differenceInCalendarDays(period.endDate, period.startDate);
+    const diff = differenceInCalendarDays(endDate, startDate);
     return diff + 1;
   });
 
-  $effect(() => {
-    startDate = period.startDate;
-    endDate = period.endDate;
-    numberOfDays = daysOfStay;
-  });
+ 
 
   // Valores auxiliares para inputs
   let stayDaysInput: string | number = $derived(daysOfStay);
-  let endDateInput = $derived(format(period.startDate, "dd/MM/yyyy"));
-  let startDateInput = $derived(format(period.startDate, "dd/MM/yyyy"));
-
-  // Atualiza a data final ao digitar os dias
+  
+  let startDateInput = $derived(format(startDate, "dd/MM/yyyy"))
+  
+  let endDateInput = $derived.by(()=>{
+     if(isAfter(startDate,endDate)){
+      return format(startDate, "dd/MM/yyyy")
+     }else{
+       return format(endDate, "dd/MM/yyyy")
+     }
+   })
+   $effect(() => {
+     numberOfDays = daysOfStay;
+  });
+  
+  
+  
+  
+  
   function handleDaysInput() {
     if(startDateInput=='permanente') return
     const num = Number(stayDaysInput);
@@ -59,9 +63,9 @@
 
     stayDaysInput = num;
 
-    const calculatedEndDate = addDays(period.startDate, num - 1);
+    const calculatedEndDate = addDays(startDate, num - 1);
     endDateInput = format(calculatedEndDate, "dd/MM/yyyy");
-    period.endDate = calculatedEndDate;
+    endDate = calculatedEndDate;
   }
 </script>
 
@@ -69,9 +73,9 @@
   <!-- Início da permanência -->
   <Calendar
     class={classCalendar}
-    disabled={{ before: period.startDate }}
+    disabled={{ before: today }}
     startDate={today}
-    bind:selectedDate={period.startDate}
+    bind:value={startDate}
     bind:inputValue={startDateInput}
     label="Início de permanência"
   />
@@ -79,9 +83,9 @@
   <!-- Fim da permanência -->
   <Calendar
     class={classCalendar}
-    disabled={{ before: period.startDate }}
+    disabled={{ before: startDate }}
     startDate={today}
-    bind:selectedDate={period.endDate}
+    bind:value={endDate}
     bind:inputValue={endDateInput}
     label="Fim de permanência"
   />
