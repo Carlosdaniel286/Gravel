@@ -1,8 +1,9 @@
-import { addYears } from "date-fns";
 
 
-export function normalizeDateInput (value:string,today:Date,maxYear:number,minYear:number){
+
+export function normalizeDateInput (value:string,maxYear:number,minYear:number){
   let lastIndex = value.length - 1;
+  
    if(value.length>10) return value = value.slice(0,-1)
    let digits = value.split('').map(Number);
 
@@ -66,7 +67,7 @@ const year = Number(digits.slice(6, 10).join(''));
 if (digits.length === 10 && year > maxYear) {
   digits.splice(6, 4, ...String(maxYear).split('').map(Number));
 }
-if(digits.length===10 && year<today.getFullYear()){
+if(digits.length===10 && minYear>year){
   digits.splice(6, 4, ...String(minYear).split('').map(Number));
 }
 

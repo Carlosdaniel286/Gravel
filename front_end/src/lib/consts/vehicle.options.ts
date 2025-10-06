@@ -1,5 +1,5 @@
 import type { Vehicle } from "$lib/types/vehicle.type";
-import { initRegisterVisitor } from "./access.options";
+
 
 export const brands = [
   { id: 1, brand: 'Fiat' },
@@ -260,6 +260,4 @@ export const initRegisterVehicle:Vehicle ={
   vehicleType:'',
   model:'',
   brands:'',
-  passenger:[],
- 
-}
+  }

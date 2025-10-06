@@ -11,7 +11,7 @@
   import {  optionsAccessMode, optionsAccessProfile, optionsAccessType, optionsResidentAccess } from '$lib/consts/access.options';
   import HeaderForm from './HeaderForm.svelte';
   import type { ApiProps } from './Carousel.svelte';
-  import { getRegisterContext } from '$lib/context/acessRequestForm.svelte';
+  import { getRegisterContext } from '$lib/context/acessRequestFormContext.svelte';
     
    
   interface AccessFormProps{
@@ -24,7 +24,9 @@
  
   let {onCancel,onConfirm,api=$bindable()}:AccessFormProps= $props()
   const registerManager = getRegisterContext();
-  
+   
+  const variant = $derived(registerManager.register.driver || (registerManager.register.accessMode=="passageiro" && registerManager.register.passenger===false)  ?'next':'confirm')
+
 </script>
 
 
@@ -110,7 +112,6 @@
     title='perfil de vistante'
     options={optionsAccessProfile}
     property='label'
-    
     bind:value={registerManager.register.accessProfile}
   />
 
@@ -120,7 +121,9 @@
     label='escolha a locomoção'
     height={HEIGHT}
     options={optionsAccessMode}
+    disabled={registerManager.register.passenger}
     property='label'
+    valueProperty='value'
     bind:value={registerManager.register.accessMode}
    
   />
@@ -141,18 +144,25 @@
        text='cancelar'
        onClick={onCancel}
       />
-      
+        {#if registerManager.register.passenger }
+      <ButtonAdd
+       label=''
+       text='adiconar passageiro'
+       class=' h-[54px]'
+       onClick={(()=>{
+        registerManager.creatPassenger()
+      })}
+       />
+      {/if}
       <Button
        text='enviar'
-       variant={registerManager.register.accessMode=='Veículo (Condutor)' ?'next':'confirm'}
+       variant={variant}
        onClick={(()=>{
-         
-        if(registerManager.register.accessMode=='Veículo (Condutor)'){
-          
-           api?.apiNext()
-        }else{
-          onConfirm?.()
-          //registerList.push({...newRegister,idRegister:id})
+        if(variant==='next'){
+            api?.apiNext()
+         }else{
+           onConfirm?.()
+           registerManager.addPerson()
         }
        })}
       />

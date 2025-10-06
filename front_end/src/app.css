@@ -134,7 +134,6 @@
   .input{
     @apply
     w-full 
-    
     border-0 
     hover:border-transparent 
     focus:outline-none 

@@ -1,13 +1,4 @@
 
-
-
-export type Driver ={
- 
-  
-}
-
-
-
 export type  Vehicle ={
     idVehicle:string
     plate: string;
@@ -16,5 +7,4 @@ export type  Vehicle ={
     model: string;
     brands: string;
     
-    passenger?:string[]
 }

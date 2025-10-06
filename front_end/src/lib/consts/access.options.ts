@@ -1,10 +1,11 @@
-import type { RegisterVisitor, AccessMode, AccessProfile, AccessType, ResidentAccess } from "$lib/types/access.types";
+import type {  AccessMode, AccessProfile, AccessType, ResidentAccess } from "$lib/types/access.types";
+import type { Vehicle } from "$lib/types/vehicle.type";
 
 
 // Opções de modo de acesso
 export const optionsAccessMode: AccessMode[] = [
   { id: 1, label: 'Pedestre', value: 'pedestre' },
-  { id: 2, label: 'Veículo (Condutor)', value: 'veiculo' },
+  { id: 2, label: "Veículo (Condutor)", value: 'veículo' },
   { id: 3, label: 'Passageiro (Veículo)', value: 'passageiro' },
   { id: 4, label: 'Bicicleta', value: 'bicicleta' },
   { id: 5, label: 'Bicicleta Elétrica', value: 'bicicleta eletrica' },
@@ -62,19 +63,61 @@ export const optionsResidentAccess: ResidentAccess[] = [
   { id: 12, label: 'Diego Martins - Casa 4', casa: '4' },
 ];
 
-// Valor inicial do formulário
-export const initRegisterVisitor: RegisterVisitor = {
+
+
+
+ export type RegisterVisitorList ={
+  idRegister: string;
+    name: string;
+    cpf: string;
+    address: string;
+    phone: undefined|string
+    startDate: Date;
+    endDate: Date;
+    stayDays: number;
+    cnhValidity:undefined|Date
+    cnh?:string
+    accessType: string;
+    accessMode: string;
+    accessProfile: string;
+    driver: boolean;
+    passenger: boolean;
+    observation?: string;
+ }
+
+export const initRegisterVisitorList:RegisterVisitorList = {
   idRegister:'',
   name: '',
   cpf: '',
   address:'',
-  phone:'',
-  startDate:new Date,
-  endDate:new Date,
+  phone:undefined,
+  startDate:new Date(),
+  endDate:new Date(),
   stayDays:1,
-  cnhValidity:null,
+  cnh:undefined,
+  cnhValidity:undefined,
   accessType: '',
   accessMode: '',
   accessProfile: '',
-  vehicle:[]
+  driver:false,
+  passenger:false,
+  observation:undefined
 };
+
+export const initRegisterVehicle:Vehicle ={
+  idVehicle:'',
+  plate:'',
+  color:'',
+  vehicleType:'',
+  model:'',
+  brands:'',
+}
+
+
+export type GeralRegister ={
+  person:RegisterVisitorList[],
+  vehicle?:Vehicle
+}
+
+
+  

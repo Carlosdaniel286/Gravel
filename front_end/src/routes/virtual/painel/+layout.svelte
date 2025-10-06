@@ -4,7 +4,7 @@
     import Header from '../../../components/Header.svelte';
     import RootOverlay from '../../../components/RootOverlay.svelte';
     import { setOverlayContext } from '$lib/context/overlayContext.svelte';
-    import { setRegisterContext } from '$lib/context/acessRequestForm.svelte';
+    import { setRegisterContext } from '$lib/context/acessRequestFormContext.svelte';
     setOverlayContext()
     
  </script>

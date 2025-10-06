@@ -8,11 +8,12 @@ export type AccessOptionBase = {
 export type AccessMode = AccessOptionBase & {
   value: 
     | 'pedestre'
-    | 'veiculo'
+    | 'veículo'
     | 'passageiro'
     | 'bicicleta'
     | 'bicicleta eletrica' // bicicleta elétrica, sem placa
-    | 'veiculo sem placa'; // veículos sem placa
+    | 'veiculo sem placa'
+    | null
 };
 
 
@@ -51,20 +52,3 @@ export type ResidentAccess = AccessOptionBase & {
   casa: string | null
 };
 
-export type RegisterVisitor = {
-  idRegister:string,
-  name: string;
-  cpf: string;
-  address:string;
-  startDate:Date
-	endDate:Date
-	stayDays:number;
-  phone:string
-  accessType?: string 
-  accessMode?: string 
-  accessProfile?: string 
-  cnhValidity: Date|null
-  cnh?: string;
-  vehicle?:string[] 
-
-};

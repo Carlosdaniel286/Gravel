@@ -2,7 +2,7 @@
 
   import { brands, initRegisterVehicle, popularCars,motorcycleBrands, popularMotorcycles, truckBrands,truckModels, vehicleColors, vehicleTypes } from "$lib/consts/vehicle.options";
    
-  import { getRegisterContext } from "$lib/context/acessRequestForm.svelte";
+  import { getRegisterContext } from "$lib/context/acessRequestFormContext.svelte";
   import AutoComplete from "./AutoComplete.svelte";
   import Button from "./Button.svelte";
   import ButtonAdd from "./ButtonAdd.svelte";
@@ -18,11 +18,13 @@
   const Height =58;
   let {onPrevious,onConfirm }: AccessVehicleFormProps = $props();
   const registerManager = getRegisterContext();
- 
+  $effect(()=>{
+    
+  })
 
   
   const vehicleBrands = $derived.by(()=>{
-  switch(registerManager.register.vehicleType){
+  switch(registerManager.vehicle.vehicleType){
     case 'Carro':
       return brands
     case 'Caminhão':
@@ -35,7 +37,7 @@
 })
 
 const vehicleModel = $derived.by(()=>{
-  switch(registerManager.register.vehicleType){
+  switch(registerManager.vehicle.vehicleType){
     case 'Carro':
       return popularCars
     case 'Caminhão':
@@ -65,7 +67,7 @@ const vehicleModel = $derived.by(()=>{
       label="Placa do veículo"
       placeholder="Digite a placa"
       mask={["aaa0a00", "aaa-0000"]}
-       bind:value={registerManager.register.plate}
+       bind:value={registerManager.vehicle.plate}
     />
      <Input
       height={Height}
@@ -80,7 +82,7 @@ const vehicleModel = $derived.by(()=>{
       title="Selecione o tipo"
       options={vehicleTypes}
       property='type'
-      bind:value={registerManager.register.vehicleType}
+      bind:value={registerManager.vehicle.vehicleType}
       />
       
       <AutoComplete
@@ -90,7 +92,7 @@ const vehicleModel = $derived.by(()=>{
       title="Selecione a marca"
       options={vehicleBrands}
       property='brand'
-      bind:value={registerManager.register.brands}
+      bind:value={registerManager.vehicle.brands}
       />
 
       <AutoComplete
@@ -99,7 +101,7 @@ const vehicleModel = $derived.by(()=>{
       title="Selecione o modelo"
       options={vehicleModel}
       property='model'
-      bind:value={registerManager.register.model}
+      bind:value={registerManager.vehicle.model}
       />
 
       <AutoComplete
@@ -108,7 +110,7 @@ const vehicleModel = $derived.by(()=>{
       title="Selecione a cor"
       options={vehicleColors}
       property='color'
-      bind:value={registerManager.register.color}
+      bind:value={registerManager.vehicle.color}
       />
     <div class="">
       <Calendar
@@ -128,8 +130,8 @@ const vehicleModel = $derived.by(()=>{
        text='adiconar passageiro'
        class=' h-[54px]'
        onClick={(()=>{
-         registerManager.addRegister()
-       
+        registerManager.creatPassenger()
+        onPrevious?.()
        })}
        />
        <Button
@@ -137,7 +139,9 @@ const vehicleModel = $derived.by(()=>{
         text='confimar'
         onClick={(()=>{
           onConfirm?.()
-         // console.log($state.snapshot(registerManager.registerList));
+          registerManager.addPerson()
+          registerManager.addVehicle()
+         
           
         })}
         class='h-[54px]'
