@@ -1,4 +1,5 @@
-<script lang="ts">
+  <script lang="ts">
+
 	
   import { cn } from '$lib/utils';
   import AutoComplete from './AutoComplete.svelte';
@@ -8,26 +9,30 @@
   import Img from '$lib/assets/default_img.jpg'
   import ButtonAdd from './ButtonAdd.svelte';
   import Button from './Button.svelte';
-  import {  optionsAccessMode, optionsAccessProfile, optionsAccessType, optionsResidentAccess } from '$lib/consts/access.options';
+  import {  initRegisterVisitorList, optionsAccessMode, optionsAccessProfile, optionsAccessType, optionsResidentAccess, type RegisterVisitorList } from '$lib/consts/access.options';
   import HeaderForm from './HeaderForm.svelte';
   import type { ApiProps } from './Carousel.svelte';
   import { getRegisterContext } from '$lib/context/acessRequestFormContext.svelte';
-    
+    import type { ResidentAccess } from '$lib/types/access.types';
+   
    
   interface AccessFormProps{
     onCancel?:()=>void
     onConfirm?: () => void
     api?:ApiProps 
+    register?:RegisterVisitorList
    }
+   const HEIGHT = '58';
  
-  const HEIGHT = '58';
- 
-  let {onCancel,onConfirm,api=$bindable()}:AccessFormProps= $props()
-  const registerManager = getRegisterContext();
-   
-  const variant = $derived(registerManager.register.driver || (registerManager.register.accessMode=="passageiro" && registerManager.register.passenger===false)  ?'next':'confirm')
+  let {onCancel,onConfirm,api=$bindable(),register = $bindable({...initRegisterVisitorList})}:AccessFormProps= $props()
+ // const registerManager = getRegisterContext();
+  const variant = $derived(register?.driver || (register?.accessMode=="passageiro" && register.passenger===false)  ?'next':'confirm')
+  $effect(()=>{
+    $inspect(register)
+  })
 
-</script>
+  let array:ResidentAccess[] = $state([])
+  </script>
 
 
 <div class="bg-white flex flex-col w-full lg:h-[calc(100vh+110px)]   gap-5  max-w-[1536px] 3xl:rounded-lg  px-5 py-5  ">
@@ -45,7 +50,7 @@
     height={HEIGHT}
     placeholder="Digite o nome completo"
     label="Nome completo"
-    bind:value={registerManager.register.name}
+    bind:value={register.name}
   />
 
   <picture class=' md:col-start-2 flex justify-end row-span-2 lg:col-start-4 row-start-1'>
@@ -63,9 +68,10 @@
     class={cn(` lg:col-span-2 z-10`)}
     placeholder="Digite endereço ou nome do morador"
     options={optionsResidentAccess}
+    multiple={true}
     property='label'
-    bind:value={registerManager.register.address}
-    setSelect={registerManager.register.address}
+    bind:value={array}
+    setSelect={register.address}
   />
 
   <!-- CPF -->
@@ -75,7 +81,7 @@
     class={cn(`lg:col-span-2 lg:col-start-1`)}
     placeholder="Digite o CPF"
     label="CPF completo"
-    bind:value={registerManager.register.cpf}
+    bind:value={register.cpf}
   />
 
   <Input
@@ -84,7 +90,7 @@
     class={cn(`md:col-start-1 lg:col-span-2 lg:col-start-1`)}
     placeholder="Digite o número de telefone"
     label="telefone (opcional)"
-    bind:value={registerManager.register.phone}
+    bind:value={register.phone}
     
   />
 
@@ -100,8 +106,8 @@
     class="row-span-3 md: row-start-5 lg:row-start-2 lg:col-span-1 lg:col-start-3 gap-8"
     classCalendar={cn(`h-[${HEIGHT}px]`)}
     classDays={cn(`h-[${HEIGHT}px]`)}
-    bind:startDate={registerManager.register.startDate}
-    bind:endDate={registerManager.register.endDate}
+    bind:startDate={register.startDate}
+    bind:endDate={register.endDate}
     />
 
   <!-- Selects adicionais -->
@@ -112,7 +118,7 @@
     title='perfil de vistante'
     options={optionsAccessProfile}
     property='label'
-    bind:value={registerManager.register.accessProfile}
+    bind:value={register.accessProfile}
   />
 
   <Select 
@@ -121,10 +127,9 @@
     label='escolha a locomoção'
     height={HEIGHT}
     options={optionsAccessMode}
-    disabled={registerManager.register.passenger}
     property='label'
     valueProperty='value'
-    bind:value={registerManager.register.accessMode}
+    bind:value={register.accessMode}
    
   />
 
@@ -135,37 +140,31 @@
     options={optionsAccessType}
     property='label'
     label='tipo de registro'
-    bind:value={registerManager.register.accessType}
+    bind:value={register.accessType}
   
   />
-    <div class=" mt-6 col-span-1 md:col-span-2 lg:col-span-4 flex justify-between ">
+    <div class=" mt-6 h-[51px] col-span-1 md:col-span-2 lg:col-span-4 flex justify-between ">
+    <Button
+      variant='cancel'
+      text='cancelar'
+      onClick={onCancel}
+     />
        <Button
-       variant='cancel'
-       text='cancelar'
-       onClick={onCancel}
-      />
-        {#if registerManager.register.passenger }
-      <ButtonAdd
-       label=''
-       text='adiconar passageiro'
-       class=' h-[54px]'
-       onClick={(()=>{
-        registerManager.creatPassenger()
-      })}
-       />
-      {/if}
-      <Button
-       text='enviar'
+        text={'registrar'}
        variant={variant}
        onClick={(()=>{
-        if(variant==='next'){
-            api?.apiNext()
-         }else{
-           onConfirm?.()
-           registerManager.addPerson()
-        }
-       })}
+       if(variant==='next'){
+        api?.apiNext()
+        register.cnh=''
+        register.cnhValidity = new Date()
+        }else{
+        onConfirm?.()
+        
+       }
+      })}
       />
+      
+     
       
     </div>
    

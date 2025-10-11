@@ -1,4 +1,5 @@
 <script lang='ts'>
+
     import { getOverlayContext } from "$lib/context/overlayContext.svelte";
     import AccessRequestForm from "./AccessRequestForm.svelte";
     import AccessVehicleForm from "./AccessVehicleForm.svelte";
@@ -6,23 +7,21 @@
     import Overlay from "./Overlay.svelte";
     const show =getOverlayContext()
     import type { ApiProps } from "./Carousel.svelte";
-    import { setRegisterContext } from "$lib/context/acessRequestFormContext.svelte";
-   
-    
-   let api:ApiProps | undefined = $state(undefined)
-   setRegisterContext()
-   
+    import { setRegisterContext,getRegisterContext } from "$lib/context/acessRequestFormContext.svelte";
+    let api:ApiProps | undefined = $state(undefined)
+    setRegisterContext()
+    const registerManager = getRegisterContext()
 </script>
 
  {#snippet accessRequestForm()}
    
   <AccessRequestForm
     api={api}
+    bind:register={registerManager.register}
     onConfirm={(()=>{
-      
+      registerManager.addPerson()
     })}
-    
-    onCancel={(()=>{
+   onCancel={(()=>{
      show.close()
     })}
    />
@@ -30,6 +29,9 @@
 
  {#snippet accessVehicleForm()}
    <AccessVehicleForm
+   bind:cnh={registerManager.register.cnh}
+   bind:cnhValidity={registerManager.register.cnhValidity}
+   bind:registerVehicle={registerManager.vehicle}
     onPrevious={(()=>api?.apiPrevious())}
    />
  {/snippet}

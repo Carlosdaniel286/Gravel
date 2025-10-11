@@ -15,11 +15,14 @@
     height?: string | number;
     value?: string;
     disabled?:boolean
+    setSelected?:string
   }
 
-  let { value=$bindable(), options, onSelect, property, label='Escolha', title, class:className, height,disabled=false,valueProperty }: SelectProps = $props();
+  let { value=$bindable(), options, onSelect, property, label='Escolha', title, class:className, height,disabled=false,valueProperty,setSelected }: SelectProps = $props();
   let selectedOption = $state<Item | string>('');
-  let selected= $state(label)
+  let selected = $state(label)
+  
+  
   const obj = {
     option: '',
     value: ''
@@ -69,6 +72,14 @@
     selected = valuePrevious;
   }
   });
+  
+  $effect(()=>{
+    if(setSelected){
+      selected = setSelected
+      selectedOption = selected
+    }
+  })
+  
   
   const styleDisabled = disabled?'text-gray-400 hover:ring-transparent':''
 </script>

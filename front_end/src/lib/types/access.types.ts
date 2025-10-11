@@ -9,7 +9,6 @@ export type AccessMode = AccessOptionBase & {
   value: 
     | 'pedestre'
     | 'veículo'
-    | 'passageiro'
     | 'bicicleta'
     | 'bicicleta eletrica' // bicicleta elétrica, sem placa
     | 'veiculo sem placa'

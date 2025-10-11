@@ -6,10 +6,9 @@ import type { Vehicle } from "$lib/types/vehicle.type";
 export const optionsAccessMode: AccessMode[] = [
   { id: 1, label: 'Pedestre', value: 'pedestre' },
   { id: 2, label: "Veículo (Condutor)", value: 'veículo' },
-  { id: 3, label: 'Passageiro (Veículo)', value: 'passageiro' },
-  { id: 4, label: 'Bicicleta', value: 'bicicleta' },
-  { id: 5, label: 'Bicicleta Elétrica', value: 'bicicleta eletrica' },
-  { id: 6, label: 'Veículo Sem Placa', value: 'veiculo sem placa' },
+  { id: 3, label: 'Bicicleta', value: 'bicicleta' },
+  { id: 4, label: 'Bicicleta Elétrica', value: 'bicicleta eletrica' },
+  { id: 5, label: 'Veículo Sem Placa', value: 'veiculo sem placa' },
 ];
 
 // Opções de perfil de acesso

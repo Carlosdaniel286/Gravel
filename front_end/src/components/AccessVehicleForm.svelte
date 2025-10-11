@@ -1,11 +1,13 @@
 <script lang="ts">
 
+
+
   import { brands, initRegisterVehicle, popularCars,motorcycleBrands, popularMotorcycles, truckBrands,truckModels, vehicleColors, vehicleTypes } from "$lib/consts/vehicle.options";
    
-  import { getRegisterContext } from "$lib/context/acessRequestFormContext.svelte";
+ 
+    import type { Vehicle } from "$lib/types/vehicle.type";
   import AutoComplete from "./AutoComplete.svelte";
   import Button from "./Button.svelte";
-  import ButtonAdd from "./ButtonAdd.svelte";
   import Calendar from "./Calendar.svelte";
   import HeaderForm from "./HeaderForm.svelte";
   import Input from "./Input.svelte";
@@ -14,17 +16,24 @@
   interface AccessVehicleFormProps {
     onPrevious?: () => void;
     onConfirm?: ()=>void
+    registerVehicle?:Vehicle
+    cnh?:string
+    cnhValidity?:Date
   }
   const Height =58;
-  let {onPrevious,onConfirm }: AccessVehicleFormProps = $props();
-  const registerManager = getRegisterContext();
+  let {onPrevious,onConfirm,registerVehicle=$bindable({...initRegisterVehicle}),cnh=$bindable(),cnhValidity=$bindable() }: AccessVehicleFormProps = $props();
+  
   $effect(()=>{
-    
+    console.log(cnh)
+    console.log(cnhValidity)
   })
-
+  
+  
   
   const vehicleBrands = $derived.by(()=>{
-  switch(registerManager.vehicle.vehicleType){
+  
+  
+    switch(registerVehicle.vehicleType){
     case 'Carro':
       return brands
     case 'Caminhão':
@@ -37,7 +46,7 @@
 })
 
 const vehicleModel = $derived.by(()=>{
-  switch(registerManager.vehicle.vehicleType){
+  switch(registerVehicle.vehicleType){
     case 'Carro':
       return popularCars
     case 'Caminhão':
@@ -48,9 +57,6 @@ const vehicleModel = $derived.by(()=>{
       return popularCars
   } 
 })
-
-
-
 
 </script>
 
@@ -67,22 +73,24 @@ const vehicleModel = $derived.by(()=>{
       label="Placa do veículo"
       placeholder="Digite a placa"
       mask={["aaa0a00", "aaa-0000"]}
-       bind:value={registerManager.vehicle.plate}
+       bind:value={registerVehicle.plate}
     />
+    {#if cnh}
      <Input
       height={Height}
       label="Número da CNH"
       placeholder="Digite a CNH"
       mask="00000000000"
-      bind:value={registerManager.register.cnh}
+      bind:value={cnh}
       />
+      {/if}
        <AutoComplete
       height={Height}
       placeholder="Tipo de veículo"
       title="Selecione o tipo"
       options={vehicleTypes}
       property='type'
-      bind:value={registerManager.vehicle.vehicleType}
+      bind:value={registerVehicle.vehicleType}
       />
       
       <AutoComplete
@@ -92,7 +100,7 @@ const vehicleModel = $derived.by(()=>{
       title="Selecione a marca"
       options={vehicleBrands}
       property='brand'
-      bind:value={registerManager.vehicle.brands}
+      bind:value={registerVehicle.brands}
       />
 
       <AutoComplete
@@ -101,7 +109,7 @@ const vehicleModel = $derived.by(()=>{
       title="Selecione o modelo"
       options={vehicleModel}
       property='model'
-      bind:value={registerManager.vehicle.model}
+      bind:value={registerVehicle.model}
       />
 
       <AutoComplete
@@ -110,42 +118,37 @@ const vehicleModel = $derived.by(()=>{
       title="Selecione a cor"
       options={vehicleColors}
       property='color'
-      bind:value={registerManager.vehicle.color}
+      bind:value={registerVehicle.color}
       />
-    <div class="">
+    {#if cnhValidity }
+      <div class="">
       <Calendar
         height={Height}
         label="Validade da CNH"
-        bind:value={registerManager.register.cnhValidity}
+        bind:value={cnhValidity}
       />
     </div>
+    {/if}
+    
     <div class=" flex justify-between md:row-start-5 md:col-span-2">
        <Button
        variant='previous'
        onClick={onPrevious}
        class='h-[54px]'
        />
-       <ButtonAdd
-       label=''
-       text='adiconar passageiro'
-       class=' h-[54px]'
-       onClick={(()=>{
-        registerManager.creatPassenger()
-        onPrevious?.()
-       })}
-       />
+      
        <Button
-        variant='confirm'
-        text='confimar'
-        onClick={(()=>{
+          variant='confirm'
+          text='prosseguir'
+         onClick={(()=>{
           onConfirm?.()
-          registerManager.addPerson()
-          registerManager.addVehicle()
-         
           
-        })}
+         })}
         class='h-[54px]'
        />
+        
+      
+      
     </div>
   </form>
 </div>
