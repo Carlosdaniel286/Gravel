@@ -4,7 +4,7 @@ export const load: ServerLoad = async ({ cookies }) => {
   const loggedIn = cookies.get('user_session');
 
   if (!loggedIn) {
-    throw redirect(303, '/virtual/painel');
+   // throw redirect(303, '/virtual/painel');
   }
 
   // Se o usuário estiver logado, retorne um objeto de dados (mesmo que vazio).

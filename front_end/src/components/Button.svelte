@@ -31,7 +31,7 @@
   onclick={onClick}
   type={type}
   class={cn(
-    "rounded-lg cursor-pointer uppercase flex justify-center items-center gap-2 min-w-[100px] px-2 py-2 font-medium",
+    "rounded-lg cursor-pointer uppercase flex justify-center items-center gap-2 min-w-[100px] px-2 py-2 font-medium ",
      style,
      className
   )}

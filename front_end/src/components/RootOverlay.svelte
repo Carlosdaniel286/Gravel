@@ -1,5 +1,4 @@
 <script lang='ts'>
-
     import { getOverlayContext } from "$lib/context/overlayContext.svelte";
     import AccessRequestForm from "./AccessRequestForm.svelte";
     import AccessVehicleForm from "./AccessVehicleForm.svelte";
@@ -7,10 +6,12 @@
     import Overlay from "./Overlay.svelte";
     const show =getOverlayContext()
     import type { ApiProps } from "./Carousel.svelte";
-    import { setRegisterContext,getRegisterContext } from "$lib/context/acessRequestFormContext.svelte";
+    import {getRegisterContext } from "$lib/context/acessRequestFormContext.svelte";
+    import AccessRegisterFormSummary from "./AccessRegisterFormSummary.svelte";
     let api:ApiProps | undefined = $state(undefined)
-    setRegisterContext()
     const registerManager = getRegisterContext()
+  
+  
 </script>
 
  {#snippet accessRequestForm()}
@@ -29,10 +30,21 @@
 
  {#snippet accessVehicleForm()}
    <AccessVehicleForm
-   bind:cnh={registerManager.register.cnh}
-   bind:cnhValidity={registerManager.register.cnhValidity}
-   bind:registerVehicle={registerManager.vehicle}
+     bind:cnh={registerManager.register.cnh}
+     bind:cnhValidity={registerManager.register.cnhValidity}
+     bind:registerVehicle={registerManager.vehicle}
+   
     onPrevious={(()=>api?.apiPrevious())}
+    onConfirm={(()=>{
+      console.log(registerManager.register)
+      api?.apiNext()
+    })}
+   />
+ {/snippet}
+ 
+ {#snippet accessRegisterFormSummary()}
+   <AccessRegisterFormSummary
+   
    />
  {/snippet}
  
@@ -46,7 +58,7 @@
  })}
 >
 
- <Carousel children={[accessRequestForm,accessVehicleForm]} 
+ <Carousel children={[accessRequestForm,accessVehicleForm,accessRegisterFormSummary]} 
  onMove={((item)=>{
     api=item
   })}

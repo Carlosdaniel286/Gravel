@@ -22,9 +22,9 @@ import { CirclePlus } from "@lucide/svelte";
     "bg-gray-900 rounded-lg text-white cursor-pointer uppercase", 
     'font-medium hover:bg-gray-800',
     'flex justify-center items-center gap-2 px-2',
-     `w-full h-full`
+     `w-full h-full`,style
      )} 
-     style={style}
+     
      >
     {text}
     <CirclePlus/>

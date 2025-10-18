@@ -1,6 +1,7 @@
 <script lang="ts">
 import { maskAction } from "$lib/hooks/useMask.svelte";
     import { cn } from "$lib/utils";
+    import { onMount } from "svelte";
     import Label from "./Label.svelte";
  
 interface InputProps{
@@ -11,10 +12,12 @@ interface InputProps{
   value?:string
   height?:string|number
  }
-  
- let {mask,class:className,label,placeholder,value=$bindable(),height}:InputProps=$props()
+let {mask,class:className,label,placeholder,value=$bindable(),height}:InputProps=$props()
+$effect(()=>{
+    console.log($state.snapshot(value))
+  })
  </script>
-
+  
   <fieldset class={cn("flex flex-col gap-2",className)}>
     <Label 
      for="name"
@@ -29,4 +32,4 @@ interface InputProps{
             placeholder={placeholder}
             type="text" 
             />
-  </fieldset>
+     </fieldset>

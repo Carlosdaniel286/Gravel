@@ -22,29 +22,52 @@ export type AccessType = AccessOptionBase & {
 
 export type AccessProfile = AccessOptionBase & {
   value:
+    // Visitantes
     | 'visitante'
-    | 'servicos-gerais'
-    | 'servico(limpa-fossa)'  
-    | 'servico publico(seguranca)'      // polícia ou vigilância pública
-    | 'servico publico(energia)'        // empresas de energia
-    | 'servico publico(agua)'           // empresas de água
-    | 'servico publico(justica)'        // oficial da justiça
-    | 'servico publico(correios)'
-    | 'prestador(obra)'
-    | 'prestador(domestica)'
-    | 'prestador(baba)'
-    | 'prestador(condominio)'
-    | 'prestador(portaria)'
-    | 'prestador(seguranca)'
-    | 'prestador(taxi)'
-    | 'prestador(aplicativo de corrida)' // Uber, 99, etc.
-    | 'entregador(delivery)'
-    | 'entregador(farmacia)'
-    | 'entregador(encomendas)'
-    | 'entregador(frete)'                // entrega de móveis/sofás
-    | 'entregador(obras)'
-    
+
+    // Prestadores de serviço
+    | 'pedreiro'
+    | 'encanador'
+    | 'eletricista'
+    | 'jardineiro'
+    | 'pintor'
+    | 'domestica'
+    | 'baba'
+    | 'piscineiro'
+    | 'tecnico-internet'
+    | 'tecnico-ar-condicionado'
+    | 'porteiro'
+    | 'vigilante'
+
+    // Entregadores e transporte
+    | 'entregador-delivery'
+    | 'entregador-farmacia'
+    | 'entregador-encomendas'
+    | 'freteiro'
+    | 'motorista-aplicativo'
+    | 'taxista'
+
+    // Serviços públicos e essenciais
+    | 'correios'
+    | 'empresa-energia'
+    | 'empresa-agua'
+    | 'limpa-fossa'
+    | 'oficial-justica'
+
+    // Forças Policiais
+    | 'policia-militar'
+    | 'policia-civil'
+    | 'policia-federal'
+    | 'policia-rodoviaria-federal'
+    | 'policia-penal'
+    | 'guarda-civil'
+
+    // Outros
+    | 'prestador-condominio'
+    | 'outro'
+    | 'serviços gerais'
 };
+
 
 
 export type ResidentAccess = AccessOptionBase & {

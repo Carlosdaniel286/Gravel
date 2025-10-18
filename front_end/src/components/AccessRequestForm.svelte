@@ -1,6 +1,4 @@
   <script lang="ts">
-
-	
   import { cn } from '$lib/utils';
   import AutoComplete from './AutoComplete.svelte';
   import DateRangePicker from './DateRangePicker.svelte';
@@ -12,8 +10,7 @@
   import {  initRegisterVisitorList, optionsAccessMode, optionsAccessProfile, optionsAccessType, optionsResidentAccess, type RegisterVisitorList } from '$lib/consts/access.options';
   import HeaderForm from './HeaderForm.svelte';
   import type { ApiProps } from './Carousel.svelte';
-  import { getRegisterContext } from '$lib/context/acessRequestFormContext.svelte';
-    import type { ResidentAccess } from '$lib/types/access.types';
+  
    
    
   interface AccessFormProps{
@@ -28,10 +25,11 @@
  // const registerManager = getRegisterContext();
   const variant = $derived(register?.driver || (register?.accessMode=="passageiro" && register.passenger===false)  ?'next':'confirm')
   $effect(()=>{
-    $inspect(register)
+   // $inspect(register.address)
+   
   })
 
-  let array:ResidentAccess[] = $state([])
+
   </script>
 
 
@@ -70,8 +68,8 @@
     options={optionsResidentAccess}
     multiple={true}
     property='label'
-    bind:value={array}
-    setSelect={register.address}
+    bind:value={register.address}
+    
   />
 
   <!-- CPF -->
@@ -111,11 +109,11 @@
     />
 
   <!-- Selects adicionais -->
-  <Select 
+  <AutoComplete 
     class={cn(`md:col-start-2 lg:col-start-4 lg:row-start-3`)}
     height={HEIGHT}
-    label='escolha o perfil'
-    title='perfil de vistante'
+    title='escolha o perfil'
+    placeholder='perfil de vistante'
     options={optionsAccessProfile}
     property='label'
     bind:value={register.accessProfile}
@@ -155,8 +153,12 @@
        onClick={(()=>{
        if(variant==='next'){
         api?.apiNext()
-        register.cnh=''
-        register.cnhValidity = new Date()
+        if(register.cnh==undefined){
+          register.cnh=''
+        }
+        if(register.cnhValidity==undefined){
+          register.cnhValidity=new Date()
+        }
         }else{
         onConfirm?.()
         

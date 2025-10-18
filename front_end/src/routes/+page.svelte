@@ -1,21 +1,14 @@
 <script lang="ts">
-	import { onMount, type Component,type Snippet} from 'svelte';
-    import Calendar from "../components/Calendar.svelte";
-    import Input from "../components/Input.svelte";
-    import AccessRequestForm from '../components/AccessRequestForm.svelte';
-    import CalendarGrid from '../components/calendarGrid.svelte';
-  
-  
-</script>
-
-
-
- 
-<div class="w-screen h-screen flex justify-center gap-3 items-end pb-32">
-	<CalendarGrid/>
-
+	import AccessRegisterFormSummary from '../components/AccessRegisterFormSummary.svelte';
+    import AccessVehicleForm from '../components/AccessVehicleForm.svelte';
+    import VehicleSummary from '../components/VehicleSummary.svelte';
     
+</script>
+  <div class="flex w-screen h-screen bg-gray-200 items-center justify-center">
+  <VehicleSummary/>
 </div>
+    
+
 
 
 

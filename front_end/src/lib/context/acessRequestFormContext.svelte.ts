@@ -34,8 +34,7 @@ export class RegisterManager {
   constructor() {
     // Inspeciona reatividade
     $effect(() => {
-      console.log('lista total abaixo ')
-      $inspect(this.registerList);
+     $inspect(this.registerList)
     });
 
     // Define se o visitante é motorista

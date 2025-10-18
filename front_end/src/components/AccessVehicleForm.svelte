@@ -1,11 +1,7 @@
 <script lang="ts">
-
-
-
+    import { initRegisterVisitorList, type RegisterVisitorList } from "$lib/consts/access.options";
   import { brands, initRegisterVehicle, popularCars,motorcycleBrands, popularMotorcycles, truckBrands,truckModels, vehicleColors, vehicleTypes } from "$lib/consts/vehicle.options";
-   
- 
-    import type { Vehicle } from "$lib/types/vehicle.type";
+  import type { Vehicle } from "$lib/types/vehicle.type";
   import AutoComplete from "./AutoComplete.svelte";
   import Button from "./Button.svelte";
   import Calendar from "./Calendar.svelte";
@@ -19,21 +15,12 @@
     registerVehicle?:Vehicle
     cnh?:string
     cnhValidity?:Date
+    
   }
   const Height =58;
-  let {onPrevious,onConfirm,registerVehicle=$bindable({...initRegisterVehicle}),cnh=$bindable(),cnhValidity=$bindable() }: AccessVehicleFormProps = $props();
-  
-  $effect(()=>{
-    console.log(cnh)
-    console.log(cnhValidity)
-  })
-  
-  
-  
+  let {onPrevious,onConfirm,registerVehicle=$bindable({...initRegisterVehicle}) ,cnh=$bindable(),cnhValidity=$bindable() }: AccessVehicleFormProps = $props();
   const vehicleBrands = $derived.by(()=>{
-  
-  
-    switch(registerVehicle.vehicleType){
+   switch(registerVehicle?.vehicleType){
     case 'Carro':
       return brands
     case 'Caminhão':
@@ -46,7 +33,7 @@
 })
 
 const vehicleModel = $derived.by(()=>{
-  switch(registerVehicle.vehicleType){
+  switch(registerVehicle?.vehicleType){
     case 'Carro':
       return popularCars
     case 'Caminhão':
@@ -73,18 +60,18 @@ const vehicleModel = $derived.by(()=>{
       label="Placa do veículo"
       placeholder="Digite a placa"
       mask={["aaa0a00", "aaa-0000"]}
-       bind:value={registerVehicle.plate}
+      bind:value={registerVehicle.plate}
     />
-    {#if cnh}
-     <Input
+     {#if cnh!==undefined }
+      <Input
       height={Height}
       label="Número da CNH"
       placeholder="Digite a CNH"
-      mask="00000000000"
+      mask={"00000000000"}
       bind:value={cnh}
       />
-      {/if}
-       <AutoComplete
+    {/if}
+     <AutoComplete
       height={Height}
       placeholder="Tipo de veículo"
       title="Selecione o tipo"
@@ -126,6 +113,7 @@ const vehicleModel = $derived.by(()=>{
         height={Height}
         label="Validade da CNH"
         bind:value={cnhValidity}
+        startDate={new Date()}
       />
     </div>
     {/if}
@@ -136,20 +124,16 @@ const vehicleModel = $derived.by(()=>{
        onClick={onPrevious}
        class='h-[54px]'
        />
-      
        <Button
-          variant='confirm'
-          text='prosseguir'
+        variant='confirm'
+        text='prosseguir'
          onClick={(()=>{
           onConfirm?.()
           
          })}
         class='h-[54px]'
        />
-        
-      
-      
-    </div>
+      </div>
   </form>
 </div>
 

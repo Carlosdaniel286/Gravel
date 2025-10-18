@@ -11,30 +11,55 @@ export const optionsAccessMode: AccessMode[] = [
   { id: 5, label: 'Veículo Sem Placa', value: 'veiculo sem placa' },
 ];
 
-// Opções de perfil de acesso
+
+
 export const optionsAccessProfile: AccessProfile[] = [
+  // Visitantes
   { id: 1, label: 'Visitante', value: 'visitante' },
-  { id: 2, label: 'Serviços Gerais', value: 'servicos-gerais' },
-  { id: 3, label: 'Serviço Limpa Fossa', value: 'servico(limpa-fossa)' },
-  { id: 4, label: 'Segurança Pública', value: 'servico publico(seguranca)' },
-  { id: 5, label: 'Empresa de Energia', value: 'servico publico(energia)' },
-  { id: 6, label: 'Empresa de Água', value: 'servico publico(agua)' },
-  { id: 7, label: 'Oficial da Justiça', value: 'servico publico(justica)' },
-  { id: 8, label: 'Correios', value: 'servico publico(correios)' },
-  { id: 9, label: 'Prestador de Obra', value: 'prestador(obra)' },
-  { id: 10, label: 'Prestador Doméstico', value: 'prestador(domestica)' },
-  { id: 11, label: 'Babá', value: 'prestador(baba)' },
-  { id: 12, label: 'Prestador do Condomínio', value: 'prestador(condominio)' },
-  { id: 13, label: 'Portaria', value: 'prestador(portaria)' },
-  { id: 14, label: 'Segurança Privada', value: 'prestador(seguranca)' },
-  { id: 15, label: 'Taxi', value: 'prestador(taxi)' },
-  { id: 16, label: 'Aplicativo de Corrida', value: 'prestador(aplicativo de corrida)' },
-  { id: 17, label: 'Delivery', value: 'entregador(delivery)' },
-  { id: 18, label: 'Farmácia', value: 'entregador(farmacia)' },
-  { id: 19, label: 'Encomendas', value: 'entregador(encomendas)' },
-  { id: 20, label: 'Frete (móveis/sofás)', value: 'entregador(frete)' },
-  { id: 21, label: 'Obras', value: 'entregador(obras)' },
+
+  // Prestadores de serviço
+  { id: 2, label: 'Pedreiro', value: 'pedreiro' },
+  { id: 3, label: 'Encanador', value: 'encanador' },
+  { id: 4, label: 'Eletricista', value: 'eletricista' },
+  { id: 5, label: 'Jardineiro', value: 'jardineiro' },
+  { id: 6, label: 'Pintor', value: 'pintor' },
+  { id: 7, label: 'Doméstica', value: 'domestica' },
+  { id: 8, label: 'Babá', value: 'baba' },
+  { id: 9, label: 'Piscineiro', value: 'piscineiro' },
+  { id: 10, label: 'Técnico de Internet', value: 'tecnico-internet' },
+  { id: 11, label: 'Técnico de Ar Condicionado', value: 'tecnico-ar-condicionado' },
+  { id: 12, label: 'Porteiro', value: 'porteiro' },
+  { id: 13, label: 'Vigilante', value: 'vigilante' },
+
+  // Entregadores e transporte
+  { id: 14, label: 'Entregador de Delivery', value: 'entregador-delivery' },
+  { id: 15, label: 'Entregador de Farmácia', value: 'entregador-farmacia' },
+  { id: 16, label: 'Entregador de Encomendas', value: 'entregador-encomendas' },
+  { id: 17, label: 'Freteiro / Caminhoneiro', value: 'freteiro' },
+  { id: 18, label: 'Motorista de Aplicativo', value: 'motorista-aplicativo' },
+  { id: 19, label: 'Taxista', value: 'taxista' },
+
+  // Serviços públicos e essenciais
+  { id: 20, label: 'Funcionário dos Correios', value: 'correios' },
+  { id: 21, label: 'Funcionário da Enel (Energia)', value: 'empresa-energia' },
+  { id: 22, label: 'Funcionário da Saneago (Água)', value: 'empresa-agua' },
+  { id: 23, label: 'Serviço de Limpa Fossa', value: 'limpa-fossa' },
+  { id: 24, label: 'Oficial de Justiça', value: 'oficial-justica' },
+
+  // Forças Policiais (5 principais)
+  { id: 25, label: 'Polícia Militar', value: 'policia-militar' },
+  { id: 26, label: 'Polícia Civil', value: 'policia-civil' },
+  { id: 27, label: 'Polícia Federal', value: 'policia-federal' },
+  { id: 28, label: 'Polícia Rodoviária Federal', value: 'policia-rodoviaria-federal' },
+  { id: 29, label: 'Polícia Penal', value: 'policia-penal' },
+
+  // Outros
+  { id: 30, label: 'Guarda Civil Metropolitana (GCM)', value: 'guarda-civil' },
+  { id: 31, label: 'Prestador do Condomínio', value: 'prestador-condominio' },
+  { id: 32, label: 'Outro Profissional', value: 'outro' },
+  { id: 33, label: 'Serviços gerais', value: 'serviços gerais' },
 ];
+
 
 
 // Opções de tipo de acesso (fixo ou esporádico)
@@ -69,13 +94,13 @@ export const optionsResidentAccess: ResidentAccess[] = [
   idRegister: string;
     name: string;
     cpf: string;
-    address: string;
+    address: ResidentAccess[] 
     phone: undefined|string
     startDate: Date;
     endDate: Date;
     stayDays: number;
     cnhValidity:undefined|Date
-    cnh?:string
+    cnh:string|undefined
     accessType: string;
     accessMode: string;
     accessProfile: string;
@@ -88,7 +113,7 @@ export const initRegisterVisitorList:RegisterVisitorList = {
   idRegister:'',
   name: '',
   cpf: '',
-  address:'',
+  address:[],
   phone:undefined,
   startDate:new Date(),
   endDate:new Date(),
