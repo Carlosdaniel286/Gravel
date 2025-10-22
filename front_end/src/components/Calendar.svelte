@@ -14,7 +14,7 @@
   import { normalizeDateInput } from '$lib/helpers/normalizeDateInput';
   import { CalendarSearch, X } from '@lucide/svelte';
   import { onMount } from 'svelte';
-  import CalendarGrid from './calendarGrid.svelte';
+  import CalendarGrid from './CalendarGrid.svelte';
 
   interface CalendarProps {
     value?: Date;

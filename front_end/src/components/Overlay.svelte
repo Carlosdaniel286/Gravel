@@ -8,9 +8,10 @@
     onOverlay?:()=>void;
     class?:string
     background?:string
+    z?:number
   }
 
-  let { show=$bindable(false), children,onOverlay,class:style,background="auto" }: OverlayProps = $props();
+  let { show=$bindable(false), children,onOverlay,class:style,background="auto",z }: OverlayProps = $props();
 
   let overlayEl = $state<null | HTMLDivElement>(null);
   let height = $state(0)
@@ -35,9 +36,8 @@
   <div
     bind:this={overlayEl}
     class={cn("flex fixed inset-0 bg-black/40 h-screen w-screen items-center-safe justify-center",
-    
-   )}
-    style="overflow-x:auto; background:{background};"
+    )}
+    style="overflow-x:auto; background:{background};z-index:{z}"
 
     >
     <div  class={cn(style)}>

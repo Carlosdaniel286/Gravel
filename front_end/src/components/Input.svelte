@@ -13,9 +13,7 @@ interface InputProps{
   height?:string|number
  }
 let {mask,class:className,label,placeholder,value=$bindable(),height}:InputProps=$props()
-$effect(()=>{
-    console.log($state.snapshot(value))
-  })
+
  </script>
   
   <fieldset class={cn("flex flex-col gap-2",className)}>

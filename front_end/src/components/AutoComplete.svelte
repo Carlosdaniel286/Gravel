@@ -22,6 +22,8 @@
   let toggleEyes = $state(false);
   let Icon = $derived(toggleEyes ? Eye : EyeClosed);
   let selectedItems: (Item | string)[] = $state([]);
+  let limitPosition = $state(true);
+  let dropdownRef = $state<HTMLUListElement | null>(null);
   const hasSelectedItems = $derived(selectedItems.length > 0)
   
  const inputPlaceholder = $derived.by(() => {
@@ -123,6 +125,12 @@
       value = String(item[property]);
     }
   }
+   $effect(() => {
+    if (dropdownRef) {
+      const rect = dropdownRef.getBoundingClientRect();
+      if (rect.top < 0) limitPosition = false;
+    }
+  });
 </script>
 
 <svelte:document onclick={handleClickOutside} />
@@ -177,7 +185,9 @@
      {/if}
     
     {#if openOverlay && !toggleEyes}
-      <ul class={cn("bg-black absolute z-20 top-full left-0 mt-4 flex flex-col gap-2 overflow-auto overflow-x-hidden rounded-md max-h-[300px]")} style="min-width:{width}px">
+      <ul bind:this={dropdownRef} class={cn("bg-black absolute z-20  flex flex-col gap-2 overflow-auto overflow-x-hidden rounded-md max-h-[300px]",
+        limitPosition ? 'bottom-full mb-2' : 'top-full left-0 mt-4'
+      )} style="min-width:{width}px">
          {#if multiple && filteredOptions.length === 0}
             <li class="my-4 mx-3">
               <strong class="text-white text-2xl uppercase">

@@ -1,15 +1,18 @@
 <script lang="ts">
   import Button from './Button.svelte';
-  import { Car } from 'lucide-svelte';
+  import { Car, Trash } from 'lucide-svelte';
     import ButtonAdd from './ButtonAdd.svelte';
 
   interface CarCardProps {
     plate?: string;
     brand?: string;
     model?: string;
+    onClick?:()=>void
+    onEdit?:()=>void
+    onDelet?:()=>void
   }
 
-  const { plate='AAA-0000', brand='Fiat', model='Uno' }: CarCardProps = $props();
+  const { plate='AAA-0000', brand='Fiat', model='Uno',onClick,onEdit,onDelet }: CarCardProps = $props();
 </script>
 
 <article
@@ -58,13 +61,26 @@
     <footer class="mt-5 border-t border-gray-100 pt-2 flex gap-5 justify-center">
       <Button
         text="Editar"
+        onClick={onEdit}
         class="rounded-full font-bold shadow-md hover:shadow-lg transition-all
                bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 text-white px-6 py-2"
       />
       <ButtonAdd
        text='passageiro'
-       style='bg-orange-600 rounded-full font-bold shadow-md hover:shadow-lg hover:bg-orange-500 '
+       style='bg-orange-600 rounded-full font-bold shadow-md hover:shadow-lg hover:bg-orange-500'
+       onClick={onClick}
       />
+
+      <button
+        onclick={onDelet}
+        class={`rounded-full font-bold shadow-md hover:shadow-lg transition-all 
+         bg-gradient-to-r from-red-600 via-red-500 to-red-700 text-white px-6 py-2
+          cursor-pointer
+         `
+         
+         }
+
+      ><Trash  /></button>
     </footer>
   </div>
 </article>

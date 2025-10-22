@@ -9,6 +9,8 @@ export const optionsAccessMode: AccessMode[] = [
   { id: 3, label: 'Bicicleta', value: 'bicicleta' },
   { id: 4, label: 'Bicicleta Elétrica', value: 'bicicleta eletrica' },
   { id: 5, label: 'Veículo Sem Placa', value: 'veiculo sem placa' },
+  
+
 ];
 
 
@@ -128,14 +130,7 @@ export const initRegisterVisitorList:RegisterVisitorList = {
   observation:undefined
 };
 
-export const initRegisterVehicle:Vehicle ={
-  idVehicle:'',
-  plate:'',
-  color:'',
-  vehicleType:'',
-  model:'',
-  brands:'',
-}
+ 
 
 
 export type GeralRegister ={

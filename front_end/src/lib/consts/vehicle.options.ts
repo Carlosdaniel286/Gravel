@@ -260,4 +260,5 @@ export const initRegisterVehicle:Vehicle ={
   vehicleType:'',
   model:'',
   brands:'',
+  passenger:[]
   }

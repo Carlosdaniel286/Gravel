@@ -22,7 +22,6 @@ let initGeralRegister: GeralRegister = {
 // 🧩 Classe que gerencia a lista de registros
 export class RegisterManager {
   registerList = $state<GeralRegister>(initGeralRegister);
-  
   register = $state<RegisterVisitorList>({
     ...initRegisterVisitorList,
     idRegister: crypto.randomUUID()
@@ -35,6 +34,7 @@ export class RegisterManager {
     // Inspeciona reatividade
     $effect(() => {
      $inspect(this.registerList)
+      
     });
 
     // Define se o visitante é motorista
@@ -45,30 +45,40 @@ export class RegisterManager {
     });
   }
 
+  get initPerson(){
+   return {
+    ...initRegisterVisitorList,
+    idRegister: crypto.randomUUID()
+   } 
+  }
+
    addPerson() {
     const exists = this.registerList.person.some(
       (item) => item.idRegister === this.register.idRegister
     );
     if (exists) return;
-    
+   
     this.registerList.person.push(this.register);
   }
  // 🧍‍♂️ Cria novo passageiro associado ao veículo
-  createPassenger() {
-    this.addPerson();
-    this.addVehicle();
-    
-    this.register = {
-      ...initRegisterVisitorList,
-      passenger: true,
+  createPassenger(register:RegisterVisitorList) {
+    const passenger = {...register, 
+      accessMode:'passageiro',
       idRegister: crypto.randomUUID(),
-      accessMode:"passageiro"
-    };
+      passenger: true
+    }
+    if(!this.registerList.vehicle?.passenger) return
+    const exists = this.registerList.vehicle.passenger.some(
+      (item) => item.idRegister === passenger.idRegister
+    );
     
+    if (exists) return;
+    this.registerList.vehicle.passenger.push(passenger)
   }
   // 🚗 Adiciona veículo atual ao registro
   addVehicle() {
-    this.registerList.vehicle = this.vehicle;
+    this.addPerson()
+    this.registerList.vehicle = this.vehicle
   }
 }
 

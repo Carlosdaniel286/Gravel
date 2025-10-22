@@ -1,39 +1,69 @@
 <script lang="ts">
   import Img from '$lib/assets/default_img.jpg';
   import Button from './Button.svelte';
-  import { IdCard } from 'lucide-svelte';
-
+  import { IdCard,SquareChevronRight,Trash } from 'lucide-svelte';
+    import ButtonAdd from './ButtonAdd.svelte';
+//square-chevron-right
   interface CardInfoPerson {
     name?: string;
     cpf?: string;
-    typeProfile?: "driver" | "passenger";
+    typeProfile?: "driver" | "passenger"|'pedestrian'
+    onEdit?:()=>void
+    onDelete?:()=>void
+    onAddDriver?:()=>void
   }
 
   const {
-    name = 'Carlos Daniel',
-    cpf = '000.000.000-00',
-    typeProfile ='driver'
+    name,
+    cpf ,
+    typeProfile ='driver',
+    onEdit,
+    onDelete,
+    onAddDriver
   }: CardInfoPerson = $props();
 
-  // Cores dinâmicas para header, badge e botão
-  // Cores dinâmicas para header, badge e botão
-const headerGradient =
+
+const text = $derived.by(()=>{
+   switch(typeProfile){
+    case 'driver':
+      return 'condutor'
+    case 'passenger':
+      return 'passagerio'
+    case 'pedestrian':
+      return 'pedestre'
+   }
+})
+const headerGradient =$derived(
   typeProfile === 'driver'
     ? 'from-cyan-500 via-cyan-400 to-sky-400'
-    : 'from-red-500 via-red-400 to-pink-400'; // vermelho para passageiro
+    : typeProfile === 'passenger'
+    ? 'from-blue-800 via-blue-700 to-indigo-700':
+    'from-rose-600 via-rose-500 to-rose-600'
+)
 
-const badgeColor =
+const badgeColor =$derived(
   typeProfile === 'driver'
     ? 'bg-cyan-100 text-cyan-900'
-    : 'bg-red-100 text-red-900'; // vermelho para passageiro
+    : typeProfile === 'passenger'
+    ? 'bg-indigo-100 text-blue-900'
+    : 'bg-rose-100 text-rose-900') // Badge rosa claro com texto escuro
 
-const badgeIconColor =
-  typeProfile === 'driver' ? 'text-cyan-800' : 'text-red-800'; // vermelho para passageiro
 
-const buttonGradient =
+
+const buttonGradient = $derived(
   typeProfile === 'driver'
     ? 'from-cyan-400 via-cyan-300 to-sky-300'
-    : 'from-red-400 via-red-300 to-pink-300'; // vermelho para passageiro
+    : typeProfile === 'passenger'
+    ? 'from-blue-700 via-blue-600 to-indigo-600'
+    : 'from-rose-600 via-rose-500 to-rose-500' // Botão rosa
+)
+  const  badgeIconColor = $derived(
+     typeProfile === 'driver'
+    ? 'text-cyan-800'
+    : typeProfile === 'passenger'
+    ? 'text-blue-800'
+    : 'text-rose-800'
+  )
 
 </script>
 
@@ -48,7 +78,8 @@ const buttonGradient =
     class={`h-36 w-full flex items-center justify-center rounded-b-[3rem] bg-gradient-to-r ${headerGradient}`}
   >
     <h2 class="text-white text-2xl uppercase font-semibold tracking-wide drop-shadow-md">
-      {typeProfile === 'driver' ? 'Condutor' : 'Passageiro'}
+      {text}
+
     </h2>
   </header>
 
@@ -80,20 +111,40 @@ const buttonGradient =
         <span class="uppercase">{cpf}</span>
       </div>
 
+      
       <div
         class={`flex items-center gap-2 px-6 py-2 rounded-full text-sm font-semibold shadow-md hover:shadow-lg transition-shadow ${badgeColor}`}
       >
-        <span class="uppercase">{typeProfile === 'driver' ? 'Condutor' : 'Passageiro'}</span>
+        <span class="uppercase"><SquareChevronRight class={badgeIconColor} size={20}/></span>
       </div>
     </div>
 
     <!-- Botão -->
-    <footer class="mt-7 border-t border-gray-100 pt-4 flex justify-center">
-      <Button
-        text="Editar"
+    <footer class="mt-7 border-t border-gray-100 pt-4 gap-8 flex justify-center">
+      {#if name}
+        <Button
+        text={"Editar"}
+        onClick={onEdit}
         class={`rounded-full font-bold shadow-md hover:shadow-lg transition-all
                bg-gradient-to-r ${buttonGradient} text-white px-6 py-2`}
       />
+      {:else}
+      <ButtonAdd 
+      onClick={onAddDriver}
+       text='condutor'
+        style={` font-bold shadow-md hover:shadow-lg transition-all
+               text-white px-6 py-2`}
+      />
+      {/if}
+       <button
+        onclick={onDelete}
+        class={`rounded-full font-bold shadow-md hover:shadow-lg transition-all 
+         bg-gradient-to-r from-red-600 via-red-500 to-red-700 text-white px-6 py-2
+          cursor-pointer
+         `
+         }
+
+      ><Trash  /></button>
     </footer>
   </div>
 </article>

@@ -1,5 +1,5 @@
 <script lang='ts'>
-    import { getOverlayContext } from "$lib/context/overlayContext.svelte";
+	  import { getOverlayContext } from "$lib/context/overlayContext.svelte";
     import AccessRequestForm from "./AccessRequestForm.svelte";
     import AccessVehicleForm from "./AccessVehicleForm.svelte";
     import Carousel from "./Carousel.svelte";
@@ -15,8 +15,7 @@
 </script>
 
  {#snippet accessRequestForm()}
-   
-  <AccessRequestForm
+   <AccessRequestForm
     api={api}
     bind:register={registerManager.register}
     onConfirm={(()=>{
@@ -36,7 +35,7 @@
    
     onPrevious={(()=>api?.apiPrevious())}
     onConfirm={(()=>{
-      console.log(registerManager.register)
+      registerManager.addVehicle()
       api?.apiNext()
     })}
    />
@@ -44,21 +43,22 @@
  
  {#snippet accessRegisterFormSummary()}
    <AccessRegisterFormSummary
+    api={api}
    
    />
  {/snippet}
  
  
 <Overlay
- class='grid w-full overflow-hidden   lg:flex  lg:items-center-safe lg:justify-center-safe   3xl:h-auto 3xl:block  3xl:w-auto 3xl:bg-transparent'
+ class='grid w-full md:px-2 overflow-hidden lg:flex lg:items-center-safe lg:justify-center-safe   3xl:h-auto 3xl:block  3xl:w-auto 3xl:bg-transparent'
  show={show.isOpen}
  background='white'
  onOverlay={(()=>{
-    show.close()
+   // show.close()
  })}
 >
 
- <Carousel children={[accessRequestForm,accessVehicleForm,accessRegisterFormSummary]} 
+ <Carousel props={[accessRequestForm,accessVehicleForm,accessRegisterFormSummary]} 
  onMove={((item)=>{
     api=item
   })}

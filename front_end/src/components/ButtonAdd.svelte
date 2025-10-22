@@ -8,8 +8,9 @@ import { CirclePlus } from "@lucide/svelte";
   onClick?:()=>void
   label?:string
   style?:string
+  height?:string|number
  }  
- const {class:className,text,onClick,label,style}:ButtonFormProps=$props()
+ const {class:className,text,onClick,label,style,height='auto'}:ButtonFormProps=$props()
 </script>
   <div class={cn('flex flex-col gap-2',className)}>
    {#if label}
@@ -18,7 +19,9 @@ import { CirclePlus } from "@lucide/svelte";
       label={label}
    />
    {/if}
-   <button id="button" onclick={onClick} type="button" class={cn(
+   <button 
+   style="height:{height}px;"
+   id="button" onclick={onClick} type="button" class={cn(
     "bg-gray-900 rounded-lg text-white cursor-pointer uppercase", 
     'font-medium hover:bg-gray-800',
     'flex justify-center items-center gap-2 px-2',

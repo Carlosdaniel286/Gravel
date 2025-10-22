@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from "$lib/utils";
-  import { ArrowBigRight, ArrowRight,ArrowLeft}  from '@lucide/svelte'
+  import {  ArrowRight,ArrowLeft}  from '@lucide/svelte'
 
   type ButtonVariant = "confirm" | "cancel" | "next" | "previous";
   interface ButtonFormProps {

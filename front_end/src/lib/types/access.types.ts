@@ -3,15 +3,18 @@ import type { Vehicle } from "./vehicle.type";
 export type AccessOptionBase = { 
   id: number; 
   label: string; 
+  
 };
 
 export type AccessMode = AccessOptionBase & {
+  
   value: 
     | 'pedestre'
     | 'veículo'
     | 'bicicleta'
     | 'bicicleta eletrica' // bicicleta elétrica, sem placa
     | 'veiculo sem placa'
+    | 'passageiro'
     | null
 };
 
