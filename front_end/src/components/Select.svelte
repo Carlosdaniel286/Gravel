@@ -2,6 +2,7 @@
   import { cn } from '$lib/utils';
   import { onMount } from 'svelte';
   import Label from './Label.svelte';
+    import FieldMessage from './FieldMessage.svelte';
    
 
   interface SelectProps {
@@ -16,9 +17,11 @@
     value?: string;
     disabled?:boolean
     setSelected?:string
+    error?:boolean
+    message?:string
   }
 
-  let { value=$bindable(), options, onSelect, property, label='Escolha', title, class:className, height,disabled=false,valueProperty,setSelected }: SelectProps = $props();
+  let { value=$bindable(), options, onSelect, property, label='Escolha', title, class:className, height,disabled=false,valueProperty,setSelected,error,message }: SelectProps = $props();
   let selectedOption = $state<Item | string>('');
   let selected = $state(label)
   
@@ -111,4 +114,8 @@
       <option  value={opt.value}>{opt.option}</option>
     {/each}
   </select>
+   <FieldMessage
+    error={error}
+    message={message}
+   /> 
  </div>

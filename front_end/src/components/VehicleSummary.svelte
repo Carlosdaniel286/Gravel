@@ -11,7 +11,7 @@
     onEdit?:()=>void
     onDelet?:()=>void
   }
-
+ 
   const { plate='AAA-0000', brand='Fiat', model='Uno',onClick,onEdit,onDelet }: CarCardProps = $props();
 </script>
 
@@ -58,16 +58,19 @@
     </div>
 
     <!-- Button -->
-    <footer class="mt-5 border-t border-gray-100 pt-2 flex gap-5 justify-center">
+    <footer class="mt-5 flex-col sm:flex-row items-center border-t border-gray-100 pt-2 flex gap-5 justify-center">
       <Button
         text="Editar"
+        
         onClick={onEdit}
-        class="rounded-full font-bold shadow-md hover:shadow-lg transition-all
+        class="rounded-full w-full sm:w-auto font-bold shadow-md hover:shadow-lg transition-all
                bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 text-white px-6 py-2"
       />
       <ButtonAdd
+      height={40}
        text='passageiro'
-       style='bg-orange-600 rounded-full font-bold shadow-md hover:shadow-lg hover:bg-orange-500'
+       class='w-full sm:w-auto '
+       style='bg-orange-600  rounded-full font-bold shadow-md hover:shadow-lg hover:bg-orange-500'
        onClick={onClick}
       />
 
@@ -77,8 +80,7 @@
          bg-gradient-to-r from-red-600 via-red-500 to-red-700 text-white px-6 py-2
           cursor-pointer
          `
-         
-         }
+        }
 
       ><Trash  /></button>
     </footer>

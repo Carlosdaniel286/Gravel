@@ -131,7 +131,7 @@
   <div class="flex flex-col gap-2">
     <label for="input" class="pl-2 uppercase text-gray-800 font-semibold">{label}</label>
     <div
-      class={cn('flex input items-center border rounded-[1rem] p-2', className)}
+      class={cn('flex input items-center   p-2', className)}
       style="height:{heightClass}px;"
     >
       <button class="cursor-pointer mr-3 rounded-sm" onclick={clearInput}>

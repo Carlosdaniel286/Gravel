@@ -9,6 +9,7 @@ import {
 
 import { initRegisterVehicle } from "$lib/consts/vehicle.options";
 import type { Vehicle } from "$lib/types/vehicle.type";
+import { registerSchema } from "$lib/helpers/validateFormData";
 
 // 🔑 Chave única para o contexto
 const REGISTER_KEY = Symbol("register-form");
@@ -33,10 +34,10 @@ export class RegisterManager {
   constructor() {
     // Inspeciona reatividade
     $effect(() => {
-     $inspect(this.registerList)
+     // const result = registerSchema.safeParse(this.register);
+     //$inspect(result)
       
     });
-
     // Define se o visitante é motorista
     $effect(() => {
       this.register.driver =

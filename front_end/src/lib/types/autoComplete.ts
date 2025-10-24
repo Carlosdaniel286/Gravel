@@ -11,4 +11,6 @@ export type AutoCompleteProps<Item> = {
     placeholder?:string;
     height?:string|number;
     multiple?:boolean;
+    error?:boolean
+    message?:string
   }

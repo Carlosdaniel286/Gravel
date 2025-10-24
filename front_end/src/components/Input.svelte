@@ -3,6 +3,7 @@ import { maskAction } from "$lib/hooks/useMask.svelte";
     import { cn } from "$lib/utils";
     import { onMount } from "svelte";
     import Label from "./Label.svelte";
+    import FieldMessage from "./FieldMessage.svelte";
  
 interface InputProps{
   mask?:string | RegExp | string[] 
@@ -11,8 +12,10 @@ interface InputProps{
   placeholder?:string
   value?:string
   height?:string|number
+  error?:boolean
+  message?:string
  }
-let {mask,class:className,label,placeholder,value=$bindable(),height}:InputProps=$props()
+let {mask,class:className,label,placeholder,value=$bindable(),height,error,message}:InputProps=$props()
 
  </script>
   
@@ -30,4 +33,8 @@ let {mask,class:className,label,placeholder,value=$bindable(),height}:InputProps
             placeholder={placeholder}
             type="text" 
             />
+           <FieldMessage
+            error={error}
+            message={message}
+           />  
      </fieldset>

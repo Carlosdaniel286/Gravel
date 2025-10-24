@@ -11,6 +11,7 @@
     class?: string;
     classDays?: string;
     classCalendar?: string;
+    height?:number|string
   }
 
   const today = startOfDay(new Date());
@@ -21,7 +22,8 @@
     numberOfDays = $bindable(),
     class: className,
     classDays,
-    classCalendar
+    classCalendar,
+    height
   }: DateRangePickerProps = $props();
 
   // Dias de permanência derivados
@@ -58,7 +60,7 @@
 
 </script>
 
-<div class={cn("flex flex-col justify-center gap-4", className)}>
+<div class={cn("flex flex-col gap-8  ", className)}>
   <!-- Início da permanência -->
   <Calendar
     class={classCalendar}
@@ -66,6 +68,7 @@
     startDate={today}
     bind:value={startDate}
     label="Início de permanência"
+    height={height}
   />
 
   <!-- Fim da permanência -->
@@ -75,6 +78,7 @@
     startDate={today}
     bind:value={endDate}
     label="Fim de permanência"
+    height={height}
   />
 
   <!-- Dias de permanência -->
@@ -86,6 +90,7 @@
       id="days-input"
       bind:value={stayDaysInput}
       oninput={handleDaysInput}
+      style="height:{height}px;"
       use:maskAction={{ mask: ["0000"], value: stayDaysInput.toString() }}
       class={cn("input text-center px-1 cursor-auto", classDays)}
     />

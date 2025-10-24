@@ -26,7 +26,7 @@
     cnhValidity?: Date;
   }
 
-  const HEIGHT = 58;
+  const HEIGHT = 65;
 
   let {
     onPrevious,

@@ -1,5 +1,5 @@
 <script lang='ts'  generics="Item">
-  import { maskAction } from '$lib/hooks/useMask.svelte';
+	import { maskAction } from '$lib/hooks/useMask.svelte';
   import { cn } from '$lib/utils';
   import Eraser from '$lib/icons/Eraser.svelte';
   import Label from './Label.svelte';
@@ -7,12 +7,13 @@
   import SelectedItems from './SelectedItems.svelte';
   import {  onMount } from 'svelte';
   import type { AutoCompleteProps } from '$lib/types/autoComplete';
+    import FieldMessage from './FieldMessage.svelte';
     
    
  let { 
     options, onSelect, property, filterOptions, class: className, mask = /.+/, onClear, multiple = false,
     value=$bindable(multiple ? ([] as (Item | string)[]) : ''),
-    title, placeholder, height
+    title, placeholder, height,error,message
   }: AutoCompleteProps<Item> = $props();
 
   let searchValue = $state('');
@@ -226,4 +227,8 @@
       </ul>
     {/if}
   </div>
+   <FieldMessage
+   error={error}
+   message={message}
+   /> 
 </div>
