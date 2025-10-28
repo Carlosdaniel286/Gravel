@@ -123,6 +123,8 @@
    --font-nunito: 'Nunito', ui-sans-serif, system-ui, sans-serif;
 }
 
+
+
 @layer components {
   .button{
     @apply
@@ -137,7 +139,37 @@
     text-gray-700
      text-[0.96rem]
   }
-  .input{
+  .placeholder{
+    @apply
+    placeholder:text-transparent
+  }
+ .input {
+  @apply
+    w-full
+    px-4
+    py-3
+    rounded-sm
+    bg-transparent
+    text-gray-800
+    border-2
+    border-gray-200
+    focus:border-0
+    focus:ring-2
+    focus:ring-blue-400
+    hover:border-transparent
+    hover:ring-2
+    hover:ring-blue-400
+    focus:outline-none 
+    transition
+    duration-300
+    uppercase
+    ease-in-out;
+}
+
+
+}
+
+.inputw{
     @apply
     w-full 
     border-0 
@@ -152,7 +184,7 @@
     hover:ring-[3px] 
     hover:ring-black
   }
-}
+
 
 @layer base {
   * {

@@ -21,10 +21,13 @@
     message?:string
   }
 
-  let { value=$bindable(), options, onSelect, property, label='Escolha', title, class:className, height,disabled=false,valueProperty,setSelected,error,message }: SelectProps = $props();
-  let selectedOption = $state<Item | string>('');
-  let selected = $state(label)
-  
+  let { value=$bindable(), options, onSelect, property, label='Escolha', title, class:className, height,disabled=false,valueProperty,error,message }: SelectProps = $props();
+  const labelSelect = $derived.by(()=>{
+    if(label && !value) return label
+    return value
+  })
+  // svelte-ignore state_referenced_locally
+    let selectedOption = $state<Item | string>(labelSelect??'');
   
   const obj = {
     option: '',
@@ -41,64 +44,23 @@
     });
   });
 
-  
-  
-  onMount(() => {
-    
-    if(label!=='Escolha' && label && !value){
-       selectedOption=label
-      }
-      if(value){
-    
-      let valuePrevious = '';
-
-      for (const item of optionLabels) {
-        const obj = item.value;
-
-      // Caso o valor seja uma string simples
-      if (typeof obj === 'string' && obj === value) {
-        valuePrevious = obj;
-        break;
-      }
-
-      // Se não tiver as propriedades necessárias, pula
-      if (!property || !valueProperty) continue;
-
-      // Caso o valor seja um objeto
-      if (obj && typeof obj === 'object' && obj[valueProperty] === value) {
-        valuePrevious = obj[property] as string;
-        break;
-      }
-    }
-
-    selectedOption = valuePrevious;
-    selected = valuePrevious;
-  }
-  });
-  
-  $effect(()=>{
-    if(setSelected){
-      selected = setSelected
-      selectedOption = selected
-    }
-  })
-  
-  
   const styleDisabled = disabled?'text-gray-400 hover:ring-transparent':''
 </script>
 
 <div class={cn("flex flex-col gap-2", className)}>
   <Label 
-    for="select"
+   
     label={title}
   />
    <select
-    class={cn("input",styleDisabled)}
-    style="height:{height}px;"
+    class={cn("input text-gray-700",styleDisabled)}
+    style="height:{height}px; "
     id='select'
     disabled={disabled}
+    
     onchange={() => {
       onSelect?.(selectedOption);
+      
       const objProperty = valueProperty?valueProperty:property
       if (!objProperty) return;
         if (typeof selectedOption !== 'string') {
@@ -106,12 +68,15 @@
       } else {
         value = selectedOption;
       }
+      
     }}
     bind:value={selectedOption}
   >
-    <option disabled hidden value={selected}>{selected}</option>
+   
+    <option  disabled hidden value={labelSelect}>{labelSelect}</option>
+    
     {#each optionLabels as opt}
-      <option  value={opt.value}>{opt.option}</option>
+      <option   value={opt.value}>{opt.option}</option>
     {/each}
   </select>
    <FieldMessage

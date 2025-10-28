@@ -13,9 +13,10 @@
 
   interface AccessSummaryProps {
     api?: ApiProps;
+    onPrevious?:()=>void
   }
 
-  let { api }: AccessSummaryProps = $props();
+  let { api,onPrevious }: AccessSummaryProps = $props();
 
   let isAddPassengerOverlayOpen = $state(false);
   let isEditPassengerOverlayOpen = $state(false);
@@ -168,7 +169,7 @@
         {textSection}
       </h3>
       <div class="overflow-hidden">
-        <Carousel animation={false}>
+        <Carousel >
           {#each passengerList as passenger (passenger.idRegister)}
             <div class="shrink-0 px-2">
               <ProfileSummary
@@ -197,7 +198,7 @@
       text="voltar" 
       variant="previous"
       class="w-full sm:w-auto py-3"
-      onClick={() => api?.apiPrevious()} 
+      onClick={() => {api?.apiPrevious(),onPrevious?.()}} 
     />
     <Button 
       text="registrar" 

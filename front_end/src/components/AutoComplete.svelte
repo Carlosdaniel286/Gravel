@@ -7,7 +7,7 @@
   import SelectedItems from './SelectedItems.svelte';
   import {  onMount } from 'svelte';
   import type { AutoCompleteProps } from '$lib/types/autoComplete';
-    import FieldMessage from './FieldMessage.svelte';
+  import FieldMessage from './FieldMessage.svelte';
     
    
  let { 
@@ -29,7 +29,7 @@
   
  const inputPlaceholder = $derived.by(() => {
   if (!hasSelectedItems) {
-    return placeholder ?? "Digite para buscar...";
+    return placeholder ?? "";
   } else {
     const count = selectedItems.length;
     return `Você selecionou ${count} item${count > 1 ? 's' : ''}`;
@@ -137,16 +137,17 @@
 <svelte:document onclick={handleClickOutside} />
 
 <div class={cn("flex flex-col gap-2", className)}>
-  <Label for="" label={title} />
+  <Label  label={title} />
   <div bind:this={containerRef} bind:clientWidth={width} class={cn("input relative h-full w-full flex")} style="height:{height}px;">
     <input
       id="in"
       type="text"
       placeholder={inputPlaceholder}
       class={cn("border-0 focus:outline-none w-full cursor-text uppercase ",
-      'placeholder:text-gray-800'
+      
       )}
       oninput={handleInput}
+      
       bind:value={searchValue}
       onclick={() => { openOverlay = true }}
       use:maskAction={{mask, value: searchValue}}

@@ -8,15 +8,21 @@
     import type { ApiProps } from "./Carousel.svelte";
     import {getRegisterContext } from "$lib/context/acessRequestFormContext.svelte";
     import AccessRegisterFormSummary from "./AccessRegisterFormSummary.svelte";
+    import FormSidebar from "./FormSidebar.svelte";
     let api:ApiProps | undefined = $state(undefined)
+    let steps = $state(1)
     const registerManager = getRegisterContext()
   
   
 </script>
 
  {#snippet accessRequestForm()}
+   
    <AccessRequestForm
-    api={api}
+    onNext={(()=>{
+      api?.apiNext()
+      steps++
+    })}
     bind:register={registerManager.register}
     onConfirm={(()=>{
       registerManager.addPerson()
@@ -25,6 +31,7 @@
      show.close()
     })}
    />
+   
  {/snippet}
 
  {#snippet accessVehicleForm()}
@@ -33,10 +40,11 @@
      bind:cnhValidity={registerManager.register.cnhValidity}
      bind:registerVehicle={registerManager.vehicle}
    
-    onPrevious={(()=>api?.apiPrevious())}
+    onPrevious={(()=>{api?.apiPrevious(), steps--})}
     onConfirm={(()=>{
       registerManager.addVehicle()
       api?.apiNext()
+      steps++
     })}
    />
  {/snippet}
@@ -44,24 +52,27 @@
  {#snippet accessRegisterFormSummary()}
    <AccessRegisterFormSummary
     api={api}
-   
+    onPrevious={(()=>{
+      steps--
+    })}
    />
  {/snippet}
  
  
 <Overlay
- class='grid w-full md:px-2 overflow-hidden lg:flex lg:items-center-safe lg:justify-center-safe   3xl:h-auto 3xl:block  3xl:w-auto 3xl:bg-transparent'
+ class='grid w-full md:px-0  lg:flex lg:items-center-safe lg:justify-center-safe   3xl:h-auto 3xl:block  3xl:w-auto 3xl:bg-transparent'
  show={show.isOpen}
  background='white'
  onOverlay={(()=>{
    // show.close()
  })}
 >
-
+ <FormSidebar step={steps} >
  <Carousel props={[accessRequestForm,accessVehicleForm,accessRegisterFormSummary]} 
  onMove={((item)=>{
     api=item
   })}
  
  />
+ </FormSidebar>
 </Overlay>

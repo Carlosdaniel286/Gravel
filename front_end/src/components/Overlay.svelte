@@ -35,12 +35,11 @@
   
   <div
     bind:this={overlayEl}
-    class={cn("flex fixed inset-0 bg-black/40 h-screen w-screen items-center-safe justify-center",
-    )}
-    style="overflow-x:auto; background:{background};z-index:{z}"
+    class={cn("flex fixed  inset-0 bg-black/40 h-screen w-screen items-center-safe justify-center")}
+    style=" background:{background};z-index:{z}"
 
     >
-    <div  class={cn(style)}>
+    <div  class={cn("overflow-x-auto",style)}>
       {@render children?.()}
    </div>
 </div>

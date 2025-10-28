@@ -5,13 +5,15 @@
   label?:string
   class?:string
   for?:string
+  
  }
-const {label,class:style,for:to}:LabelProps =$props()
+const {label,class:style,for:id}:LabelProps =$props()
 
 </script>
  
 
-<label 
+<label
  class={cn("pl-2 uppercase text-gray-800 font-semibold",style )}
- for={to}>{label}
+ for={id}  aria-autocomplete='none' >
+ {label}
 </label>

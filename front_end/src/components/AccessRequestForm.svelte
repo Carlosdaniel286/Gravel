@@ -24,6 +24,7 @@
   interface AccessFormProps {
     onCancel?: () => void;
     onConfirm?: () => void;
+    onNext?: () => void;
     api?: ApiProps;
     register?: RegisterVisitorList;
     typeForm?: 'register' | 'edit';
@@ -31,7 +32,7 @@
 
   const HEIGHT = 65;
 
-  let { onCancel, onConfirm, api = $bindable(), register = $bindable({ ...initRegisterVisitorList }), typeForm = 'register' }: AccessFormProps = $props();
+  let { onCancel, onConfirm, api = $bindable(),onNext, register = $bindable({ ...initRegisterVisitorList }), typeForm = 'register' }: AccessFormProps = $props();
 
   const variant = $derived(register?.driver && typeForm === 'register' ? 'next' : 'confirm');
 
@@ -68,11 +69,12 @@
   />
 
   <!-- Form Grid -->
-  <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
+  <form autocomplete="off" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
     
     <!-- Nome Completo -->
     <Input
       mask={/^[A-Za-z ]+$/}
+      
       class={cn(`lg:col-span-3`)}
       height={HEIGHT}
       error={fieldErrors.name.error}
@@ -91,7 +93,6 @@
       title="Endereço do morador"
       height={HEIGHT}
       class={cn(`lg:col-span-2 z-10`)}
-      placeholder="Digite endereço ou nome do morador"
       options={optionsResidentAccess}
       multiple={true}
       property="label"
@@ -138,7 +139,6 @@
       class={cn(`md:col-start-2 md:row-start-3 lg:col-start-4 lg:row-start-3`)}
       height={HEIGHT}
       title="Escolha o perfil"
-      placeholder="Perfil de visitante"
       options={optionsAccessProfile}
       property="label"
       bind:value={register.accessProfile}
@@ -150,10 +150,10 @@
     <Select
       class={cn(`md:col-start-2 lg:col-start-4 lg:row-start-4`)}
       title="Modo de acesso"
-      label={register.accessMode == 'passageiro' ? 'Passageiro' : 'Locomoção'}
       height={HEIGHT}
       disabled={register.accessMode == 'passageiro' || typeForm == 'edit'}
       options={accessMode}
+      label='sss'
       onSelect={((item)=>{
         if(item=='veículo'){
           register.cnh=''
@@ -172,8 +172,8 @@
       height={HEIGHT}
       title="Tipo de registro"
       options={optionsAccessType}
+      setSelected='Esporádico'
       property="label"
-      label="Tipo de registro"
       bind:value={register.accessType}
       error={fieldErrors.accessType.error}
       message={fieldErrors.accessType.message}
@@ -185,7 +185,7 @@
         height={HEIGHT}
         label="Número da CNH"
         placeholder="Digite a CNH"
-        mask="00000000000"
+        mask={['00000000000']}
         bind:value={register.cnh}
         error={fieldErrors.cnh.error}
         message={fieldErrors.cnh.message}
@@ -215,14 +215,15 @@
         onClick={() => {
           if (variant === 'next') {
             const {success,data} = getFieldError(register)
-            if(!success) return fieldErrors = data
+            //if(!success) return fieldErrors = data
             isError = success
             api?.apiNext();
+            onNext?.()
             
           } else {
               onConfirm?.();
               fieldErrors = getFieldError(register).data
-              console.log($state.snapshot(fieldErrors))
+              console.log($state.snapshot(register))
               isError = true
           }
         }}
