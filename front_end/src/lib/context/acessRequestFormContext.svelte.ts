@@ -35,7 +35,7 @@ export class RegisterManager {
     // Inspeciona reatividade
     $effect(() => {
      // const result = registerSchema.safeParse(this.register);
-     //$inspect(result)
+     $inspect(this.register)
       
     });
     // Define se o visitante é motorista

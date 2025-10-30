@@ -6,14 +6,45 @@
   import { Eye, EyeClosed, CircleCheck,Minimize2 } from '@lucide/svelte';
   import SelectedItems from './SelectedItems.svelte';
   import {  onMount } from 'svelte';
-  import type { AutoCompleteProps } from '$lib/types/autoComplete';
+  //import type { AutoCompleteProps } from '$lib/types/autoComplete';
   import FieldMessage from './FieldMessage.svelte';
-    
+  import type { Snippet } from "svelte"; 
    
+  
+  
+  type AutoCompleteProps<Item> = {
+    options?: Item[] | string[];
+    onSelect?: (item: Item | string) => void;
+    property?: keyof Item;
+    filterOptions?: (options: Item[] | string[], value: string) => string[] | void;
+    class?: string;
+    mask?: string[] | string | RegExp;
+    onClear?:() => void;
+    value?: string | (Item | string)[];
+    title?:string;
+    placeholder?:string;
+    height?:string|number;
+    multiple?:boolean;
+    error?:boolean
+    message?:string
+    children?:Snippet<[()=>void,boolean,string]>
+  }
  let { 
-    options, onSelect, property, filterOptions, class: className, mask = /.+/, onClear, multiple = false,
+    options, 
+    onSelect, 
+    property, 
+    filterOptions, 
+    class: className, 
+    mask = /.+/, 
+    onClear, 
+    multiple = false,
     value=$bindable(multiple ? ([] as (Item | string)[]) : ''),
-    title, placeholder, height,error,message
+    title, 
+    placeholder, 
+    height,
+    error,
+    message,
+    children
   }: AutoCompleteProps<Item> = $props();
 
   let searchValue = $state('');
@@ -25,6 +56,7 @@
   let selectedItems: (Item | string)[] = $state([]);
   let limitPosition = $state(true);
   let dropdownRef = $state<HTMLUListElement | null>(null);
+  let clicked = $state(false)
   const hasSelectedItems = $derived(selectedItems.length > 0)
   
  const inputPlaceholder = $derived.by(() => {
@@ -37,6 +69,11 @@
 });
  $effect(()=>{if(!hasSelectedItems) toggleEyes = false})
  
+ const valueString = ((item: string | Item)=>{
+    if( typeof item =='string') return item
+    if(property) return item[property] as string
+    return ''
+ })
  
   const filterByWordStart = $derived.by(() => {
     const filterOptions = options?.filter((item) => {
@@ -137,99 +174,133 @@
 <svelte:document onclick={handleClickOutside} />
 
 <div class={cn("flex flex-col gap-2", className)}>
-  <Label  label={title} />
-  <div bind:this={containerRef} bind:clientWidth={width} class={cn("input relative h-full w-full flex")} style="height:{height}px;">
+  <Label label={title} />
+
+  <div
+    bind:this={containerRef}
+    bind:clientWidth={width}
+    class={cn("input relative h-full w-full flex items-center    bg-white focus-within:ring-2  transition-all")}
+    style="height:{height}px;"
+  >
     <input
       id="in"
       type="text"
       placeholder={inputPlaceholder}
-      class={cn("border-0 focus:outline-none w-full cursor-text uppercase ",
-      
+      class={cn(
+        "w-full h-full px-4 py-2 text-[15px] font-semibold tracking-wide uppercase rounded-xl border-0 bg-transparent text-gray-800 placeholder:text-gray-400 focus:outline-none cursor-text"
       )}
       oninput={handleInput}
-      
       bind:value={searchValue}
       onclick={() => { openOverlay = true }}
-      use:maskAction={{mask, value: searchValue}}
+      use:maskAction={{ mask, value: searchValue }}
     />
-    <div class="flex gap-4">
-       {#if multiple && openOverlay}
-        <button class="cursor-pointer" onclick={() => {
-          openOverlay=false
-          toggleEyes = false
-        }}>
+
+    <div class="flex gap-3 items-center pr-3">
+      {#if multiple && openOverlay}
+        <button
+          class="cursor-pointer text-gray-500 hover:text-blue-600 transition-colors"
+          onclick={() => {
+            openOverlay = false
+            toggleEyes = false
+          }}
+        >
           <Minimize2 size={20} />
         </button>
       {/if}
+
       {#if multiple && hasSelectedItems}
-        <button class="cursor-pointer" onclick={() => {
-          toggleEyes = !toggleEyes;
-        }}>
+        <button
+          class="cursor-pointer text-gray-500 hover:text-blue-600 transition-colors"
+          onclick={() => { toggleEyes = !toggleEyes }}
+        >
           <Icon size={20} />
         </button>
       {/if}
-      <button class="cursor-pointer" onclick={() => {
-        searchValue = '';
-        if(!multiple) openOverlay = false;
-        selectedItems=[]
-        onClear?.();
-      }}>
+
+      <button
+        class="cursor-pointer text-gray-500 hover:text-red-600 transition-colors"
+        onclick={() => {
+          onClear?.();
+          if (!multiple) openOverlay = false;
+          if(searchValue!==''.trim()) return searchValue = '';
+          selectedItems = [];
+          
+        }}
+      >
         <Eraser size={20} />
       </button>
     </div>
 
-     {#if toggleEyes && hasSelectedItems}
-      <SelectedItems
-      bind:selectedItems={selectedItems}
-      property={property}
-      width={width}
-      />
-     {/if}
-    
+    {#if toggleEyes && hasSelectedItems}
+      <SelectedItems bind:selectedItems={selectedItems} property={property} width={width} />
+    {/if}
+
     {#if openOverlay && !toggleEyes}
-      <ul bind:this={dropdownRef} class={cn("bg-black absolute z-20  flex flex-col gap-2 overflow-auto overflow-x-hidden rounded-md max-h-[300px]",
-        limitPosition ? 'bottom-full mb-2' : 'top-full left-0 mt-4'
-      )} style="min-width:{width}px">
-         {#if multiple && filteredOptions.length === 0}
-            <li class="my-4 mx-3">
-              <strong class="text-white text-2xl uppercase">
-                Sem resultados
-              </strong>
-            </li>
-          {/if}
-        {#each filteredOptions as item, i (i)}
-          <li style="max-width:{width}px">
+      <ul
+        bind:this={dropdownRef}
+        class={cn(
+          "absolute z-20 flex flex-col gap-1 overflow-auto overflow-x-hidden rounded-xl shadow-lg border border-gray-200 bg-white/95 backdrop-blur-md max-h-[300px] text-gray-800 transition-all",
+          limitPosition ? 'bottom-full mb-2' : 'top-full left-0 mt-3'
+        )}
+        style="min-width:{width}px"
+      >
+        {#if multiple && filteredOptions.length === 0}
+          <li class="my-4 mx-3">
+            <strong class="text-gray-700 text-lg font-bold uppercase">
+              Sem resultados
+            </strong>
+          </li>
+        {/if}
+         
+        
+          {#each filteredOptions as item, i (i)}
+          <li class="flex justify-center items-center" style="max-width:{width}px">
             <button
-              class="uppercase flex gap-2.5 px-4 py-2 w-full text-white text-left cursor-pointer hover:bg-gray-700 rounded-md break-words whitespace-normal"
+              class="uppercase flex gap-3 px-4 py-2 w-full text-left cursor-pointer hover:bg-blue-100 active:bg-blue-200 rounded-lg break-words whitespace-normal font-semibold transition-colors"
               onclick={() => {
                 multiple ? toggleSelection(item) : setSearchAndValue(item);
                 onSelect?.(item);
-                if(!multiple) openOverlay = false
+                 clicked =isItemSelected(item)
+                 console.log(clicked)
+                if (!multiple) openOverlay = false;
               }}
             >
               {#if multiple}
                 <CircleCheck
-                  color={isItemSelected(item) ? 'blue' : ''}
-                  fill={isItemSelected(item) ? 'white' : ''}
-                  class={cn('border-2 rounded-full', isItemSelected(item) ? 'border-0' : 'border-gray-200')}
+                  color={isItemSelected(item) ? '#2563eb' : ''}
+                  
+                  fill={isItemSelected(item) ? '#2563eb' : 'transparent'}
+                  class={cn('border-2 rounded-full', isItemSelected(item) ? 'border-0' : 'border-gray-300')}
                   strokeWidth={4}
                 />
               {/if}
-
+                
               {#if typeof item === 'string'}
                 {item}
-              {:else if typeof item!== 'string' && property}
+              {:else if typeof item !== 'string' && property}
                 {item[property]}
               {/if}
+               
             </button>
+            {#if children}
+             
+              {@render children(()=>{
+                  multiple ? toggleSelection(item) : setSearchAndValue(item);
+                  
+              }, isItemSelected(item),valueString(item))}
+             
+            {/if}
+             
           </li>
         {/each}
-     
+         
+        
+       
+        
+       
       </ul>
     {/if}
   </div>
-   <FieldMessage
-   error={error}
-   message={message}
-   /> 
+
+  <FieldMessage error={error} message={message} />
 </div>

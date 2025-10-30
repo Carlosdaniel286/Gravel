@@ -11,7 +11,6 @@
     initRegisterVisitorList,
     optionsAccessMode,
     optionsAccessProfile,
-    optionsAccessType,
     optionsResidentAccess,
     type RegisterVisitorList
   } from '$lib/consts/access.options';
@@ -19,7 +18,8 @@
   import type { ApiProps } from './Carousel.svelte';
   import type { AccessMode } from '$lib/types/access.types';
   import Calendar from './Calendar.svelte';
-  import { getFieldError, registerSchema, registerVisitorErrors } from '$lib/helpers/validateFormData';
+  import { getFieldError,  registerVisitorErrors } from '$lib/helpers/validateFormData';
+  import IconsAutoComplete from './optionsAutoComplete/IconsAutoComplete.svelte';
 
   interface AccessFormProps {
     onCancel?: () => void;
@@ -75,7 +75,7 @@
     <Input
       mask={/^[A-Za-z ]+$/}
       
-      class={cn(`lg:col-span-3`)}
+      class={cn(` col-start-1 lg:col-span-3`)}
       height={HEIGHT}
       error={fieldErrors.name.error}
       message={fieldErrors.name.message}
@@ -84,22 +84,37 @@
       bind:value={register.name}
     />
 
-    <picture class="md:col-start-2 flex justify-end row-span-2 lg:col-start-4 row-start-1">
+    <picture class="md:col-start-2 sm:col-span-2 md:col-span-1 flex justify-end row-span-2 lg:col-start-4 row-start-1">
       <img src={Img} alt="" class="rounded-lg cursor-pointer object-cover" />
     </picture>
 
     <!-- Endereço do Morador -->
+     {#snippet children(select:()=>void,clicked:boolean,label:string)}
+	     <IconsAutoComplete
+        onClick={select}
+        clicked={clicked}
+        bind:register={register}
+        label={label}
+       />
+       {/snippet}
     <AutoComplete
       title="Endereço do morador"
       height={HEIGHT}
-      class={cn(`lg:col-span-2 z-10`)}
+      class={cn(` col-start-1 lg:col-span-2 z-10`)}
       options={optionsResidentAccess}
       multiple={true}
+      onSelect={((item)=>{
+        console.log(item)
+      })}
       property="label"
       bind:value={register.address}
       error={fieldErrors.address.error}
       message={fieldErrors.address.message}
-    />
+      children={children}
+   />
+   
+  
+  
 
     <!-- CPF -->
     <Input
@@ -117,7 +132,7 @@
     <Input
       height={HEIGHT}
       mask="(00) 9 0000-0000"
-      class={cn(`md:col-start-1 lg:col-span-2 lg:row-start-5 lg:col-start-1`)}
+      class={cn(`md:col-start-1 lg:col-span-2 lg:row-start-4 lg:col-start-1`)}
       placeholder="Telefone..."
       label="Telefone (opcional)"
       bind:value={register.phone}
@@ -167,22 +182,13 @@
     />
 
     <!-- Tipo de registro -->
-    <Select
-      class={cn(`md:col-start-2 lg:col-span-2 lg:col-start-1 lg:row-start-4`)}
-      height={HEIGHT}
-      title="Tipo de registro"
-      options={optionsAccessType}
-      setSelected='Esporádico'
-      property="label"
-      bind:value={register.accessType}
-      error={fieldErrors.accessType.error}
-      message={fieldErrors.accessType.message}
-    />
+    
 
     {#if register.accessMode === 'veículo'}
       <!-- CNH -->
       <Input
         height={HEIGHT}
+        class='col-start-1 md:row-start-5  md:col-start-2 lg:col-start-3'
         label="Número da CNH"
         placeholder="Digite a CNH"
         mask={['00000000000']}
@@ -192,19 +198,19 @@
       />
 
       <!-- Validade CNH -->
+       <div class='sm:col-start-2  md:row-start-6  lg:row-start-5  lg:col-start-4'>
       <Calendar
-        height={HEIGHT}
+       height={HEIGHT}
         label="Validade da CNH"
         bind:value={register.cnhValidity}
         startDate={new Date()}
-       
-        
-      />
+       />
+       </div>
     {/if}
 
     <ButtonAdd class={cn(`sm:hidden`)} text="Criar uma observação" height={HEIGHT} />
 
-    <div class="mt-6 h-[51px] col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
+    <div class="mt-6 h-[51px] sm:col-span-2 md:col-span-2 lg:col-span-4 flex justify-between">
       <Button variant="cancel" text="Cancelar" onClick={onCancel} />
 
       <ButtonAdd class={cn(`hidden sm:block`)} text="Criar uma observação" />

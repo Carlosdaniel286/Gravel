@@ -1,4 +1,4 @@
-import type {  AccessMode, AccessProfile, AccessType, ResidentAccess } from "$lib/types/access.types";
+import type {  AccessMode, AccessProfile, AccessType, Options, ResidentAccess } from "$lib/types/access.types";
 import type { Vehicle } from "$lib/types/vehicle.type";
 
 
@@ -66,27 +66,28 @@ export const optionsAccessProfile: AccessProfile[] = [
 
 // Opções de tipo de acesso (fixo ou esporádico)
 export const optionsAccessType: AccessType[] = [
-  { id: 1, label: 'Fixo', value: 'fixo' },           // moradores, prestadores fixos
-  { id: 2, label: 'Esporádico', value: 'esporádico' }, // visitantes ocasionais
-  { id: 3, label: 'Temporário', value: 'temporario' }, // prestadores por período limitado (obra, serviços)
+  { id: 1, label: 'Fixo', value: 'Fixo' },           // moradores, prestadores fixos
+  { id: 2, label: 'Esporádico', value: 'Esporádico' }, // visitantes ocasionais
+  { id: 3, label: 'Eventual', value: 'Eventual' }, // prestadores por período limitado (obra, serviços)
  
 ];
 
+ const accessType: Options = 'Esporádico';
 
 // Opções de moradores / endereço
 export const optionsResidentAccess: ResidentAccess[] = [
-  { id: 1, label: 'João Silva  - Casa 1', casa: '1' },
-  { id: 2, label: 'Maria Oliveira - Casa 1', casa: '1' },
-  { id: 3, label: 'Carlos Daniel - Casa 1', casa: '1' },
-  { id: 4, label: 'Ana Paula - Casa 2', casa: '2' },
-  { id: 5, label: 'Pedro Santos - Casa 2', casa: '2' },
-  { id: 6, label: 'Lucas Pereira - Casa 2', casa: '2' },
-  { id: 7, label: 'Mariana Costa - Casa 3', casa: '3' },
-  { id: 8, label: 'Ricardo Almeida - Casa 3', casa: '3' },
-  { id: 9, label: 'Fernanda Lima - Casa 3', casa: '3' },
-  { id: 10, label: 'Bruno Souza - Casa 4', casa: '4' },
-  { id: 11, label: 'Camila Rocha - Casa 4', casa: '4' },
-  { id: 12, label: 'Diego Martins - Casa 4', casa: '4' },
+  { id: 1, label: 'João Silva  - Casa 1', casa: '1', accessType },
+  { id: 2, label: 'Maria Oliveira - Casa 1', casa: '1', accessType },
+  { id: 3, label: 'Carlos Daniel - Casa 1', casa: '1', accessType },
+  { id: 4, label: 'Ana Paula - Casa 2', casa: '2', accessType },
+  { id: 5, label: 'Pedro Santos - Casa 2', casa: '2', accessType },
+  { id: 6, label: 'Lucas Pereira - Casa 2', casa: '2', accessType },
+  { id: 7, label: 'Mariana Costa - Casa 3', casa: '3', accessType },
+  { id: 8, label: 'Ricardo Almeida - Casa 3', casa: '3', accessType },
+  { id: 9, label: 'Fernanda Lima - Casa 3', casa: '3', accessType },
+  { id: 10, label: 'Bruno Souza - Casa 4', casa: '4', accessType },
+  { id: 11, label: 'Camila Rocha - Casa 4', casa: '4', accessType },
+  { id: 12, label: 'Diego Martins - Casa 4', casa: '4', accessType },
 ];
 
 
@@ -103,7 +104,6 @@ export const optionsResidentAccess: ResidentAccess[] = [
     stayDays: number;
     cnhValidity:undefined|Date
     cnh:string|undefined
-    accessType: string;
     accessMode: string;
     accessProfile: string;
     driver: boolean;
@@ -122,7 +122,6 @@ export const initRegisterVisitorList:RegisterVisitorList = {
   stayDays:1,
   cnh:undefined,
   cnhValidity:undefined,
-  accessType:'Esporádico',
   accessMode:'pedestre',
   accessProfile: '',
   driver:false,

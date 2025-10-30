@@ -13,7 +13,7 @@ const {label,class:style,for:id}:LabelProps =$props()
  
 
 <label
- class={cn("pl-2 uppercase text-gray-800 font-semibold",style )}
+ class={cn("pl-2  uppercase text-gray-800 font-semibold",style )}
  for={id}  aria-autocomplete='none' >
  {label}
 </label>
