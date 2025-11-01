@@ -80,6 +80,7 @@
       title="Selecione o tipo"
       options={vehicleTypes}
       property="type"
+      freeSolo={true}
       bind:value={registerVehicle.vehicleType}
     />
 
@@ -88,6 +89,7 @@
       label="Placa do veículo"
       placeholder="Digite a placa"
       mask={["aaa0a00", "aaa-0000"]}
+      
       bind:value={registerVehicle.plate}
     />
 
@@ -98,6 +100,7 @@
       title="Selecione a marca"
       options={vehicleBrands}
       property="brand"
+      freeSolo={true}
       bind:value={registerVehicle.brands}
     />
 
@@ -107,6 +110,7 @@
       title="Selecione o modelo"
       options={vehicleModels}
       property="model"
+      freeSolo={true}
       bind:value={registerVehicle.model}
     />
 
@@ -117,6 +121,7 @@
       title="Selecione a cor"
       options={vehicleColors}
       property="color"
+      freeSolo={true}
       bind:value={registerVehicle.color}
     />
 

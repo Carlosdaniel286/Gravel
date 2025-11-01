@@ -4,11 +4,12 @@
     import AccessVehicleForm from "./AccessVehicleForm.svelte";
     import Carousel from "./Carousel.svelte";
     import Overlay from "./Overlay.svelte";
-    const show =getOverlayContext()
+    const overlay =getOverlayContext()
     import type { ApiProps } from "./Carousel.svelte";
     import {getRegisterContext } from "$lib/context/acessRequestFormContext.svelte";
     import AccessRegisterFormSummary from "./AccessRegisterFormSummary.svelte";
     import FormSidebar from "./FormSidebar.svelte";
+    import TextArea from "./TextArea.svelte";
     let api:ApiProps | undefined = $state(undefined)
     let steps = $state(1)
     const registerManager = getRegisterContext()
@@ -28,7 +29,7 @@
       registerManager.addPerson()
     })}
    onCancel={(()=>{
-     show.close()
+     overlay.overlayManager('form',false)
     })}
    />
    
@@ -61,7 +62,7 @@
  
 <Overlay
  class='grid w-full md:px-0  lg:flex lg:items-center-safe lg:justify-center-safe   3xl:h-auto 3xl:block  3xl:w-auto 3xl:bg-transparent'
- show={show.isOpen}
+ show={overlay.overlayStore('form')}
  background='white'
  onOverlay={(()=>{
    // show.close()
@@ -75,4 +76,20 @@
  
  />
  </FormSidebar>
+</Overlay>
+
+<Overlay
+  class='px-2'
+  show={overlay.overlayStore('textArea')}
+>
+  <TextArea
+   class='md:w-[650px] w-screen'
+   bind:observation={registerManager.register.observation}
+   onconfirm={()=>{
+    overlay.overlayManager('textArea',false)
+   }}
+   oncancel={(()=>{
+    overlay.overlayManager('textArea',false)
+   })}
+  />
 </Overlay>

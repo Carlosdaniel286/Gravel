@@ -20,6 +20,7 @@
   import Calendar from './Calendar.svelte';
   import { getFieldError,  registerVisitorErrors } from '$lib/helpers/validateFormData';
   import IconsAutoComplete from './optionsAutoComplete/IconsAutoComplete.svelte';
+    import { getOverlayContext } from '$lib/context/overlayContext.svelte';
 
   interface AccessFormProps {
     onCancel?: () => void;
@@ -39,7 +40,7 @@
   let fieldErrors = $state({...registerVisitorErrors});
   let isError = $state(false)
   const passenger: AccessMode = { id: 6, label: 'Passageiro', value: 'passageiro' };
-
+  const overlay = getOverlayContext()
   const accessMode = $derived.by(() => {
     if (register.accessMode === 'passageiro') {
       const options = [...optionsAccessMode];
@@ -104,7 +105,7 @@
       options={optionsResidentAccess}
       multiple={true}
       onSelect={((item)=>{
-        console.log(item)
+        
       })}
       property="label"
       bind:value={register.address}
@@ -154,6 +155,7 @@
       class={cn(`md:col-start-2 md:row-start-3 lg:col-start-4 lg:row-start-3`)}
       height={HEIGHT}
       title="Escolha o perfil"
+      freeSolo={true}
       options={optionsAccessProfile}
       property="label"
       bind:value={register.accessProfile}
@@ -213,7 +215,13 @@
     <div class="mt-6 h-[51px] sm:col-span-2 md:col-span-2 lg:col-span-4 flex justify-between">
       <Button variant="cancel" text="Cancelar" onClick={onCancel} />
 
-      <ButtonAdd class={cn(`hidden sm:block`)} text="Criar uma observação" />
+      <ButtonAdd 
+      class={cn(`hidden sm:block`)} 
+      text="Criar uma observação" 
+      onClick={()=>{
+        overlay.overlayManager('textArea',true)
+      }}
+      />
 
       <Button
         text={typeForm == 'edit' ? 'Prosseguir' : 'Registrar'}

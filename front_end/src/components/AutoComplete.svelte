@@ -4,9 +4,7 @@
   import Eraser from '$lib/icons/Eraser.svelte';
   import Label from './Label.svelte';
   import { Eye, EyeClosed, CircleCheck,Minimize2 } from '@lucide/svelte';
-  import SelectedItems from './SelectedItems.svelte';
   import {  onMount } from 'svelte';
-  //import type { AutoCompleteProps } from '$lib/types/autoComplete';
   import FieldMessage from './FieldMessage.svelte';
   import type { Snippet } from "svelte"; 
    
@@ -22,6 +20,7 @@
     onClear?:() => void;
     value?: string | (Item | string)[];
     title?:string;
+    freeSolo?:boolean
     placeholder?:string;
     height?:string|number;
     multiple?:boolean;
@@ -44,6 +43,7 @@
     height,
     error,
     message,
+    freeSolo=false,
     children
   }: AutoCompleteProps<Item> = $props();
 
@@ -51,8 +51,8 @@
   let width = $state(0);
   let openOverlay = $state(false);
   let containerRef = $state<HTMLElement | null>(null);
-  let toggleEyes = $state(false);
-  let Icon = $derived(toggleEyes ? Eye : EyeClosed);
+  let toggleEyes = $state(true);
+  let Icon = $derived(toggleEyes ?Eye:EyeClosed );
   let selectedItems: (Item | string)[] = $state([]);
   let limitPosition = $state(true);
   let dropdownRef = $state<HTMLUListElement | null>(null);
@@ -67,7 +67,12 @@
     return `Você selecionou ${count} item${count > 1 ? 's' : ''}`;
   }
 });
- $effect(()=>{if(!hasSelectedItems) toggleEyes = false})
+  $effect(()=>{
+    if(freeSolo && !multiple){
+      value = searchValue
+    }
+    
+  })
  
  const valueString = ((item: string | Item)=>{
     if( typeof item =='string') return item
@@ -191,27 +196,17 @@
       )}
       oninput={handleInput}
       bind:value={searchValue}
-      onclick={() => { openOverlay = true }}
+      onclick={() => { openOverlay = true,toggleEyes=true }}
       use:maskAction={{ mask, value: searchValue }}
     />
 
     <div class="flex gap-3 items-center pr-3">
-      {#if multiple && openOverlay}
-        <button
-          class="cursor-pointer text-gray-500 hover:text-blue-600 transition-colors"
-          onclick={() => {
-            openOverlay = false
-            toggleEyes = false
-          }}
-        >
-          <Minimize2 size={20} />
-        </button>
-      {/if}
+      
 
       {#if multiple && hasSelectedItems}
         <button
           class="cursor-pointer text-gray-500 hover:text-blue-600 transition-colors"
-          onclick={() => { toggleEyes = !toggleEyes }}
+          onclick={() => { toggleEyes = !toggleEyes, openOverlay=!openOverlay }}
         >
           <Icon size={20} />
         </button>
@@ -224,18 +219,17 @@
           if (!multiple) openOverlay = false;
           if(searchValue!==''.trim()) return searchValue = '';
           selectedItems = [];
-          
+          if(typeof value =='string') return value = ''
+          value = []
         }}
       >
         <Eraser size={20} />
       </button>
     </div>
 
-    {#if toggleEyes && hasSelectedItems}
-      <SelectedItems bind:selectedItems={selectedItems} property={property} width={width} />
-    {/if}
+   
 
-    {#if openOverlay && !toggleEyes}
+    {#if openOverlay && toggleEyes}
       <ul
         bind:this={dropdownRef}
         class={cn(
@@ -261,7 +255,7 @@
                 multiple ? toggleSelection(item) : setSearchAndValue(item);
                 onSelect?.(item);
                  clicked =isItemSelected(item)
-                 console.log(clicked)
+                 
                 if (!multiple) openOverlay = false;
               }}
             >

@@ -23,7 +23,7 @@ export type AccessType = AccessOptionBase & {
   value: 'Fixo' | 'Esporádico'| 'Eventual'
 };
 
-export type AccessProfile = AccessOptionBase & {
+ type AccessProfile = AccessOptionBase & {
   value:
     // Visitantes
     | 'visitante'
@@ -72,7 +72,7 @@ export type AccessProfile = AccessOptionBase & {
 };
 
 
-export type Options = "Esporádico" | "fixo" | "eventual" | null;
+export type Options = "Esporádico" | "Fixo" | "Eventual" | null;
 export type ResidentAccess = AccessOptionBase & {
   casa: string | null
   accessType:Options

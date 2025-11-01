@@ -3,6 +3,7 @@
   import { startOfDay, differenceInCalendarDays, addDays, isAfter, isBefore } from "date-fns";
   import Calendar from "./Calendar.svelte";
   import { cn } from "$lib/utils";
+    import Label from "./Label.svelte";
 
   interface DateRangePickerProps {
     startDate?: Date;
@@ -60,14 +61,16 @@
 
 </script>
 
-<div class={cn("flex flex-col gap-8  ", className)}>
+<div class={cn("flex flex-col  gap-8  ", className)}>
   <!-- Início da permanência -->
+   
+   
   <Calendar
-    class={classCalendar}
+    class={cn(classCalendar)}
     disabled={{ before: today }}
     startDate={today}
     bind:value={startDate}
-    label="Início de permanência"
+    label='Início de permanência'
     height={height}
   />
 
@@ -82,10 +85,13 @@
   />
 
   <!-- Dias de permanência -->
-  <fieldset class="flex flex-col gap-2">
-    <label for="days-input" class="pl-2 uppercase text-gray-800 font-semibold">
-      Dias de permanência
-    </label>
+  <fieldset class=" flex flex-col gap-2">
+    <Label for="days-input" 
+    label='Dias de permanência'
+    
+    />
+      
+    
     <input
       id="days-input"
       bind:value={stayDaysInput}
@@ -96,3 +102,4 @@
     />
   </fieldset>
 </div>
+

@@ -1,4 +1,4 @@
-import type {  AccessMode, AccessProfile, AccessType, Options, ResidentAccess } from "$lib/types/access.types";
+import type {  AccessMode, AccessType, Options, ResidentAccess } from "$lib/types/access.types";
 import type { Vehicle } from "$lib/types/vehicle.type";
 
 
@@ -15,7 +15,7 @@ export const optionsAccessMode: AccessMode[] = [
 
 
 
-export const optionsAccessProfile: AccessProfile[] = [
+export const optionsAccessProfile = [
   // Visitantes
   { id: 1, label: 'Visitante', value: 'visitante' },
 
@@ -108,7 +108,7 @@ export const optionsResidentAccess: ResidentAccess[] = [
     accessProfile: string;
     driver: boolean;
     passenger: boolean;
-    observation?: string;
+    observation:string|undefined
  }
 
 export const initRegisterVisitorList:RegisterVisitorList = {

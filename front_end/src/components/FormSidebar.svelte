@@ -17,8 +17,8 @@
   })
 </script>
 
-<aside class="bg-gray-800 hidden lg:block py-10 h-screen  items-center w-[280px]">
-  <div class="w-full  h-full flex flex-col justify-around px-4">
+<aside class="bg-gray-800 hidden xl:block py-10 h-screen  items-center w-[280px]">
+  <div class="w-full font-nunito font-semibold  h-full flex flex-col justify-around px-4">
 
     <!-- Etapa 1 -->
     <div class="flex items-center gap-3">
@@ -41,7 +41,7 @@
       >
         <Car size={18} />
       </div>
-      <span class={`capitalize text-sm ${activeStep === 2 ? 'text-white font-semibold' : 'text-gray-400'}`}>
+      <span class={`capitalize text-sm  ${activeStep === 2 ? 'text-white font-semibold' : 'text-gray-400'}`}>
         registro de veículos
       </span>
     </div>

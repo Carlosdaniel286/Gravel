@@ -101,7 +101,7 @@
          overflow-x-hidden"
 >
   <!-- Passenger Registration Overlay -->
-  <Overlay show={isAddPassengerOverlayOpen} z={20} class="grid w-full" background="white">
+  <Overlay show={isAddPassengerOverlayOpen} z={20} class="grid overflow-auto w-full h-full " background="white">
     <AccessRequestForm
       bind:register={newPassenger}
       onConfirm={handleAddPassenger}
@@ -110,7 +110,7 @@
   </Overlay>
 
   <!-- Passenger Edit Overlay -->
-  <Overlay show={isEditPassengerOverlayOpen} z={20} class="grid w-full" background="white">
+  <Overlay show={isEditPassengerOverlayOpen} z={20} class="grid overflow-auto w-full h-full " background="white">
     <AccessRequestForm
       bind:register={passengerBeingEdited}
       typeForm="edit"
@@ -120,8 +120,9 @@
   </Overlay>
 
   <!-- Vehicle Edit Overlay -->
-  <Overlay show={isEditVehicleOverlayOpen} z={20} class="grid w-full" background="white">
+  <Overlay show={isEditVehicleOverlayOpen} z={20} class="grid w-full overflow-auto" background="white">
     <AccessVehicleForm
+      
       bind:registerVehicle={registerContext.vehicle}
       onConfirm={() => (isEditVehicleOverlayOpen = false)}
       onCancel={() => (isEditVehicleOverlayOpen = false)}

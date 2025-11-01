@@ -15,6 +15,7 @@
   import { CalendarSearch, X } from '@lucide/svelte';
   import { onMount } from 'svelte';
   import CalendarGrid from './CalendarGrid.svelte';
+    import Label from './Label.svelte';
 
   interface CalendarProps {
     value?: Date;
@@ -109,7 +110,7 @@
 
 <svelte:window bind:innerHeight={height} />
 <svelte:document on:click={handleClickOutside} />
-
+ 
 <div bind:this={calendarRef} class="relative">
   {#if isCalendarOpen}
     <CalendarGrid
@@ -129,7 +130,12 @@
 
   <!-- Input -->
   <div class="flex flex-col gap-2">
-    <label for="input" class="pl-2 uppercase text-gray-800 font-semibold">{label}</label>
+    {#if label }
+    <Label for="input"  
+     label={label}
+    />
+    {/if}
+   
     <div
       class={cn('flex input items-center   p-2', className)}
       style="height:{heightClass}px;"

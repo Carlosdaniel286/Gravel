@@ -4,7 +4,7 @@
   import CreatUser from "$lib/icons/CreatUser.svelte";
   import SearchUser from "$lib/icons/SearchUser.svelte";
     import { getOverlayContext } from "$lib/context/overlayContext.svelte";
-    const show =getOverlayContext()
+    const overlay =getOverlayContext()
    
 </script>
 <aside class="bg-gray-50 w-[300px] h-full">
@@ -16,7 +16,7 @@
         />
          <SidebarList
          onClick={(()=>{
-           show.toggle()
+           overlay.overlayManager('form',true)
          
          })}
          description='Cadastrar'
