@@ -3,7 +3,7 @@ import { getContext, setContext } from "svelte";
 
 const OVERLAY_KEY = Symbol("overlay");
 
- type OverlayManager = "form"|'textArea'
+ type OverlayManager = "form"|'textArea'|"filterRegister"
  
 
 
@@ -14,7 +14,8 @@ export class OverlayController {
   
  private overlays = $state({
     form:false,
-    textArea:false
+    textArea:false,
+    filterRegister:false
   })
 
   constructor() {}

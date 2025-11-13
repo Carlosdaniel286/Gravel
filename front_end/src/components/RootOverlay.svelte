@@ -10,6 +10,7 @@
     import AccessRegisterFormSummary from "./AccessRegisterFormSummary.svelte";
     import FormSidebar from "./FormSidebar.svelte";
     import TextArea from "./TextArea.svelte";
+    import FilterRegister from "./FilterRegister.svelte";
     let api:ApiProps | undefined = $state(undefined)
     let steps = $state(1)
     const registerManager = getRegisterContext()
@@ -68,7 +69,9 @@
    // show.close()
  })}
 >
- <FormSidebar step={steps} >
+
+
+<FormSidebar step={steps} >
  <Carousel props={[accessRequestForm,accessVehicleForm,accessRegisterFormSummary]} 
  onMove={((item)=>{
     api=item
@@ -94,3 +97,12 @@
    })}
   />
 </Overlay>
+
+ <Overlay
+  show={overlay.overlayStore('filterRegister')}
+  onOverlay={(()=>overlay.overlayManager('filterRegister',false))}
+ >
+ <FilterRegister
+   oncancel={(()=>overlay.overlayManager('filterRegister',false))}
+ />
+ </Overlay>

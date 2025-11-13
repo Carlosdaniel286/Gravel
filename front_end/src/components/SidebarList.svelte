@@ -1,24 +1,36 @@
 <script lang="ts">
-    import { cn } from "$lib/utils";
-   import type {   Component, Snippet } from "svelte";
-  
-   
+  import { cn } from "$lib/utils";
+  import type { Component, Snippet } from "svelte";
 
   interface ItemProps {
-    Icon?:Component
+    Icon?: Component;
     description?: string;
-    class?: string; // cor de fundo do círculo
+    class?: string; // permite personalizar cor de fundo, se quiser
     onClick?: () => void;
-    children?:Snippet
+    children?: Snippet;
   }
 
-  let { Icon, description = "", class:bgColor = "bg-gray-400", onClick }: ItemProps = $props();
+  let { Icon, description = "", class: ms = "bg-gray-100", onClick }: ItemProps = $props();
 </script>
 
-<button
-  onclick={onClick}
-  class={cn("flex flex-col items-center justify-center w-14 h-14 rounded-xl shadow-lg hover:scale-105 transition-transform duration-200",bgColor)}
- >
-  <Icon  class="w-6 h-6  text-white"/>
-  <span class="text-xs text-white mt-1">{description}</span>
-</button>
+<div class="flex  flex-col justify-center gap-1 cursor-pointer">
+  <button
+    type="button"
+    aria-label={description}
+    onclick={onClick}
+    class={cn(
+      "flex items-center justify-center cursor-pointer w-12 h-12 rounded-2xl shadow-sm transition-transform duration-150 transform hover:scale-105 active:scale-100 focus:outline-none focus:ring-1 focus:ring-gray-300",
+      ms
+    )}
+  >
+    {#if Icon}
+      <Icon fill="white" class="w-6 h-6 text-white" />
+    {/if}
+  </button>
+
+  {#if description}
+    <span class="font-nunito text-[1rem] font-bold text-sm text-gray-900 text-center">
+      {description}
+    </span>
+  {/if}
+</div>
