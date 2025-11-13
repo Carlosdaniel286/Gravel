@@ -75,8 +75,7 @@
     <!-- Nome Completo -->
     <Input
       mask={/^[A-Za-z ]+$/}
-      
-      class={cn(` col-start-1 lg:col-span-3`)}
+      class={cn(`col-start-1 lg:col-span-3`)}
       height={HEIGHT}
       error={fieldErrors.name.error}
       message={fieldErrors.name.message}
@@ -121,7 +120,7 @@
     <Input
       height={HEIGHT}
       mask="000.000.000-00"
-      class={cn(`lg:col-span-2 lg:col-start-1`)}
+      class={cn(`lg:col-span-2 lg:col-start-1 sm:row-start-3 sm:col-start-2 md:row-auto md:col-auto`)}
       placeholder="Digite o CPF"
       label="CPF completo"
       bind:value={register.cpf}
@@ -188,6 +187,24 @@
 
     {#if register.accessMode === 'veículo'}
       <!-- CNH -->
+        <Select
+        height={HEIGHT}
+        class='sm:col-start-2 sm:row-start-7  md:mt-7 lg:col-start-1 lg:row-start-auto lg:mt-0 lg:col-span-2'
+        label=''
+        title='categoria da cnh'
+        options={[  
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "AB",
+          "AC",
+          "AD",
+          "AE"
+         ]}
+       
+       />
       <Input
         height={HEIGHT}
         class='col-start-1 md:row-start-5  md:col-start-2 lg:col-start-3'

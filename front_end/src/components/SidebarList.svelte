@@ -1,21 +1,24 @@
 <script lang="ts">
-  import type { Component } from "svelte";
+    import { cn } from "$lib/utils";
+   import type {   Component, Snippet } from "svelte";
+  
+   
 
   interface ItemProps {
-    Icon: Component;
+    Icon?:Component
     description?: string;
-    onClick?: () => void; // callback opcional
+    class?: string; // cor de fundo do círculo
+    onClick?: () => void;
+    children?:Snippet
   }
 
-
-  let { Icon, description = "",onClick }: ItemProps = $props();
+  let { Icon, description = "", class:bgColor = "bg-gray-400", onClick }: ItemProps = $props();
 </script>
 
-<button 
- onclick={onClick}
-class="cursor-pointer flex px-4 py-2.5 items-center gap-4 capitalize font-semibold hover:bg-gray-200 text-md">
-  
-    <Icon />
- 
-  <span class="text-gray-700 font-semibold">{description}</span>
+<button
+  onclick={onClick}
+  class={cn("flex flex-col items-center justify-center w-14 h-14 rounded-xl shadow-lg hover:scale-105 transition-transform duration-200",bgColor)}
+ >
+  <Icon  class="w-6 h-6  text-white"/>
+  <span class="text-xs text-white mt-1">{description}</span>
 </button>

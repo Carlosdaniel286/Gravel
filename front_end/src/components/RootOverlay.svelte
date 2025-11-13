@@ -83,7 +83,8 @@
   show={overlay.overlayStore('textArea')}
 >
   <TextArea
-   class='md:w-[650px] w-screen'
+   class='md:w-[850px] md:h-[70vh]  w-screen'
+   heightAuto={false}
    bind:observation={registerManager.register.observation}
    onconfirm={()=>{
     overlay.overlayManager('textArea',false)

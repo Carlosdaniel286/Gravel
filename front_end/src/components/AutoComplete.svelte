@@ -8,8 +8,6 @@
   import FieldMessage from './FieldMessage.svelte';
   import type { Snippet } from "svelte"; 
    
-  
-  
   type AutoCompleteProps<Item> = {
     options?: Item[] | string[];
     onSelect?: (item: Item | string) => void;
@@ -205,6 +203,7 @@
 
       {#if multiple && hasSelectedItems}
         <button
+         type='button'
           class="cursor-pointer text-gray-500 hover:text-blue-600 transition-colors"
           onclick={() => { toggleEyes = !toggleEyes, openOverlay=!openOverlay }}
         >
@@ -213,6 +212,7 @@
       {/if}
 
       <button
+      type='button'
         class="cursor-pointer text-gray-500 hover:text-red-600 transition-colors"
         onclick={() => {
           onClear?.();
@@ -250,6 +250,7 @@
           {#each filteredOptions as item, i (i)}
           <li class="flex justify-center items-center" style="max-width:{width}px">
             <button
+            type='button'
               class="uppercase flex gap-3 px-4 py-2 w-full text-left cursor-pointer hover:bg-blue-100 active:bg-blue-200 rounded-lg break-words whitespace-normal font-semibold transition-colors"
               onclick={() => {
                 multiple ? toggleSelection(item) : setSearchAndValue(item);

@@ -9,6 +9,7 @@
     maxLength?: number;
     onconfirm?:()=>void
     oncancel?:()=>void
+    heightAuto?:boolean
     }
 
     let {
@@ -16,7 +17,8 @@
     class:style,
     maxLength=500,
     onconfirm,
-    oncancel
+    oncancel,
+    heightAuto=true
   }:TextAreaProps =$props()
     
     
@@ -25,9 +27,9 @@
     
     
     function autoResize() {
-        if (textareaEl) {
+        if (textareaEl && heightAuto) {
             textareaEl.style.height = "auto"; // reseta altura
-            textareaEl.style.height = textareaEl.scrollHeight + "px"; // ajusta conforme conteúdo
+           textareaEl.style.height = textareaEl.scrollHeight + "px"; // ajusta conforme conteúdo
         }
     }
 
