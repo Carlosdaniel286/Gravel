@@ -13,7 +13,7 @@
   let { Icon, description = "", class: ms = "bg-gray-100", onClick }: ItemProps = $props();
 </script>
 
-<div class="flex  flex-col justify-center gap-1 cursor-pointer">
+<div class="flex  flex-col  min-w-full items-center gap-1 cursor-pointer">
   <button
     type="button"
     aria-label={description}

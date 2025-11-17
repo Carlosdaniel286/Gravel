@@ -12,7 +12,7 @@
     options?: Item[] | string[];
     onSelect?: (item: Item | string) => void;
     property?: keyof Item;
-    filterOptions?: (options: Item[] | string[], value: string) => string[] | void;
+    filterOptions?: (options: Item[] | string[], value: string) => string[] | Item[] | void
     class?: string;
     mask?: string[] | string | RegExp;
     onClear?:() => void;
@@ -24,6 +24,7 @@
     multiple?:boolean;
     error?:boolean
     message?:string
+    prefix?:string
     children?:Snippet<[()=>void,boolean,string]>
   }
  let { 
@@ -42,6 +43,7 @@
     error,
     message,
     freeSolo=false,
+    prefix,
     children
   }: AutoCompleteProps<Item> = $props();
 
@@ -185,12 +187,14 @@
     class={cn("input relative h-full w-full flex items-center    bg-white focus-within:ring-2  transition-all")}
     style="height:{height}px;"
   >
+   <p class="uppercase">{prefix}</p>
     <input
       id="in"
+      autocorrect='on'
       type="text"
       placeholder={inputPlaceholder}
       class={cn(
-        "w-full h-full px-4 py-2 text-[15px] font-semibold tracking-wide uppercase rounded-xl border-0 bg-transparent text-gray-800 placeholder:text-gray-400 focus:outline-none cursor-text"
+        "w-full h-full px-2 py-2 text-[15px] font-semibold tracking-wide uppercase rounded-xl border-0 bg-transparent text-gray-800 placeholder:text-gray-400 focus:outline-none cursor-text "
       )}
       oninput={handleInput}
       bind:value={searchValue}
@@ -199,8 +203,6 @@
     />
 
     <div class="flex gap-3 items-center pr-3">
-      
-
       {#if multiple && hasSelectedItems}
         <button
          type='button'

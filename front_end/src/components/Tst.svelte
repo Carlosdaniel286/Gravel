@@ -39,21 +39,3 @@ import { onMount, type Component,type Snippet} from 'svelte';
    
 
 
-{#each  Element as App , i}
-        <div
-          in:fly={{ x: 400 ,  duration: 2000 }} 
-          out:fly={{ x: -400 , duration: 2000 }}> 
-           {#if i === activeIndex}
-             <App/>
-          {/if}
-        </div>
-    {/each}
-  
-
- 
-    <div>
-      <button onclick={() => console.log('Selecionado:')}>
-        {@render header?.(activeIndex)}
-      </button>
-    </div>
- 

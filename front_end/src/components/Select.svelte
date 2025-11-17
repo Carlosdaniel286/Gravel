@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import Label from './Label.svelte';
     import FieldMessage from './FieldMessage.svelte';
+    import { useEffect } from 'react';
    
 
   interface SelectProps {
@@ -16,20 +17,26 @@
     height?: string | number;
     value?: string;
     disabled?:boolean
-    setSelected?:string
     error?:boolean
     message?:string
   }
 
   let { value=$bindable(), options, onSelect, property, label='Escolha', title, class:className, height,disabled=false,valueProperty,error,message }: SelectProps = $props();
+  
+  
   const labelSelect = $derived.by(()=>{
     if(label && !value) return label
     return value
   })
-  // svelte-ignore state_referenced_locally
-    let selectedOption = $state<Item | string>(labelSelect??'');
+  let selectedOption = $state<Item | string>('');
   
-  const obj = {
+    $effect(()=>{
+    if(labelSelect){
+      selectedOption=labelSelect
+    }
+  })
+  
+      const obj = {
     option: '',
     value: ''
   };
@@ -49,8 +56,7 @@
 
 <div class={cn("flex flex-col gap-2", className)}>
   <Label 
-   
-    label={title}
+   label={title}
   />
    <select
     class={cn("input text-gray-700",styleDisabled)}

@@ -12,6 +12,7 @@
     optionsAccessMode,
     optionsAccessProfile,
     optionsResidentAccess,
+    addressExemple,
     type RegisterVisitorList
   } from '$lib/consts/access.options';
   import HeaderForm from './HeaderForm.svelte';
@@ -21,6 +22,7 @@
   import { getFieldError,  registerVisitorErrors } from '$lib/helpers/validateFormData';
   import IconsAutoComplete from './optionsAutoComplete/IconsAutoComplete.svelte';
     import { getOverlayContext } from '$lib/context/overlayContext.svelte';
+    import Address from './address/Address.svelte';
 
   interface AccessFormProps {
     onCancel?: () => void;
@@ -57,7 +59,7 @@
      }
    // 
   })
-
+ 
   // Atualiza erros ao mudar valores
   
 </script>
@@ -68,7 +70,7 @@
     title="Cadastro Geral"
     subTitle="Preencha as informações abaixo para criar um novo cadastro."
   />
-
+     
   <!-- Form Grid -->
   <form autocomplete="off" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
     
@@ -97,26 +99,13 @@
         label={label}
        />
        {/snippet}
-    <AutoComplete
-      title="Endereço do morador"
+    
+     <Address
       height={HEIGHT}
-      class={cn(` col-start-1 lg:col-span-2 z-10`)}
-      options={optionsResidentAccess}
-      multiple={true}
-      onSelect={((item)=>{
-        
-      })}
-      property="label"
-      bind:value={register.address}
-      error={fieldErrors.address.error}
-      message={fieldErrors.address.message}
-      children={children}
-   />
-   
-  
-  
-
-    <!-- CPF -->
+      class={cn(`col-start-1 lg:col-span-2 z-10`)}
+      address={addressExemple}
+      />
+   <!-- CPF -->
     <Input
       height={HEIGHT}
       mask="000.000.000-00"
@@ -190,7 +179,7 @@
         <Select
         height={HEIGHT}
         class='sm:col-start-2 sm:row-start-7  md:mt-7 lg:col-start-1 lg:row-start-auto lg:mt-0 lg:col-span-2'
-        label=''
+        label='A'
         title='categoria da cnh'
         options={[  
           "A",

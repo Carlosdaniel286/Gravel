@@ -165,8 +165,8 @@
 
     <Select
       property="month"
+      label={currentMonthLabel}
       options={months.map((it) => ({ ...it, month: it.month.slice(0, 3) }))}
-      setSelected={currentMonthLabel}
       onSelect={(item) => {
         if (typeof item !== 'string') {
           selectedMonth = item.id;
@@ -177,7 +177,7 @@
 
     <Select
       options={yearOptions}
-      setSelected={currentMonthStart.getFullYear().toString()}
+      label={currentMonthStart.getFullYear().toString()}
       onSelect={(item) => {
         if (typeof item !== 'string') {
           selectedYear = item;

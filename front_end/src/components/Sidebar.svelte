@@ -33,7 +33,7 @@
   //bg-gray-200 w-[200px] h-full flex flex-col items-center  py-4 gap-6 shadow-lg
 </script>
 
-<aside class="bg-gray-100 w-[110px] h-full flex flex-col items-start px-6 py-4 gap-6 shadow-lg">
+<aside class="bg-gray-100 w-[110px] h-full flex flex-col items-start  py-4 gap-6 shadow-lg">
   
 {#each menuItems as item}
   {@const Icon = item.icon}

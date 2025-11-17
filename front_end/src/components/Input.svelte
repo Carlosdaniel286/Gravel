@@ -13,9 +13,10 @@
     height?: string | number;
     error?: boolean;
     message?: string;
+    prefix?:string
   }
 
-  let { mask, class: className, label, placeholder, value = $bindable(), height, error, message }: InputProps = $props()
+  let { mask, class: className, label, placeholder,prefix, value = $bindable(), height, error, message }: InputProps = $props()
 
   
 </script>
@@ -26,19 +27,27 @@
   <!-- destivar o autofill do chorme -->
   <label class="hidden" for="name">name</label>
   
+  <div style="height:{height}px;" 
+  class="input flex items-center gap-1 ">
+  {#if prefix }
+    <p class=" uppercase font-nunito">{prefix}</p>
+  {/if}
   <input
     use:maskAction={{ mask, value }}
     bind:value={value}
-    class={cn("input uppercase cursor-text placeholder:h-full")}
-    style="height:{height}px;"
+    class={cn(" border-0 outline-0 focus:none h-full w-full uppercase  cursor-text placeholder:h-full")}
     id='name'
     aria-label={label}         
     name='name' 
     autocomplete='off'      
-    placeholder=''
+    placeholder={placeholder}
     type="text"
   />
-  <FieldMessage {error} {message} />
+  </div>
+  
+    <FieldMessage {error} {message} />
+  
+  
 </div>
 
 
