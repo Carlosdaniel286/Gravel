@@ -1,113 +1,203 @@
- <script lang='ts' generics="T">
-	import Label from './../Label.svelte';
-    import { cn } from "$lib/utils";
-    import SelectedItems from '../SelectedItems.svelte';
-    import Input from '../Input.svelte';
-    import { BookOpen } from 'lucide-svelte';
-    import { Check } from '@lucide/svelte';
-    
-    
-   type AddressResident = {
+ <script lang="ts">
+  import Label from './../Label.svelte';
+  import { cn } from "$lib/utils";
+  import SelectedItems from '../SelectedItems.svelte';
+  import Input from '../Input.svelte';
+  import ButtonAdd from '../ButtonAdd.svelte';
+  import Overlay from '../Overlay.svelte';
+  import Button from '../Button.svelte';
+
+  // Modelo renomeado
+  type ResidentAddress = {
     qd: string;
     lt: string;
     label: string;
+    name: string;
+  };
 
-   }
-   
-    interface AddressProps {
-     class?:string
-     height?:number|string
-     address?:AddressResident[]
-   }
-  let { class:style,height,address}:AddressProps = $props()
-  
-  let open = $state(false)
-  
-  let addressState = $state({
-    lt:'',
-    qd:''
-  })
-  let width = $state(0)
-  
-  let filterAddress = $derived.by(()=>{
-    if(!address) return []
-      return address.filter((item)=> {
-         
-        if(addressState.lt!=='' && addressState.qd =='') {
-            return Number(item.lt).toString() == addressState.lt
-        }
-        if(addressState.lt =='' && addressState.qd !=='') {
-         return Number(item.qd).toString() == addressState.qd
-       
-        }
+  interface AddressProps {
+    class?: string;
+    height?: number | string;
+    address?: ResidentAddress[];
+  }
 
-        if(Number(item.lt).toString() == addressState.lt && Number(item.qd).toString() == addressState.qd) return true
-        
-        
-         return false
-     })
-  })
- 
-  $effect(()=>{
-    $inspect(filterAddress)
-  })
- 
- 
- </script>
+  let {
+    class: className,
+    height,
+    address
+  }: AddressProps = $props();
 
- <div class={cn(style)}>
-  
- <div class="flex  flex-col   w-full">
-    <div class="flex items-center gap-2">
-    <Label
-     label='endereços visitados'
-    />
-    
-   <Check
-       class="bg-gray-100 dark:bg-neutral-800 p-1 rounded-full cursor-pointer text-gray-500 dark:text-gray-300 
-         hover:bg-blue-100 dark:hover:bg-blue-900 hover:text-blue-600 transition-colors duration-150"
-        stroke-width={2}
-        size={22}
-        onclick={(()=>{
-        open =! open
-        console.log(open)
-        })}
-       />
+  // Estados reorganizados e renomeados
+  let isSelecting = $state(false);
+  let panelRef = $state<HTMLElement | null>(null);
+  let showDropdown = $state(true);
 
-   
+  let searchFilters = $state({
+    lt: '',
+    qd: '',
+    name: ''
+  });
+
+  let panelWidth = $state(0);
+  let selectedItems: ResidentAddress[] = $state([]);
+  let isAddressPanelOpen = $state(false);
+
+  // Filtro organizado
+  let filteredAddresses = $derived.by(() => {
+    const list = isSelecting ? selectedItems : address;
+
+    if (!list) return [];
+
+    if (
+      searchFilters.lt === '' &&
+      searchFilters.qd === '' &&
+      searchFilters.name === ''
+    ) {
+      return list;
+    }
+
+    return list.filter((item) => {
+      const matchLt = Number(item.lt).toString() === searchFilters.lt;
+      const matchQd = Number(item.qd).toString() === searchFilters.qd;
+
+      const matchName = item.name
+        .toUpperCase()
+        .startsWith(searchFilters.name.toUpperCase());
+
+      const words = item.name.split(/\s+/);
+      const matchLastName = words.some((word) =>
+        word.toUpperCase().startsWith(searchFilters.name.toUpperCase())
+      );
+
+      if (searchFilters.name !== '') return matchLastName;
+
+      if (searchFilters.lt !== '' && searchFilters.qd === '') return matchLt;
+      if (searchFilters.lt === '' && searchFilters.qd !== '') return matchQd;
+
+      return matchLt && matchQd && matchName;
+    });
+  });
+
+  function handleOutsideClick(event: MouseEvent) {
+    const path = event.composedPath();
+
+    if (panelRef && !path.includes(panelRef)) {
+      if (selectedItems.length > 0) {
+        isAddressPanelOpen = false;
+      }
+
+      showDropdown = false;
+      isSelecting = false;
+    }
+  }
+</script>
+
+<svelte:document onclick={handleOutsideClick} />
+
+<div bind:this={panelRef} class={cn(className)}>
+  <div class="flex flex-col w-full">
+
+    <div class="flex items-center gap-2 mb-1">
+      <Label label="Endereços visitados" />
     </div>
-    <div bind:clientWidth={width} class="flex relative  gap-3 justify-between">
-     
-    <Input
-     height={height}
-     class='flex-1 placeholder:text-black'
-     placeholder='qd'
-     prefix='qd:'
-     mask='00'
-     bind:value={addressState.qd}
-     
-      />
-     <Input
-     height={height}
-     class='flex-1 placeholder:text-black'
-     placeholder='lt'
-     prefix='lt:'
-     mask='00'
-     bind:value={addressState.lt}
+
+    <Overlay
+      show={isAddressPanelOpen}
+      
+      onOverlay={(()=>{
+        isAddressPanelOpen = false
+        searchFilters.lt = '';
+        searchFilters.name = '';
+        searchFilters.qd = '';
+      })}
+      class=" sm:rounded-lg overflow-auto sm:h-auto h-full flex flex-col gap-4 w-[700px] p-4 bg-white shadow-md"
+    >
+      <header class="text-center">
+        <h3 class="capitalize font-bold text-2xl font-nunito">
+          Escolha os endereços de visita
+        </h3>
+      </header>
+
+      <div
+        bind:clientWidth={panelWidth}
+        class="flex bg-white  flex-col gap-4 justify-between"
+      >
+        <div class="flex flex-col sm:flex-row gap-3 justify-between">
+          <Input
+            height={height}
+            class="flex-1 placeholder:text-black"
+            placeholder="qd"
+            prefix="qd:"
+            mask="00"
+            bind:value={searchFilters.qd}
+          />
+
+          <Input
+            height={height}
+            class="flex-1 placeholder:text-black"
+            placeholder="lt"
+            prefix="lt:"
+            mask="00"
+            bind:value={searchFilters.lt}
+          />
+        </div>
+
+        <div>
+          <Input
+            height={height}
+            class="flex-1 placeholder:text-black"
+            placeholder="nome"
+            mask={/^[A-Za-z ]+$/}
+            bind:value={searchFilters.name}
+          />
+        </div>
+
+        {#if showDropdown}
+          <SelectedItems
+            bind:selectedItems={selectedItems}
+            options={filteredAddresses}
+            property="label"
+            width={panelWidth}
+            class="top-[80%] "
+            onclick={() => {
+              showDropdown = false;
+              isSelecting = false;
+              isAddressPanelOpen = true;
+            }}
+          />
+        {/if}
+      </div>
+
+      <div class="flex justify-between">
+        <Button
+          text={isSelecting ? "adicionar" : "ver"}
+          class=""
+          onClick={() => {
+            isSelecting = !isSelecting;
+          }}
+        />
+
+        <Button
+          class=""
+          text="ok"
+          onClick={() => {
+            isAddressPanelOpen = false;
+          }}
+        />
+      </div>
+    </Overlay>
+
+    <ButtonAdd
+      height={height}
+      text="adicionar e ver endereços"
+      onClick={() => {
+        isAddressPanelOpen = true;
+        showDropdown = true;
+        searchFilters.lt = '';
+        searchFilters.name = '';
+        searchFilters.qd = '';
+      }}
+      class="mb-6 mt-2 w-full"
     />
-     {#if addressState.lt !=='' || addressState.qd!=='' }
-    <SelectedItems
-     bind:selectedItems={filterAddress}
-     property='label'
-     openCheking={open}
-     width={width}
-     class='top-[80%]'
-    /> 
-     {/if}
-     
-    </div>
-    
-   
- </div>
- 
+  </div>
 </div>

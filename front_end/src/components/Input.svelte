@@ -14,9 +14,11 @@
     error?: boolean;
     message?: string;
     prefix?:string
+    oninput?:()=>void
+    onclick?:()=>void
   }
 
-  let { mask, class: className, label, placeholder,prefix, value = $bindable(), height, error, message }: InputProps = $props()
+  let { mask, class: className, label, placeholder,prefix, oninput, onclick, value = $bindable(), height, error, message }: InputProps = $props()
 
   
 </script>
@@ -33,6 +35,8 @@
     <p class=" uppercase font-nunito">{prefix}</p>
   {/if}
   <input
+    oninput={oninput}
+    onclick={onclick}
     use:maskAction={{ mask, value }}
     bind:value={value}
     class={cn(" border-0 outline-0 focus:none h-full w-full uppercase  cursor-text placeholder:h-full")}
