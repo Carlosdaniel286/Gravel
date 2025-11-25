@@ -3,7 +3,7 @@
   import { cn } from "$lib/utils";
   import Label from "./Label.svelte";
   import FieldMessage from "./FieldMessage.svelte";
-
+  import { imask } from '@imask/svelte';
   interface InputProps {
     mask?:string | RegExp | string[]
     class?: string;
@@ -37,7 +37,7 @@
   <input
     oninput={oninput}
     onclick={onclick}
-    use:maskAction={{ mask, value }}
+    use:imask={mask}
     bind:value={value}
     class={cn(" border-0 outline-0 focus:none h-full w-full uppercase  cursor-text placeholder:h-full")}
     id='name'

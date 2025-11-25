@@ -16,6 +16,7 @@
   import { onMount } from 'svelte';
   import CalendarGrid from './CalendarGrid.svelte';
   import Label from './Label.svelte';
+    import imask from 'imask';
 
   interface CalendarProps {
     value?: Date;
@@ -131,7 +132,7 @@
   <!-- Input -->
   <div class="flex flex-col gap-2">
     {#if label }
-    <Label for="input"  
+    <Label for="cff"  
      label={label}
     />
     {/if}
@@ -146,19 +147,19 @@
 
       <input
         bind:this={inputRef}
-        id="input"
+        id="cff"
         onfocus={() => { isTyping = true; }}
         onblur={() => { isTyping = false; }}
         class="w-full focus:outline-none"
         type="text"
         onclick={() => (isCalendarOpen = true)}
         bind:value={inputValue}
-        use:maskAction={{ mask: '00/00/0000', value: inputValue }}
+        use:imask={'00/00/0000'}
         placeholder="DD/MM/YYYY"
         oninput={() => handleInput()}
       />
 
-      <button bind:this={openButtonRef} class="cursor-pointer rounded-sm">
+      <button type='button' bind:this={openButtonRef} class="cursor-pointer rounded-sm">
         <CalendarSearch
           onclick={() => {
             isCalendarOpen = !isCalendarOpen;

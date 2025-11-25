@@ -97,7 +97,7 @@
 <div bind:this={panelRef} class={cn(className)}>
   <div class="flex flex-col w-full">
 
-    <div class="flex items-center gap-2 mb-1">
+    <div class="flex items-center gap-2 ">
       <Label label="Endereços visitados" />
     </div>
 
@@ -146,7 +146,7 @@
           <Input
             height={height}
             class="flex-1 placeholder:text-black"
-            placeholder="nome"
+            placeholder="nome ou sobrenome do visitado"
             mask={/^[A-Za-z ]+$/}
             bind:value={searchFilters.name}
           />

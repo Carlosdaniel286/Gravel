@@ -100,6 +100,7 @@
   >
     {#each visibleItems as item, index (index)}
       <button
+       type="button"
         class="group flex items-center cursor-pointer justify-between px-4 py-3 hover:bg-gray-100/70 dark:hover:bg-neutral-800/60 transition-all duration-150"
         style="max-width:{width}px"
         in:fly={{ y: -6, duration: 180 }}

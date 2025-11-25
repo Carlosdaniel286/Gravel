@@ -7,6 +7,7 @@
   import {  onMount } from 'svelte';
   import FieldMessage from './FieldMessage.svelte';
   import type { Snippet } from "svelte"; 
+    import { imask } from '@imask/svelte';
    
   type AutoCompleteProps<Item> = {
     options?: Item[] | string[];
@@ -199,7 +200,7 @@
       oninput={handleInput}
       bind:value={searchValue}
       onclick={() => { openOverlay = true,toggleEyes=true }}
-      use:maskAction={{ mask, value: searchValue }}
+      use:imask={mask}
     />
 
     <div class="flex gap-3 items-center pr-3">

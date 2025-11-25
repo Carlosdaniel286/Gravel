@@ -77,7 +77,7 @@
     <!-- Nome Completo -->
     <Input
       mask={/^[A-Za-z ]+$/}
-      class={cn(`col-start-1 lg:col-span-3`)}
+      class={cn(`col-start-1 sm:row-start-1 lg:col-span-3`)}
       height={HEIGHT}
       error={fieldErrors.name.error}
       message={fieldErrors.name.message}
@@ -86,7 +86,7 @@
       bind:value={register.name}
     />
 
-    <picture class="md:col-start-2 sm:col-span-2 md:col-span-1 flex justify-end row-span-2 lg:col-start-4 row-start-1">
+    <picture class="md:col-start-2 sm:col-span-1  flex justify-end row-span-2  lg:col-start-4 row-start-1">
       <img src={Img} alt="" class="rounded-lg cursor-pointer object-cover" />
     </picture>
 
@@ -102,13 +102,12 @@
     
      <Address
       height={HEIGHT}
-      class={cn(`col-start-1 lg:col-span-2 z-10`)}
+      class={cn(`col-start-1 sm:row-start-3  lg:col-span-2 z-10`)}
       address={addressExemple}
       />
    <!-- CPF -->
     <Input
       height={HEIGHT}
-      mask="000.000.000-00"
       class={cn(`lg:col-span-2 lg:col-start-1 sm:row-start-3 sm:col-start-2 md:row-auto md:col-auto`)}
       placeholder="Digite o CPF"
       label="CPF completo"
@@ -117,17 +116,20 @@
       message={fieldErrors.cpf.message}
     />
 
-    <!-- Telefone -->
-    <Input
+    
+   
+      <Input
       height={HEIGHT}
       mask="(00) 9 0000-0000"
-      class={cn(`md:col-start-1 lg:col-span-2 lg:row-start-4 lg:col-start-1`)}
+      class={cn(`md:col-start-1 lg:col-span-1 lg:row-start-4 lg:col-start-1`)}
       placeholder="Telefone..."
       label="Telefone (opcional)"
       bind:value={register.phone}
       error={fieldErrors.phone.error}
       message={fieldErrors.phone.message}
     />
+     
+   
 
     <!-- Período de Visita -->
     <DateRangePicker
@@ -135,8 +137,7 @@
       height={HEIGHT}
       bind:startDate={register.startDate}
       bind:endDate={register.endDate}
-     
-    />
+     />
 
     <!-- Perfil de acesso -->
     <AutoComplete
@@ -170,9 +171,13 @@
       error={fieldErrors.accessMode.error}
       message={fieldErrors.accessMode.message}
     />
-
+     
     <!-- Tipo de registro -->
-    
+     <Input
+      height={HEIGHT}
+      class={cn(``,register.accessMode === 'veículo'?'sm:col-span-2':"sm:col-span-1",'md:col-span-1')}
+       label="empresa"
+     />
 
     {#if register.accessMode === 'veículo'}
       <!-- CNH -->
@@ -215,7 +220,7 @@
        />
        </div>
     {/if}
-
+    
     <ButtonAdd class={cn(`sm:hidden`)} text="Criar uma observação" height={HEIGHT} />
 
     <div class="mt-6 h-[51px] sm:col-span-2 md:col-span-2 lg:col-span-4 flex justify-between">

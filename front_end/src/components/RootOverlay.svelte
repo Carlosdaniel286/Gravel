@@ -64,6 +64,7 @@
 <Overlay
  class='grid w-full md:px-0  lg:flex lg:items-center-safe lg:justify-center-safe   3xl:h-auto 3xl:block  3xl:w-auto 3xl:bg-transparent'
  show={overlay.overlayStore('form')}
+ z={50}
  background='white'
  onOverlay={(()=>{
    // show.close()
