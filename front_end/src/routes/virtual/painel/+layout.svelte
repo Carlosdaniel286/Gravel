@@ -8,7 +8,7 @@
     setOverlayContext()
     setRegisterContext()
  </script>
-  <main class=" flex flex-col  h-screen w-screen">
+  <main class=" flex flex-col overflow-hidden   h-screen w-screen">
   <Header />
   <div class=" h-full flex">
   <Sidebar />

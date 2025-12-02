@@ -1,117 +1,120 @@
 <script lang="ts">
   import image from '$lib/assets/rosto.jpg';
-  import { ArrowUp, Car, Plus, MapPinHouse,type Icon as IconType } from 'lucide-svelte';
+  import {
+    ArrowUp,
+    ArrowDown,
+    Car,
+    Footprints,
+    MapPinHouse,
+    Clock,
+    
+  } from 'lucide-svelte';
 
-  interface CardsInfoProps{
-    flow?:'inside'|'outside'
-    cardType?:"resident"|'visitor'|'owner'|'employee'
-    flowMode?:'pedestrian'|'vehicle'
+  import Info from './Info.svelte';
+
+  type FlowType = 'entrada' | 'saída';
+  type CardType = 'residente' | 'vistante' | 'proprietário' | 'funcionário' | 'encomendas';
+  type FlowMode = 'pedestre' | 'veículo';
+
+  export interface CardsInfoProps {
+    flow?: FlowType;
+    cardType?: CardType;
+    flowMode?: FlowMode;
+    name?: string;
+    address?: string;
   }
-  
-  let {flow='inside',cardType='employee',flowMode='pedestrian'}:CardsInfoProps = $props()
-  
-  
-  
-  
-  
-  
-  const style = (()=>{
-     switch(cardType){
-       case 'employee':
-       return {
-        bg:'white',
-        textColor:"#1c398e",
-        flowMode,
-        
-       }
-      }
-  })()
 
+  let {
+    flow = 'saída',
+    cardType = 'funcionário',
+    flowMode = 'veículo',
+    name = 'luciana lany',
+    address = 'Qd 20 lt 02'
+  }: CardsInfoProps = $props();
+  
+  
+  // Ícone dependendo da direção
+  const iconFlow = flow === 'entrada' ? ArrowDown : ArrowUp;
 
-  
-  
-  
-  
-  const styles =[
-    {
-     textColor:"oklch(57.7% 0.245 27.325)",
-     bgHover:'#ffe2e2',
-
+  // Cores do card de entrada/saída
+  const flowColor = {
+    saída: {
+      bg: 'bg-red-200',
+      textColor: 'text-red-600',
+      hover: '#ffe2e2'
+    },
+    entrada: {
+      bg: 'bg-blue-200',
+      textColor: 'text-blue-600',
+      hover: '#BFDBFE'
     }
-  ]
-
-   
-
-
-
-
+  }[flow];
 </script>
 
-<div 
-  class="bg-white w-full max-w-full text-blue-900 rounded-2xl shadow-xl 
-         p-4 border border-gray-100 font-nunito select-none"
->
-    <!-- Header -->
-    <header class="flex items-center gap-6 mb-3 pb-4 border-b border-gray-100">
-        <img 
-            alt="perfil" 
-            src={image} 
-            class="w-24 h-24 rounded-full object-cover shadow-md 
-                   ring-4 ring-blue-500/40 ring-offset-2"
-        />
-        <div>
-            <p class="capitalize font-extrabold text-3xl tracking-tight text-blue-900">
-                Luciana Lany
-            </p>
-            <p class="text-gray-500 font-medium mt-1">Visitante</p>
-        </div>
-    </header>
+<div class="bg-white w-full hover:scale-101 text-blue-900 rounded-2xl shadow-xl p-4 
+            border border-gray-100 font-nunito select-none">
 
-    <!-- Cards (tudo igual ao de Saída) -->
-    <div class=" grid  lg:grid-cols-3   px-1.5 lg:h-16 gap-2">
+  <!-- Header -->
+  <header class="flex items-center cursor-pointer gap-6 mb-4 pb-4 border-b border-gray-100">
+    <img
+      alt="perfil"
+      src={image}
+      class="w-24 h-24 rounded-full object-cover shadow-md
+             ring-4 ring-blue-500/40 ring-offset-2"
+    />
 
-        <!-- Saída -->
-        <div 
-          class="flex items-center bg-red-200 lg:bg-transparent   justify-center gap-2 rounded-sm
-                 hover:bg-red-100 transition duration-200 hover:scale-110"
-        >
-            <ArrowUp class="text-red-600"/>
-            <p class="capitalize font-semibold text-red-600 text-md">Saída</p>
-        </div>
-
-        <!-- Carro -->
-        <div 
-          class="flex items-center bg-blue-200 lg:bg-transparent justify-center gap-2 rounded-sm
-                 hover:bg-blue-100 transition duration-200 hover:scale-110"
-        >
-            <Car class="text-blue-600"/>
-            <p class="capitalize font-semibold text-blue-700 text-md">Carro</p>
-        </div>
-
-        <!-- Endereço -->
-        <div 
-          class="flex items-center bg-green-200 lg:bg-transparent justify-center gap-2 rounded-sm
-                 hover:bg-green-100 transition duration-200 hover:scale-110"
-        >
-            <MapPinHouse class="text-green-600"/>
-            <p class="capitalize font-semibold text-green-700 text-sm flex lg:flex-col items-center xl:flex xl:flex-row gap-1  ">
-                <span class="text-sm capitalize whitespace-nowrap">qd 20</span>
-                <span class="text-sm capitalize whitespace-nowrap">lt 02</span>
-            </p>
-        </div>
-
+    <div class="flex flex-col gap-1 justify-center">
+      <p class="capitalize font-extrabold text-3xl tracking-tight text-blue-900">
+        {name}
+      </p>
+      <p class="text-gray-500 capitalize font-medium mt-1">
+        {cardType}
+      </p>
+      <div class="flex items-center  gap-1">
+        <div><Clock size={14} class='text-sky-500'/></div>
+      <p class="text-sky-500 text-sm">
+        10:30
+      </p>
+      </div>
     </div>
+  </header>
 
-    <!-- Botão Detalhes separado, mesmo estilo -->
-    <div class="mt-3">
-      <button
-        class="w-full flex items-center cursor-pointer justify-center gap-2 rounded-sm
-               hover:bg-orange-100 transition duration-200 hover:scale-[1.05]
-               active:scale-[0.97]"
-      >
-          <Plus class="text-orange-600"/>
-          <p class="capitalize font-semibold text-orange-700 text-md">Detalhes</p>
-      </button>
+  <!-- Cards -->
+  <div class="grid lg:grid-cols-3 auto-rows-auto gap-2 px-1.5">
+
+    <!-- Entrada/Saída -->
+    <Info
+      bg={flowColor.bg}
+      text={flow}
+      textColor={flowColor.textColor}
+      icon={iconFlow}
+      hover={flowColor.hover}
+    />
+
+    <!-- Veículo / Pedestre -->
+    <Info
+      bg="bg-yellow-200"
+      text={flowMode}
+      textColor="text-yellow-500"
+      icon={flowMode === 'pedestre' ? Footprints : Car}
+      hover="#FEF9C3"
+    />
+
+    <!-- Endereço -->
+     <div class="h-full w-full  ">
+    <Info
+      bg="bg-green-200"
+      text={address}
+      textColor="text-green-600"
+      icon={MapPinHouse}
+      hover="#dcfce7"
+      class=' sm:text-[0.85rem] 2xl:text-[1rem] '
+    />
     </div>
-</div>
+  </div>
+
+  <!-- Botão Detalhes -->
   
+
+
+</div>

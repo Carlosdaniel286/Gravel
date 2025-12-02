@@ -18,9 +18,10 @@
     flow?:"x"|'y'
     mode?:'infinit'|'normal'
     class?:string
+    maxHeight?:number
   }
 
-  const { onMove, props = [], mode='normal', children,flow,class:style }: CarouselProps = $props();
+  const { onMove, props = [], mode='normal', children,flow,class:style,maxHeight }: CarouselProps = $props();
   let activeIndex = $state(0);
   let itemRefs: HTMLDivElement | undefined = $state();
   let scrollRefs: HTMLElement | undefined = $state();
@@ -101,12 +102,12 @@
 }
 
   }
-
+ 
 
 </script>
 
-
-<div class={cn("flex flex-col overflow-x-auto max-h-screen  gap-4 w-full",style)}>
+ {#if props && !flow }
+  <div class={cn("flex flex-col overflow-x-auto max-h-screen  gap-4 w-full",style)}>
   <div bind:this={itemRefs} class="w-full ">
     {#each props as item}
       {@render item()}
@@ -114,9 +115,10 @@
     {/each}
   </div>
 </div>
+{/if}
 
 {#if children && flow == 'x'}
-  <div bind:this={scrollRefs} onscroll={handleScroll} class={cn("carousel  flex  scroll-snap-type: x mandatory gap-2 overflow-y-hidden overflow-x-auto ",style)}>
+  <div  bind:this={scrollRefs} onscroll={handleScroll} class={cn("carousel  flex  scroll-snap-type: x mandatory gap-2 overflow-y-hidden overflow-x-auto ",style)}>
    {@render children()}
    
    {#each compontes }
@@ -126,9 +128,9 @@
 {/if}
 
 {#if children && flow == 'y'}
-  <div  class={cn("flex  scroll-snap-type: y mandatory gap-4 overflow-x-hidden overflow-y-auto  ",style)}>
+  <div  style="max-height:{maxHeight}px;"   class={cn("grid grid-cols-3 gap-1.5 max-h-full  overflow-y-auto overflow-x-hidden ",style)}>
    {@render children()}
-   </div>
+   </div> 
 {/if}
 
 {#if children && props.length === 0 && !flow }
