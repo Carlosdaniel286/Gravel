@@ -10,7 +10,7 @@ import {
 import { initRegisterVehicle } from "$lib/consts/vehicle.options";
 import type { Vehicle } from "$lib/types/vehicle.type";
 import { registerSchema } from "$lib/helpers/validateFormData";
-
+import { v4 as uuidv4 } from 'uuid';
 // 🔑 Chave única para o contexto
 const REGISTER_KEY = Symbol("register-form");
 
@@ -25,7 +25,7 @@ export class RegisterManager {
   registerList = $state<GeralRegister>(initGeralRegister);
   register = $state<RegisterVisitorList>({
     ...initRegisterVisitorList,
-    idRegister: crypto.randomUUID()
+    idRegister:  uuidv4()
   });
   vehicle = $state<Vehicle>({ ...initRegisterVehicle });
   hasVehicleWithoutDriver = $state(false);
@@ -49,7 +49,7 @@ export class RegisterManager {
   get initPerson(){
    return {
     ...initRegisterVisitorList,
-    idRegister: crypto.randomUUID()
+    idRegister: uuidv4()
    } 
   }
 
@@ -65,7 +65,7 @@ export class RegisterManager {
   createPassenger(register:RegisterVisitorList) {
     const passenger = {...register, 
       accessMode:'passageiro',
-      idRegister: crypto.randomUUID(),
+      idRegister: uuidv4(),
       passenger: true
     }
     if(!this.registerList.vehicle?.passenger) return

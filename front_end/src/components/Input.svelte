@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { maskAction } from "$lib/hooks/useMask.svelte";
   import { cn } from "$lib/utils";
   import Label from "./Label.svelte";
   import FieldMessage from "./FieldMessage.svelte";
-  import { imask } from '@imask/svelte';
+    import { onMount } from "svelte";
+    import IMask, { type FactoryArg } from "imask";
+ 
   interface InputProps {
     mask?:string | RegExp | string[]
     class?: string;
@@ -20,7 +21,19 @@
 
   let { mask, class: className, label, placeholder,prefix, oninput, onclick, value = $bindable(), height, error, message }: InputProps = $props()
 
-  
+  let inputElement: HTMLInputElement | null = $state(null)
+
+  onMount(() => {
+    if(!inputElement) return
+    if(!mask)return
+    const maskInput = IMask(inputElement, {
+      mask:mask as any
+    });
+
+    return () => {
+      maskInput.destroy(); // limpa quando o componente for destruído
+    };
+  });
 </script>
 
 <div class={cn("flex flex-col gap-2", className)}>
@@ -37,7 +50,7 @@
   <input
     oninput={oninput}
     onclick={onclick}
-    use:imask={mask}
+    bind:this={inputElement}
     bind:value={value}
     class={cn(" border-0 outline-0 focus:none h-full w-full uppercase  cursor-text placeholder:h-full")}
     id='name'

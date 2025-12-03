@@ -111,6 +111,7 @@
       class={cn(`lg:col-span-2 lg:col-start-1 sm:row-start-3 sm:col-start-2 md:row-auto md:col-auto`)}
       placeholder="Digite o CPF"
       label="CPF completo"
+      mask={'000.000.000-00'}
       bind:value={register.cpf}
       error={fieldErrors.cpf.error}
       message={fieldErrors.cpf.message}

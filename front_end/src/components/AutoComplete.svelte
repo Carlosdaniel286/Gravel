@@ -7,7 +7,8 @@
   import {  onMount } from 'svelte';
   import FieldMessage from './FieldMessage.svelte';
   import type { Snippet } from "svelte"; 
-    import { imask } from '@imask/svelte';
+    import IMask from 'imask';
+    
    
   type AutoCompleteProps<Item> = {
     options?: Item[] | string[];
@@ -37,7 +38,8 @@
     mask = /.+/, 
     onClear, 
     multiple = false,
-    value=$bindable(multiple ? ([] as (Item | string)[]) : ''),
+    // svelte-ignore state_referenced_locally
+        value=$bindable(multiple ? ([] as (Item | string)[]) : ''),
     title, 
     placeholder, 
     height,
@@ -59,7 +61,19 @@
   let dropdownRef = $state<HTMLUListElement | null>(null);
   let clicked = $state(false)
   const hasSelectedItems = $derived(selectedItems.length > 0)
-  
+  let inputElement: HTMLInputElement | null = $state(null)
+
+  onMount(() => {
+    if(!inputElement) return
+    if(!mask) return
+    const maskInput = IMask(inputElement, {
+      mask:mask as any
+    });
+
+    return () => {
+      maskInput.destroy(); // limpa quando o componente for destruído
+    };
+  });
  const inputPlaceholder = $derived.by(() => {
   if (!hasSelectedItems) {
     return placeholder ?? "";
@@ -191,6 +205,7 @@
    <p class="uppercase">{prefix}</p>
     <input
       id="in"
+      
       autocorrect='on'
       type="text"
       placeholder={inputPlaceholder}
@@ -199,8 +214,9 @@
       )}
       oninput={handleInput}
       bind:value={searchValue}
+      bind:this={inputElement}
       onclick={() => { openOverlay = true,toggleEyes=true }}
-      use:imask={mask}
+      
     />
 
     <div class="flex gap-3 items-center pr-3">
@@ -254,7 +270,7 @@
           <li class="flex justify-center items-center" style="max-width:{width}px">
             <button
             type='button'
-              class="uppercase flex gap-3 px-4 py-2 w-full text-left cursor-pointer hover:bg-blue-100 active:bg-blue-200 rounded-lg break-words whitespace-normal font-semibold transition-colors"
+              class="uppercase flex gap-3 px-4 py-2 w-full text-left cursor-pointer hover:bg-blue-100 active:bg-blue-200 rounded-lg whitespace-normal font-semibold transition-colors"
               onclick={() => {
                 multiple ? toggleSelection(item) : setSearchAndValue(item);
                 onSelect?.(item);

@@ -34,7 +34,8 @@
   
   
   // Ícone dependendo da direção
-  const iconFlow = flow === 'entrada' ? ArrowDown : ArrowUp;
+  // svelte-ignore state_referenced_locally
+    const iconFlow = flow === 'entrada' ? ArrowDown : ArrowUp
 
   // Cores do card de entrada/saída
   const flowColor = {
@@ -48,7 +49,9 @@
       textColor: 'text-blue-600',
       hover: '#BFDBFE'
     }
-  }[flow];
+  // svelte-ignore state_referenced_locally
+    // svelte-ignore state_referenced_locally
+        }[flow];
 </script>
 
 <div class="bg-white w-full hover:scale-101 text-blue-900 rounded-2xl shadow-xl p-4 
