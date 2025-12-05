@@ -128,7 +128,7 @@
 {/if}
 
 {#if children && flow == 'y'}
-  <div  style="max-height:{maxHeight}px;"   class={cn("grid grid-cols-3 gap-1.5 max-h-full  overflow-y-auto overflow-x-hidden ",style)}>
+  <div  style="max-height:{maxHeight}px; "  class={cn("grid grid-cols-1 gap-1.5   overflow-y-auto overflow-x-hidden ",style)}>
    {@render children()}
    </div> 
 {/if}

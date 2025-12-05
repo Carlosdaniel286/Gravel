@@ -11,7 +11,7 @@
     class?:string
   }
 
-  const {icon:Component,bg,hover,textColor,text,class:style}:InfoProps = $props()
+  const {icon:Component,hover,textColor,text,class:style}:InfoProps = $props()
  
  
  </script>
@@ -19,11 +19,10 @@
   <div 
      style=" --color-hover:{hover};"
        class={cn(
-            "info flex items-center  w-full  lg:bg-transparent   justify-center gap-2 rounded-sm",
-             
-              'hover:bg-[var(--color-hover)]',
+            " flex items-center  w-full  lg:bg-transparent   justify-center gap-2 rounded-sm",
+             'hover:bg-(--color-hover)',
             "transition duration-200 hover:scale-110",
-             bg,
+             
             )}
           
             
@@ -36,9 +35,7 @@
            </p>
             {/if}
         </div>
-        <style>
-
-        </style>
+      
         
         
         

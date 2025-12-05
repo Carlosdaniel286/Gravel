@@ -8,13 +8,21 @@
     setOverlayContext()
     setRegisterContext()
  </script>
-  <main class=" flex flex-col overflow-hidden   h-screen w-screen">
-  <Header />
-  <div class=" h-full flex">
-  <Sidebar />
-  <RootOverlay/>
-  {@render children?.()}
+ 
+<main class="flex overflow-hidden bg-gray-200 h-screen">
+  <Sidebar class=" overflow-hidden" />
+
+  <!-- ESSA DIV PRECISA DE flex-1 -->
+  <div class="flex flex-col flex-1 min-w-0">
+    <Header />
+
+    <RootOverlay />
+
+    <div class="flex flex-1 min-h-0 min-w-0">
+      {@render children?.()}
+    </div>
   </div>
 </main>
+
 
  

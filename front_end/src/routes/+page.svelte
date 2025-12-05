@@ -4,7 +4,7 @@
     import VehicleSummary from '../components/VehicleSummary.svelte';
     
 </script>
-  <div class="flex w-screen h-screen bg-gray-200 items-center justify-center">
+  <div class="flex w-screen h-screen items-center justify-center">
   <VehicleSummary/>
 </div>
     

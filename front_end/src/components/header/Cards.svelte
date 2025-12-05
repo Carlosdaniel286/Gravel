@@ -22,97 +22,68 @@
     case "order":
       return {
         icon: PackagePlus,
-        bg: "linear-gradient(to right, #86efac, #22c55e)",
-        text: 'encomendas'
+        bg: "bg-[#32C785]",   // Encomendas (verde)
+        text: "encomendas"
       };
     case "report":
       return {
         icon: FileText,
-        bg: "linear-gradient(to right, #c084fc, #9333ea)",
-        text: 'relatórios'
+        bg: "bg-purple-700",   // Relatórios (usei o rosa, já que não tem na imagem)
+        text: "relatórios"
       };
     case "releases":
       return {
         icon: SquareCheckBig,
-        bg: "linear-gradient(to right, #fcd34d, #f97316)",
-        text: 'liberações'
+        bg: "bg-[#F5B133]",   // Liberações (amarelo)
+        text: "liberações"
       };
     case "inflow":
       return {
         icon: ArrowUpFromLine,
-        bg: "linear-gradient(to right, #38bdf8, #0ea5e9)",
-        text: 'entradas'
+        bg: "bg-[#1DA0E8]",   // Entradas (azul)
+        text: "entradas"
       };
     case "outflow":
       return {
         icon: ArrowDownFromLine,
-        bg: "linear-gradient(to right, #f87171, #dc2626)",
-        text: 'saídas'
+        bg: "bg-[#D84C45]",   // Saídas (vermelho)
+        text: "saídas"
       };
     case "visitors":
       return {
         icon: Users,
-        bg: "linear-gradient(to right, #f472b6, #ec4899)",
-        text: 'visitantes'
+        bg: "bg-[#F26C7F]",   // Visitantes (rosa forte)
+        text: "visitantes"
       };
     default:
       return {
         icon: CircleOff,
-        bg: "linear-gradient(to right, #d1d5db, #9ca3af)",
-        text: 'off'
+        bg: "bg-gray-600",
+        text: "off"
       };
   }
 })();
 
-  
+
  
  const Component = card.icon
    
    
    
-   function random(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
- type Ball= {
-    size: number;
-    opacity: number;
-    top: number;
-    left: number;
-    
-  }
-  // Gerar dinamicamente 6 bolinhas
-  const balls:Ball[] = Array.from({ length: 6 }, () => ({
-    size: random(35, 55),            // tamanho px
-    opacity: random(20, 35) / 100,   // opacidade 0.20 a 0.35
-    top: random(0, 120),             // posição dentro do card
-    left: random(0, 220),
-    
-  }));
+  
+  //bg-linear-to-r 
 </script>
 
 <div
-  class={cn("bg-gradient-to-r cursor-pointer relative",
-        "w-[290px] h-[155px] rounded-sm flex-shrink-0 overflow-hidden flex items-center justify-center",
-         "transition-transform duration-300 hover:scale-120",
-          
+  class={cn("cursor-pointer relative",
+        "w-[295px] h-[140px]  rounded-sm shrink-0 overflow-hidden flex items-center justify-center",
+         "transition-transform duration-300 hover:scale-110",
+          card.bg
          )}
-         
-         style="background:{card.bg}"
-         >
+         style="background-color: {card.bg};"
+        >
   
-  {#each balls as b}
-    <div
-      class="absolute rounded-full"
-      style="
-        width: {b.size}px;
-        height: {b.size}px;
-        background-color: rgba(255,255,255,{b.opacity});
-        top: {b.top}px;
-        left: {b.left}px;
-       "
-    ></div>
-    
-  {/each}
+
 
   <!-- Conteúdo central -->
   <div class="flex gap-4 pl-1 items-center z-10">

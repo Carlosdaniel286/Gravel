@@ -1,4 +1,5 @@
 <script lang="ts">
+	
   import image from '$lib/assets/rosto.jpg';
   import {
     ArrowUp,
@@ -24,7 +25,7 @@
     address?: string;
   }
 
-  let {
+  const {
     flow = 'saída',
     cardType = 'funcionário',
     flowMode = 'veículo',
@@ -38,7 +39,7 @@
     const iconFlow = flow === 'entrada' ? ArrowDown : ArrowUp
 
   // Cores do card de entrada/saída
-  const flowColor = {
+  const flowColor = $derived({
     saída: {
       bg: 'bg-red-200',
       textColor: 'text-red-600',
@@ -49,12 +50,11 @@
       textColor: 'text-blue-600',
       hover: '#BFDBFE'
     }
-  // svelte-ignore state_referenced_locally
-    // svelte-ignore state_referenced_locally
-        }[flow];
+  
+   }[flow])
 </script>
 
-<div class="bg-white w-full hover:scale-101 text-blue-900 rounded-2xl shadow-xl p-4 
+<div class="bg-white w-full hover:scale-101 text-blue-900 rounded-2xl  p-4 
             border border-gray-100 font-nunito select-none">
 
   <!-- Header -->
@@ -74,8 +74,8 @@
         {cardType}
       </p>
       <div class="flex items-center  gap-1">
-        <div><Clock size={14} class='text-sky-500'/></div>
-      <p class="text-sky-500 text-sm">
+        <div><Clock size={20} strokeWidth={2.5} absoluteStrokeWidth  class='text-blue-700  font-bold'/></div>
+      <p class="text-black/65 mt-0.5 text-md font-nunito font-semibold">
         10:30
       </p>
       </div>
@@ -83,7 +83,7 @@
   </header>
 
   <!-- Cards -->
-  <div class="grid lg:grid-cols-3 auto-rows-auto gap-2 px-1.5">
+  <div class="grid grid-cols-2 lg:grid-cols-3 auto-rows-auto gap-2 px-1.5">
 
     <!-- Entrada/Saída -->
     <Info
@@ -104,14 +104,14 @@
     />
 
     <!-- Endereço -->
-     <div class="h-full w-full  ">
+     <div class="h-full w-full hidden lg:flex">
     <Info
       bg="bg-green-200"
       text={address}
-      textColor="text-green-600"
+      textColor="text-green-500"
       icon={MapPinHouse}
       hover="#dcfce7"
-      class=' sm:text-[0.85rem] 2xl:text-[1rem] '
+      class=' sm:text-[0.85rem] 2xl:text-[1rem]  '
     />
     </div>
   </div>

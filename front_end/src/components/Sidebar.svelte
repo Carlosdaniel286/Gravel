@@ -2,6 +2,7 @@
   import { House,  UserPlus, Search,type Icon as IconType} from "lucide-svelte";
   import SidebarList from "./SidebarList.svelte";
   import { getOverlayContext } from "$lib/context/overlayContext.svelte";
+    import { cn } from "$lib/utils";
   const overlay = getOverlayContext();
  
   type MenuItem = {
@@ -9,6 +10,7 @@
     description: string;
     icon: typeof IconType;
     onclick?:()=>void
+   
   };
 
   const menuItems: MenuItem[] = [
@@ -30,10 +32,10 @@
       onclick:()=> overlay.overlayManager('filterRegister',true)
     },
   ];
-  //bg-gray-200 w-[200px] h-full flex flex-col items-center  py-4 gap-6 shadow-lg
+  let {class:style=''}=$props()
 </script>
 
-<aside class="bg-gray-100 hidden w-[110px] h-full sm:flex flex-col items-start  py-4 gap-6 shadow-lg">
+<aside class={cn("bg-gray-100 hidden w-[110px] h-full sm:flex flex-col items-start  py-4 gap-6 shadow-lg",style)}>
   
 {#each menuItems as item}
   {@const Icon = item.icon}
