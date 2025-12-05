@@ -84,6 +84,7 @@
 
 <Overlay
   class='px-2'
+  z={50}
   show={overlay.overlayStore('textArea')}
 >
   <TextArea
@@ -100,6 +101,7 @@
 </Overlay>
 
  <Overlay
+ z={50}
   show={overlay.overlayStore('filterRegister')}
   onOverlay={(()=>overlay.overlayManager('filterRegister',false))}
  >

@@ -2,7 +2,9 @@
   import { House,  UserPlus, Search,type Icon as IconType} from "lucide-svelte";
   import SidebarList from "./SidebarList.svelte";
   import { getOverlayContext } from "$lib/context/overlayContext.svelte";
-    import { cn } from "$lib/utils";
+  import { cn } from "$lib/utils";
+    import { goto } from "$app/navigation";
+
   const overlay = getOverlayContext();
  
   type MenuItem = {
@@ -17,7 +19,10 @@
     {
       description:'Home',
       bg:'bg-indigo-500',
-      icon: House
+      icon: House,
+      onclick:(()=>{
+        goto('/virtual/painel')
+      })
     },
     {
       description:"Cadastrar",

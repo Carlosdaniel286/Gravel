@@ -18,7 +18,8 @@
 flow='x'
 class='gap-2   '
 >
-   <Cards cardType='visitors'/>
+   <Cards 
+    cardType='visitors'/>
     <Cards cardType='order'/>
     <Cards cardType='releases'/>
     <Cards cardType='inflow'/>
