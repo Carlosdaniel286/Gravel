@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from '$lib/utils';
-  import Select from "./Select.svelte";
+  import Select from "../Select.svelte";
   import { ArrowLeft, ArrowRight } from "@lucide/svelte";
   import { 
     addDays, addMonths, addYears, differenceInCalendarYears, 

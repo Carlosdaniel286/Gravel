@@ -1,7 +1,7 @@
 <script lang="ts">
   import { maskAction } from "$lib/hooks/useMask.svelte";
   import { startOfDay, differenceInCalendarDays, addDays, isAfter, isBefore } from "date-fns";
-  import Calendar from "./Calendar.svelte";
+  import Calendar from "./calendar/Calendar.svelte";
   import { cn } from "$lib/utils";
     import Label from "./Label.svelte";
 

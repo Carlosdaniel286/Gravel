@@ -18,7 +18,7 @@
   import HeaderForm from './HeaderForm.svelte';
   import type { ApiProps } from './Carousel.svelte';
   import type { AccessMode } from '$lib/types/access.types';
-  import Calendar from './Calendar.svelte';
+  import Calendar from './calendar/Calendar.svelte';
   import { getFieldError,  registerVisitorErrors } from '$lib/helpers/validateFormData';
   import IconsAutoComplete from './optionsAutoComplete/IconsAutoComplete.svelte';
     import { getOverlayContext } from '$lib/context/overlayContext.svelte';

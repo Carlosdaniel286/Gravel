@@ -15,7 +15,7 @@
   import { CalendarSearch, X } from '@lucide/svelte';
   import { onMount } from 'svelte';
   import CalendarGrid from './CalendarGrid.svelte';
-  import Label from './Label.svelte';
+  import Label from '../Label.svelte';
     import imask from 'imask';
 
   interface CalendarProps {
