@@ -50,8 +50,10 @@
   const currentMonthLabel = $derived(months[selectedMonth].month.slice(0, 3));
 
   const calendarYears = differenceInCalendarYears(
-    endDate ?? addYears(today, 11),
-    startDate ?? new Date(0)
+    // svelte-ignore state_referenced_locally
+        endDate ?? addYears(today, 11),
+    // svelte-ignore state_referenced_locally
+        startDate ?? new Date(0)
   );
   const yearOptions = new Array(calendarYears)
     .fill(0)

@@ -10,7 +10,7 @@
     setYear
   } from 'date-fns';
 
-  import { maskAction } from '$lib/hooks/useMask.svelte';
+  
   import { normalizeDateInput } from '$lib/helpers/normalizeDateInput';
   import { CalendarSearch, X } from '@lucide/svelte';
   import { onMount } from 'svelte';
